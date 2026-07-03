@@ -28,9 +28,8 @@ const SOP = {
 };
 
 function assetPath(filename) {
-  return `../data/${SOP.memoryId}/${filename}`;
+  return `/data/${SOP.memoryId}/${filename}`;
 }
-
 function setText(element, value) {
   if (element) element.textContent = value || "";
 }
