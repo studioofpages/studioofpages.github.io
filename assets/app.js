@@ -5,16 +5,15 @@ const titleEl = document.getElementById("memoryTitle");
 const namesEl = document.getElementById("memoryNames");
 const dateEl = document.getElementById("memoryDate");
 const messageEl = document.getElementById("memoryMessage");
+const endingNamesEl = document.getElementById("endingNames");
 const photoEl = document.getElementById("memoryPhoto");
 const audioEl = document.getElementById("memoryAudio");
 const button = document.getElementById("playButton");
 const progress = document.getElementById("progressBar");
 
-
 function setPlayingState(isPlaying) {
   document.body.classList.toggle("is-playing", isPlaying);
   button.querySelector(".play-icon").textContent = isPlaying ? "❚❚" : "▶";
-  
 }
 
 async function loadMemory() {
@@ -23,23 +22,26 @@ async function loadMemory() {
     if (!response.ok) throw new Error("Memory not found");
 
     const data = await response.json();
-const theme = data.theme?.style || "wedding";
-document.body.classList.add(`theme-${theme}`);
+
+    const theme = data.theme?.style || "eternal";
+    document.body.classList.add(`theme-${theme}`);
 
     document.title = `${data.title || "Memory"} | StudioOfPages`;
+
     titleEl.textContent = data.title || "Untitled Memory";
     namesEl.textContent = data.names || "";
     dateEl.textContent = data.date || "";
     messageEl.textContent = data.message || "";
+    endingNamesEl.textContent = data.names ? `Created for ${data.names}` : "";
 
     photoEl.src = `../data/${memoryId}/${data.photo || "photo.jpg"}`;
     audioEl.src = `../data/${memoryId}/${data.audio || "audio.mp3"}`;
-
   } catch (error) {
     titleEl.textContent = "Memory Not Found";
     namesEl.textContent = "StudioOfPages";
     dateEl.textContent = "";
     messageEl.textContent = "This memory page could not be loaded.";
+    if (endingNamesEl) endingNamesEl.textContent = "";
     button.disabled = true;
   }
 }
@@ -54,8 +56,7 @@ button.addEventListener("click", async () => {
       setPlayingState(false);
     }
   } catch (error) {
-    playerTitle.textContent = "Tap again";
-    playerSubtitle.textContent = "Your browser needs one more tap";
+    console.log("Audio play error:", error);
   }
 });
 
