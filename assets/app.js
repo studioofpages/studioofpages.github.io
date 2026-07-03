@@ -1,9 +1,20 @@
+/* StudioOfPages Memories Ultimate
+   v1.2.1 Stability Patch
+   JSON Memory System + Hero Experience + Audio Player + Gallery + Lightbox + Scroll Reveal + Parallax
+*/
+
 const SOP = {
   memoryId: new URLSearchParams(window.location.search).get("id") || "0001",
   data: null,
   galleryIndex: 0,
+  revealObserver: null,
 
-  el: {
+  el: {}
+};
+
+function cacheElements() {
+  SOP.el = {
+    intro: document.getElementById("intro"),
     title: document.getElementById("memoryTitle"),
     names: document.getElementById("memoryNames"),
     date: document.getElementById("memoryDate"),
@@ -32,25 +43,34 @@ const SOP = {
     lightboxClose: document.getElementById("lightboxClose"),
     lightboxPrev: document.getElementById("lightboxPrev"),
     lightboxNext: document.getElementById("lightboxNext")
-  }
-};
+  };
+}
 
 function assetPath(filename) {
-  return `/data/${SOP.memoryId}/${filename}`;
+  const clean = String(filename || "").replace(/^\/+/, "");
+  return `/data/${SOP.memoryId}/${clean}`;
 }
 
 function setText(element, value) {
   if (element) element.textContent = value || "";
 }
 
+function hideIntro() {
+  if (!SOP.el.intro) return;
+  SOP.el.intro.classList.add("is-hidden");
+  window.setTimeout(() => {
+    if (SOP.el.intro) SOP.el.intro.style.display = "none";
+  }, 900);
+}
+
 function getAudioFile() {
-  if (!SOP.data.audio) return "audio.mp3";
+  if (!SOP.data || !SOP.data.audio) return "audio.mp3";
   if (typeof SOP.data.audio === "string") return SOP.data.audio;
   return SOP.data.audio.file || "audio.mp3";
 }
 
 function getAudioTitle() {
-  if (!SOP.data.audio) return "Play Memory";
+  if (!SOP.data || !SOP.data.audio) return "Play Memory";
   if (typeof SOP.data.audio === "string") return "Play Memory";
   return SOP.data.audio.title || "Play Memory";
 }
@@ -59,9 +79,7 @@ async function loadMemory() {
   try {
     const response = await fetch(assetPath("memory.json"), { cache: "no-store" });
 
-    if (!response.ok) {
-      throw new Error("Memory not found");
-    }
+    if (!response.ok) throw new Error("Memory not found");
 
     SOP.data = await response.json();
 
@@ -75,14 +93,17 @@ async function loadMemory() {
     initScrollReveal();
     initParallax();
 
+    document.body.classList.add("sop-loaded");
+    window.setTimeout(hideIntro, 3200);
   } catch (error) {
     console.error(error);
     renderError();
+    hideIntro();
   }
 }
 
 function applyTheme() {
-  const theme = SOP.data.theme?.style || SOP.data.theme || "wedding";
+  const theme = SOP.data?.theme?.style || SOP.data?.theme || "wedding";
   document.body.classList.add(`theme-${theme}`);
 }
 
@@ -97,7 +118,7 @@ function renderContent() {
 
   setText(
     SOP.el.storyTitle,
-    SOP.data.story?.title || SOP.data.storyTitle || "A moment worth remembering."
+    SOP.data.story?.title || SOP.data.storyTitle || SOP.data.subtitle || "A moment worth remembering."
   );
 
   setText(
@@ -115,12 +136,34 @@ function renderContent() {
 }
 
 function renderMedia() {
-  SOP.el.heroPhoto.src = assetPath(SOP.data.photo || "photo.jpg");
-  SOP.el.audio.src = assetPath(getAudioFile());
+  if (SOP.el.heroPhoto) {
+    SOP.el.heroPhoto.src = assetPath(SOP.data.photo || "photo.jpg");
+    SOP.el.heroPhoto.addEventListener("error", () => {
+      SOP.el.heroPhoto.style.display = "none";
+    }, { once: true });
+  }
+
+  if (SOP.el.audio) {
+    SOP.el.audio.src = assetPath(getAudioFile());
+  }
+}
+
+function normalizeGalleryItem(item) {
+  if (!item) return null;
+  if (typeof item === "string") return item;
+  return item.file || item.src || item.image || null;
+}
+
+function getGalleryItems() {
+  if (!SOP.data) return [];
+  const items = Array.isArray(SOP.data.gallery) ? SOP.data.gallery : [];
+  return items.map(normalizeGalleryItem).filter(Boolean);
 }
 
 function renderGallery() {
-  const gallery = SOP.data.gallery || [];
+  if (!SOP.el.gallerySection || !SOP.el.galleryGrid) return;
+
+  const gallery = getGalleryItems();
   SOP.el.galleryGrid.innerHTML = "";
 
   if (!gallery.length) {
@@ -130,13 +173,23 @@ function renderGallery() {
 
   SOP.el.gallerySection.style.display = "block";
 
-  gallery.slice(0, 6).forEach((photo, index) => {
-    const card = document.createElement("div");
+  gallery.slice(0, 12).forEach((photo, index) => {
+    const card = document.createElement("button");
+    card.type = "button";
     card.className = "sop-gallery__card";
+    card.setAttribute("aria-label", `Open memory photo ${index + 1}`);
+    card.style.setProperty("--reveal-delay", `${index * 90}ms`);
 
     const img = document.createElement("img");
     img.src = assetPath(photo);
-    img.alt = "Memory gallery photo";
+    img.alt = `Memory gallery photo ${index + 1}`;
+    img.loading = "lazy";
+
+    img.addEventListener("load", () => card.classList.add("is-loaded"), { once: true });
+    img.addEventListener("error", () => {
+      card.classList.add("is-missing");
+      card.textContent = `Photo ${index + 1}`;
+    }, { once: true });
 
     card.appendChild(img);
     card.addEventListener("click", () => openLightbox(index));
@@ -157,33 +210,37 @@ function createBars(container, count, size) {
 
   for (let i = 0; i < count; i++) {
     const bar = document.createElement("i");
-
     const wave = Math.abs(Math.sin(i * 0.73));
     const variation = (i % 7) * 3;
     const base = size === "large" ? 28 : 16;
     const scale = size === "large" ? 96 : 54;
 
     bar.style.height = `${base + wave * scale + variation}px`;
-
     container.appendChild(bar);
   }
 }
 
 function bindAudio() {
+  if (!SOP.el.audio || !SOP.el.playButton) return;
+
   SOP.el.playButton.addEventListener("click", toggleAudio);
   SOP.el.audio.addEventListener("timeupdate", updateProgress);
   SOP.el.audio.addEventListener("loadedmetadata", updateDuration);
 
   SOP.el.audio.addEventListener("ended", () => {
     setPlaying(false);
-    SOP.el.progress.style.width = "0%";
+    if (SOP.el.progress) SOP.el.progress.style.width = "0%";
     setText(SOP.el.currentTime, "0:00");
   });
 
-  SOP.el.progressTrack.addEventListener("click", seekAudio);
+  if (SOP.el.progressTrack) {
+    SOP.el.progressTrack.addEventListener("click", seekAudio);
+  }
 }
 
 async function toggleAudio() {
+  if (!SOP.el.audio) return;
+
   try {
     if (SOP.el.audio.paused) {
       await SOP.el.audio.play();
@@ -200,7 +257,7 @@ async function toggleAudio() {
 function setPlaying(isPlaying) {
   document.body.classList.toggle("is-playing", isPlaying);
 
-  SOP.el.playIcon.textContent = isPlaying ? "❚❚" : "▶";
+  if (SOP.el.playIcon) SOP.el.playIcon.textContent = isPlaying ? "❚❚" : "▶";
   setText(SOP.el.audioTitle, isPlaying ? "Playing Memory" : getAudioTitle());
   setText(SOP.el.audioSubtitle, isPlaying ? "Your sound is now playing" : "Tap to hear this moment");
 }
@@ -215,21 +272,22 @@ function formatTime(seconds) {
 }
 
 function updateDuration() {
+  if (!SOP.el.audio) return;
   setText(SOP.el.durationTime, formatTime(SOP.el.audio.duration));
 }
 
 function updateProgress() {
-  if (!SOP.el.audio.duration) return;
+  if (!SOP.el.audio || !SOP.el.audio.duration) return;
 
   const percent = (SOP.el.audio.currentTime / SOP.el.audio.duration) * 100;
-  SOP.el.progress.style.width = `${percent}%`;
+  if (SOP.el.progress) SOP.el.progress.style.width = `${percent}%`;
 
   setText(SOP.el.currentTime, formatTime(SOP.el.audio.currentTime));
   setText(SOP.el.durationTime, formatTime(SOP.el.audio.duration));
 }
 
 function seekAudio(event) {
-  if (!SOP.el.audio.duration) return;
+  if (!SOP.el.audio || !SOP.el.audio.duration || !SOP.el.progressTrack) return;
 
   const rect = SOP.el.progressTrack.getBoundingClientRect();
   const clickX = event.clientX - rect.left;
@@ -239,49 +297,47 @@ function seekAudio(event) {
   updateProgress();
 }
 
-function getGalleryItems() {
-  return SOP.data.gallery || [];
-}
-
 function openLightbox(index) {
   const gallery = getGalleryItems();
-  if (!gallery.length) return;
+  if (!gallery.length || !SOP.el.lightbox || !SOP.el.lightboxImage) return;
 
   SOP.galleryIndex = index;
   SOP.el.lightboxImage.src = assetPath(gallery[SOP.galleryIndex]);
 
   SOP.el.lightbox.classList.add("is-open");
   SOP.el.lightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("sop-lightbox-open");
 }
 
 function closeLightbox() {
+  if (!SOP.el.lightbox) return;
+
   SOP.el.lightbox.classList.remove("is-open");
   SOP.el.lightbox.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("sop-lightbox-open");
 }
 
 function changeLightbox(direction) {
   const gallery = getGalleryItems();
-  if (!gallery.length) return;
+  if (!gallery.length || !SOP.el.lightboxImage) return;
 
-  SOP.galleryIndex =
-    (SOP.galleryIndex + direction + gallery.length) % gallery.length;
-
+  SOP.galleryIndex = (SOP.galleryIndex + direction + gallery.length) % gallery.length;
   SOP.el.lightboxImage.src = assetPath(gallery[SOP.galleryIndex]);
 }
 
 function bindLightbox() {
   if (!SOP.el.lightbox) return;
 
-  SOP.el.lightboxClose.addEventListener("click", closeLightbox);
-  SOP.el.lightboxPrev.addEventListener("click", () => changeLightbox(-1));
-  SOP.el.lightboxNext.addEventListener("click", () => changeLightbox(1));
+  if (SOP.el.lightboxClose) SOP.el.lightboxClose.addEventListener("click", closeLightbox);
+  if (SOP.el.lightboxPrev) SOP.el.lightboxPrev.addEventListener("click", () => changeLightbox(-1));
+  if (SOP.el.lightboxNext) SOP.el.lightboxNext.addEventListener("click", () => changeLightbox(1));
 
   SOP.el.lightbox.addEventListener("click", (event) => {
     if (event.target === SOP.el.lightbox) closeLightbox();
   });
 
   document.addEventListener("keydown", (event) => {
-    if (!SOP.el.lightbox.classList.contains("is-open")) return;
+    if (!SOP.el.lightbox || !SOP.el.lightbox.classList.contains("is-open")) return;
 
     if (event.key === "Escape") closeLightbox();
     if (event.key === "ArrowLeft") changeLightbox(-1);
@@ -291,35 +347,42 @@ function bindLightbox() {
 
 function initScrollReveal() {
   const sections = document.querySelectorAll(".sop-section");
+  if (!sections.length) return;
 
-  const observer = new IntersectionObserver((entries) => {
+  if (!("IntersectionObserver" in window)) {
+    sections.forEach((section) => section.classList.add("is-visible"));
+    return;
+  }
+
+  if (SOP.revealObserver) SOP.revealObserver.disconnect();
+
+  SOP.revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
+        SOP.revealObserver.unobserve(entry.target);
       }
     });
   }, {
-    threshold: 0.22,
-    rootMargin: "0px 0px -80px 0px"
+    threshold: 0.14,
+    rootMargin: "0px 0px -70px 0px"
   });
 
-  sections.forEach((section) => observer.observe(section));
+  sections.forEach((section) => SOP.revealObserver.observe(section));
 }
 
 function initParallax() {
+  const hero = document.querySelector(".sop-hero");
+  if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
   let ticking = false;
 
   function update() {
     const scrollY = window.scrollY || 0;
-    const hero = document.querySelector(".sop-hero");
-
-    if (!hero) return;
-
-    const limited = Math.min(scrollY, hero.offsetHeight);
+    const limited = Math.min(scrollY, hero.offsetHeight || window.innerHeight);
     const parallax = limited * 0.12;
 
     document.documentElement.style.setProperty("--hero-parallax", `${parallax}px`);
-
     ticking = false;
   }
 
@@ -330,6 +393,7 @@ function initParallax() {
     }
   }, { passive: true });
 
+  window.addEventListener("resize", update, { passive: true });
   update();
 }
 
@@ -343,4 +407,14 @@ function renderError() {
   if (SOP.el.playButton) SOP.el.playButton.disabled = true;
 }
 
-loadMemory();
+function boot() {
+  cacheElements();
+  window.setTimeout(hideIntro, 5200);
+  loadMemory();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", boot, { once: true });
+} else {
+  boot();
+}
