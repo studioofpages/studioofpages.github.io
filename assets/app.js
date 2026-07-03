@@ -18,6 +18,7 @@ const SOP = {
     playIcon: document.querySelector(".sop-play__icon"),
     audioTitle: document.getElementById("audioTitle"),
     audioSubtitle: document.getElementById("audioSubtitle"),
+    progressTrack: document.getElementById("progressTrack"),
     progress: document.getElementById("progressBar"),
     currentTime: document.getElementById("currentTime"),
 durationTime: document.getElementById("durationTime"),
@@ -141,6 +142,7 @@ function bindAudio() {
   SOP.el.playButton.addEventListener("click", toggleAudio);
 
   SOP.el.audio.addEventListener("timeupdate", updateProgress);
+  SOP.el.progressTrack.addEventListener("click", seekAudio);
   SOP.el.audio.addEventListener("loadedmetadata", () => {
 
     SOP.el.durationTime.textContent =
@@ -199,6 +201,16 @@ function updateProgress() {
     SOP.el.durationTime.textContent =
         formatTime(SOP.el.audio.duration);
 
+}
+function seekAudio(event) {
+  if (!SOP.el.audio.duration) return;
+
+  const rect = SOP.el.progressTrack.getBoundingClientRect();
+  const clickX = event.clientX - rect.left;
+  const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+
+  SOP.el.audio.currentTime = percent * SOP.el.audio.duration;
+  updateProgress();
 }
 
 function renderError() {

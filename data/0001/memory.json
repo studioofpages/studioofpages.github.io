@@ -11,9 +11,10 @@
     "photo.jpg"
   ],
   "audio": {
-    "file": "audio.mp3",
-    "title": "Our Voice"
-  },
+  "file": "audio.mp3",
+  "title": "Our Voice",
+  "waveform": "waveform.svg"
+},
   "theme": {
     "style": "wedding",
     "accent": "gold",

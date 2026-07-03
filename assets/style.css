@@ -458,3 +458,14 @@ body {
     color:rgba(255,247,238,.65);
     font-variant-numeric: tabular-nums;
 }
+/* V1.2 Clickable Progress */
+.sop-progress {
+  cursor: pointer;
+}
+
+.sop-progress::after {
+  content: "";
+  display: block;
+  height: 18px;
+  margin-top: -10px;
+}
