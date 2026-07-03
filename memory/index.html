@@ -6,62 +6,50 @@
   <title>StudioOfPages Memory</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>
+
 <body>
-<div id="introScreen" class="intro-screen">
-  <div class="intro-content intro-step-1">
-    <p>A memory is waiting...</p>
-  </div>
+  <div class="grain"></div>
 
-  <div class="intro-content intro-step-2">
-    <p>Created with love by</p>
-    <h2>StudioOfPages</h2>
-  </div>
-</div>
-  <div class="noise"></div>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
+  <main class="memory-experience">
+    <section class="hero">
+      <img id="memoryPhoto" class="hero-photo" src="" alt="Memory photo">
 
-  <main class="memory-shell">
-    <section class="hero-panel">
-      <p class="kicker">A StudioOfPages Memory</p>
+      <div class="hero-overlay"></div>
 
-      <h1 id="memoryTitle">Loading...</h1>
-      <p id="memoryNames" class="names"></p>
-      <p id="memoryDate" class="date"></p>
+      <div class="hero-content">
+        <p class="brand">StudioOfPages Memories</p>
 
-      <div class="photo-stage">
-        <img id="memoryPhoto" src="" alt="Personal memory photo" class="memory-photo">
+        <h1 id="memoryTitle">Loading...</h1>
+        <p id="memoryNames" class="names"></p>
+        <p id="memoryDate" class="date"></p>
 
-        <div class="glass-player">
-          <button id="playButton" class="play-button" type="button">
-            <span class="play-icon">▶</span>
-          </button>
+        <button id="playButton" class="cinematic-play" type="button">
+          <span class="play-icon">▶</span>
+        </button>
 
-          <div class="player-copy">
-            <p id="playerTitle">Play Memory</p>
-            <small id="playerSubtitle">Tap to hear this moment</small>
-          </div>
+        <audio id="memoryAudio" preload="metadata"></audio>
+
+        <div class="progress-wrap">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div class="waveform" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
         </div>
       </div>
+    </section>
 
-      <audio id="memoryAudio" preload="metadata"></audio>
+    <section class="story-section">
+      <p class="section-label">The Story</p>
+      <p id="memoryMessage" class="story-text"></p>
+    </section>
 
-      <div class="progress-wrap">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
-
-      <div class="waveform" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
-
-      <p id="memoryMessage" class="message"></p>
-
-      <footer>
-        <span>Private keepsake page</span>
-        <strong>Created with love by StudioOfPages</strong>
-      </footer>
+    <section class="ending-section">
+      <p>Every memory deserves to be remembered.</p>
+      <span id="endingNames"></span>
+      <small>Created with love by StudioOfPages</small>
     </section>
   </main>
 

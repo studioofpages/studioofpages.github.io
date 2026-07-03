@@ -9,14 +9,12 @@ const photoEl = document.getElementById("memoryPhoto");
 const audioEl = document.getElementById("memoryAudio");
 const button = document.getElementById("playButton");
 const progress = document.getElementById("progressBar");
-const playerTitle = document.getElementById("playerTitle");
-const playerSubtitle = document.getElementById("playerSubtitle");
+
 
 function setPlayingState(isPlaying) {
   document.body.classList.toggle("is-playing", isPlaying);
   button.querySelector(".play-icon").textContent = isPlaying ? "❚❚" : "▶";
-  playerTitle.textContent = isPlaying ? "Playing Memory" : "Play Memory";
-  playerSubtitle.textContent = isPlaying ? "Your sound is now playing" : "Tap to hear this moment";
+  
 }
 
 async function loadMemory() {
