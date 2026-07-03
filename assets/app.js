@@ -183,5 +183,21 @@ function renderError() {
   SOP.el.soundSection.style.display = "none";
   SOP.el.playButton.disabled = true;
 }
+function initScrollReveal() {
+  const sections = document.querySelectorAll(".sop-section");
 
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+      }
+    });
+  }, {
+    threshold: 0.18
+  });
+
+  sections.forEach((section) => observer.observe(section));
+}
+
+initScrollReveal();
 loadMemory();
