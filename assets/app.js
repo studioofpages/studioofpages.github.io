@@ -75,6 +75,11 @@ function renderContent() {
   setText(SOP.el.storyTitle, SOP.data.story?.title || SOP.data.storyTitle || "A moment worth remembering.");
   setText(SOP.el.endingQuote, SOP.data.footer?.quote || "Every memory deserves to be remembered.");
   setText(SOP.el.endingNames, SOP.data.names ? `Created for ${SOP.data.names}` : "");
+  lightbox: document.getElementById("galleryLightbox"),
+lightboxImage: document.getElementById("lightboxImage"),
+lightboxClose: document.getElementById("lightboxClose"),
+lightboxPrev: document.getElementById("lightboxPrev"),
+lightboxNext: document.getElementById("lightboxNext"),
 
   const audioTitle = SOP.data.audio?.title || "Play Memory";
   setText(SOP.el.audioTitle, audioTitle);
@@ -110,6 +115,7 @@ function renderGallery() {
     img.alt = "Memory gallery photo";
 
     card.appendChild(img);
+    card.addEventListener("click", () => openLightbox(index));
     SOP.el.galleryGrid.appendChild(card);
   });
 }
@@ -225,7 +231,7 @@ function initScrollReveal() {
   const sections = document.querySelectorAll(".sop-section");
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+    gallery.slice(0, 6).forEach((photo, index) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
       }
@@ -239,4 +245,54 @@ function initScrollReveal() {
 }
 
 initScrollReveal();
+let activeGalleryIndex = 0;
+
+function getGalleryItems() {
+  return SOP.data.gallery || [];
+}
+
+function openLightbox(index) {
+  const gallery = getGalleryItems();
+  if (!gallery.length) return;
+
+  activeGalleryIndex = index;
+  SOP.el.lightboxImage.src = assetPath(gallery[activeGalleryIndex]);
+  SOP.el.lightbox.classList.add("is-open");
+  SOP.el.lightbox.setAttribute("aria-hidden", "false");
+}
+
+function closeLightbox() {
+  SOP.el.lightbox.classList.remove("is-open");
+  SOP.el.lightbox.setAttribute("aria-hidden", "true");
+}
+
+function changeLightbox(direction) {
+  const gallery = getGalleryItems();
+  if (!gallery.length) return;
+
+  activeGalleryIndex =
+    (activeGalleryIndex + direction + gallery.length) % gallery.length;
+
+  SOP.el.lightboxImage.src = assetPath(gallery[activeGalleryIndex]);
+}
+
+function bindLightbox() {
+  SOP.el.lightboxClose.addEventListener("click", closeLightbox);
+  SOP.el.lightboxPrev.addEventListener("click", () => changeLightbox(-1));
+  SOP.el.lightboxNext.addEventListener("click", () => changeLightbox(1));
+
+  SOP.el.lightbox.addEventListener("click", (event) => {
+    if (event.target === SOP.el.lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!SOP.el.lightbox.classList.contains("is-open")) return;
+
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowLeft") changeLightbox(-1);
+    if (event.key === "ArrowRight") changeLightbox(1);
+  });
+}
+
+bindLightbox();
 loadMemory();
