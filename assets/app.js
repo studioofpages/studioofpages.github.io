@@ -82,12 +82,12 @@ function renderSingleExperience() {
 
     if (parts.length === 2) {
       SOP.el.title.innerHTML = `
-        <span class="memory-name">${parts[0].trim()}</span>
-        <span class="memory-amp">&</span>
-        <span class="memory-name">${parts[1].trim()}</span>
+        <span class="memory-name sop-reveal-name sop-reveal-name--one">${parts[0].trim()}</span>
+        <span class="memory-amp sop-reveal-name sop-reveal-name--amp">&</span>
+        <span class="memory-name sop-reveal-name sop-reveal-name--two">${parts[1].trim()}</span>
       `;
     } else {
-      SOP.el.title.textContent = fullName;
+      SOP.el.title.innerHTML = `<span class="memory-name sop-reveal-name sop-reveal-name--one">${fullName}</span>`;
     }
   }
 
