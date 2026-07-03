@@ -469,3 +469,100 @@ body {
   height: 18px;
   margin-top: -10px;
 }
+/* Hero Experience Ultimate */
+.sop-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 68%, rgba(216,181,111,.22), transparent 34%),
+    radial-gradient(circle at 18% 18%, rgba(255,247,238,.08), transparent 28%);
+  pointer-events: none;
+  animation: sopLightBreath 6s ease-in-out infinite alternate;
+}
+
+.sop-hero__image {
+  opacity: 0;
+  animation: sopPhotoReveal 3.8s ease forwards;
+  animation-delay: 2.4s;
+}
+
+.sop-hero__content {
+  opacity: 0;
+  animation: sopHeroContentReveal 1.6s ease forwards;
+  animation-delay: 4.2s;
+}
+
+.sop-title {
+  text-shadow: 0 24px 80px rgba(0,0,0,.65);
+}
+
+.sop-player {
+  margin-top: 8px;
+  transform: translateY(8px);
+  animation: sopPlayerFloat 4.5s ease-in-out infinite alternate;
+}
+
+.sop-scroll-hint {
+  margin-top: 26px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  color: rgba(255,247,238,.55);
+  font-size: 10px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.sop-scroll-hint span {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, transparent, var(--sop-gold), transparent);
+  animation: sopScrollLine 1.8s ease-in-out infinite;
+}
+
+.sop-scroll-hint p {
+  margin: 0;
+}
+
+@keyframes sopPhotoReveal {
+  0% {
+    opacity: 0;
+    transform: scale(1.16);
+    filter: brightness(.28) blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.02);
+    filter: brightness(.62) contrast(1.08) saturate(.95);
+  }
+}
+
+@keyframes sopHeroContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes sopLightBreath {
+  from { opacity: .45; transform: scale(1); }
+  to { opacity: .85; transform: scale(1.08); }
+}
+
+@keyframes sopPlayerFloat {
+  from { transform: translateY(8px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sopScrollLine {
+  0%, 100% { opacity: .25; transform: scaleY(.55); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
