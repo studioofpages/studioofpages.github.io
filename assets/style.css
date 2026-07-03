@@ -642,3 +642,47 @@ body {
   transform: translateY(-6px);
   filter: brightness(1.08);
 }
+/* Cinematic Parallax */
+.sop-hero__media {
+  transform: translateY(var(--hero-parallax, 0px));
+  transition: transform .08s linear;
+}
+
+.sop-hero__overlay {
+  transform: translateY(calc(var(--hero-parallax, 0px) * -0.35));
+}
+
+.sop-ambient {
+  position: fixed;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(34px);
+  opacity: .28;
+}
+
+.sop-ambient--one {
+  top: -110px;
+  left: -90px;
+  background: rgba(216,181,111,.34);
+  animation: sopAmbientOne 10s ease-in-out infinite alternate;
+}
+
+.sop-ambient--two {
+  right: -120px;
+  bottom: 18%;
+  background: rgba(255,247,238,.12);
+  animation: sopAmbientTwo 12s ease-in-out infinite alternate;
+}
+
+@keyframes sopAmbientOne {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(42px,36px,0) scale(1.12); }
+}
+
+@keyframes sopAmbientTwo {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(-38px,-28px,0) scale(1.16); }
+}

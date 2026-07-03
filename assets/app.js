@@ -295,4 +295,33 @@ function bindLightbox() {
 }
 
 bindLightbox();
+function initParallax() {
+  let ticking = false;
+
+  function update() {
+    const scrollY = window.scrollY || 0;
+    const hero = document.querySelector(".sop-hero");
+
+    if (!hero) return;
+
+    const heroHeight = hero.offsetHeight;
+    const limited = Math.min(scrollY, heroHeight);
+    const parallax = limited * 0.12;
+
+    document.documentElement.style.setProperty("--hero-parallax", `${parallax}px`);
+
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  update();
+}
+
+initParallax();
 loadMemory();
