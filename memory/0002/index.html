@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our First I Love You | StudioOfPages Memory</title>
+  <meta name="description" content="A private personalized memory page by StudioOfPages.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="floating-hearts" aria-hidden="true">
+    <span>♡</span><span>✦</span><span>♡</span><span>✧</span><span>♡</span>
+  </div>
+
+  <main class="memory-shell">
+    <section class="hero-panel">
+      <p class="kicker">A StudioOfPages Memory</p>
+
+      <!-- EDIT: Customer title -->
+      <h1>Our Favorite Memory”</h1>
+
+      <!-- EDIT: Customer names/date -->
+      <p class="names">Studio & Pages</p>
+      <p class="date">3 July 2026</p>
+
+      <div class="photo-stage">
+        <!-- EDIT: Replace photo.jpg with customer's photo, keep filename photo.jpg -->
+        <img src="photo.jpg" alt="Personal memory photo" class="memory-photo">
+
+        <div class="glass-player">
+          <button id="playButton" class="play-button" type="button" aria-label="Play memory audio">
+            <span class="play-icon">▶</span>
+          </button>
+
+          <div class="player-copy">
+            <p>Play Memory</p>
+            <small>Tap to hear this moment</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDIT: Replace audio.mp3 with customer's audio, keep filename audio.mp3 -->
+      <audio id="memoryAudio" src="audio.mp3" preload="metadata"></audio>
+
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div class="waveform" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <!-- EDIT: Customer message -->
+      <p class="message">“A little voice, a beautiful memory.”</p>
+
+      <footer>
+        <span>Private keepsake page</span>
+        <strong>Created with love by StudioOfPages</strong>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const audio = document.getElementById("memoryAudio");
+    const button = document.getElementById("playButton");
+    const progress = document.getElementById("progressBar");
+    const shell = document.querySelector(".memory-shell");
+    const playerCopy = document.querySelector(".player-copy p");
+    const playerSmall = document.querySelector(".player-copy small");
+
+    function setPlayingState(isPlaying) {
+      document.body.classList.toggle("is-playing", isPlaying);
+      button.querySelector(".play-icon").textContent = isPlaying ? "❚❚" : "▶";
+      playerCopy.textContent = isPlaying ? "Playing Memory" : "Play Memory";
+      playerSmall.textContent = isPlaying ? "Your sound is now playing" : "Tap to hear this moment";
+    }
+
+    button.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+          setPlayingState(true);
+        } else {
+          audio.pause();
+          setPlayingState(false);
+        }
+      } catch (error) {
+        playerCopy.textContent = "Tap again";
+        playerSmall.textContent = "Your browser needs one more tap";
+      }
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!audio.duration) return;
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = percent + "%";
+    });
+
+    audio.addEventListener("ended", () => {
+      setPlayingState(false);
+      progress.style.width = "0%";
+    });
+  </script>
+</body>
+</html>
