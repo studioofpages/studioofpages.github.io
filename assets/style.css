@@ -273,3 +273,70 @@ footer {
   .waveform { gap: 5px; }
   .waveform i { width: 3px; }
 }
+/* V6.1 Premium Intro */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.08), transparent 34%),
+    linear-gradient(135deg, #070605, #19120f 55%, #080706);
+  color: #fffaf4;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  animation: introFadeOut 1s ease forwards;
+  animation-delay: 4.2s;
+}
+
+.intro-content {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.intro-step-1 {
+  animation: introTextOne 2s ease forwards;
+}
+
+.intro-step-2 {
+  animation: introTextTwo 2s ease forwards;
+  animation-delay: 2s;
+}
+
+.intro-content p {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,250,244,0.78);
+}
+
+.intro-content h2 {
+  margin: 14px 0 0;
+  font-size: clamp(36px, 12vw, 76px);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+@keyframes introTextOne {
+  0% { opacity: 0; transform: translateY(12px); }
+  25% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes introTextTwo {
+  0% { opacity: 0; transform: translateY(12px); }
+  25% { opacity: 1; transform: translateY(0); }
+  75% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes introFadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

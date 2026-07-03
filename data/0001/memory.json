@@ -2,5 +2,12 @@
   "title": "Our First I Love You",
   "names": "Matthew & Sophia",
   "date": "14 February 2025",
-  "message": "The day everything changed forever."
+  "message": "The day everything changed forever.",
+  "photo": "photo.jpg",
+  "audio": "audio.mp3",
+  "theme": {
+    "style": "wedding",
+    "accent": "gold",
+    "animation": "floating_hearts"
+  }
 }

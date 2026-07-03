@@ -25,6 +25,8 @@ async function loadMemory() {
     if (!response.ok) throw new Error("Memory not found");
 
     const data = await response.json();
+const theme = data.theme?.style || "wedding";
+document.body.classList.add(`theme-${theme}`);
 
     document.title = `${data.title || "Memory"} | StudioOfPages`;
     titleEl.textContent = data.title || "Untitled Memory";
