@@ -1,30 +1,35 @@
 {
   "id": "0001",
+  "layout": "single",
   "label": "StudioOfPages Memories",
-  "title": "Our First I Love You",
-  "subtitle": "A moment worth remembering.",
-  "names": "Matthew & Sophia",
-  "date": "14 February 2025",
-  "message": "The day everything changed forever.",
+  "title": "OUR MEMORIES",
+  "subtitle": "A story written in little moments.",
+  "names": "MATTHEW & SOPHIA",
+  "date": "",
+  "message": "Every moment with you is my favorite part of the story.",
   "photo": "photo.jpg",
-  "gallery": [
-    "photo.jpg"
-  ],
+  "heroImage": "photo.jpg",
+  "coupleNames": "MATTHEW & SOPHIA",
+  "coupleQuote": "Every moment with you is my favorite part of the story.",
+  "brandText": "STUDIO OF PAGES",
+  "gallery": [],
   "audio": {
-  "file": "audio.mp3",
-  "title": "Our Voice",
-  "waveform": "waveform.svg"
-},
+    "file": "audio.mp3",
+    "title": "Our Voice",
+    "artist": "",
+    "cover": "photo.jpg",
+    "waveform": "waveform.svg"
+  },
   "theme": {
     "style": "wedding",
     "accent": "gold",
     "animation": "cinematic"
   },
   "story": {
-    "enabled": true,
-    "title": "A little voice became a forever memory."
+    "enabled": false,
+    "title": ""
   },
   "footer": {
-    "quote": "Every memory deserves to be remembered."
+    "quote": "STUDIO OF PAGES"
   }
 }

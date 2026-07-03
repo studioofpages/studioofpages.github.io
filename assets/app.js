@@ -1,27 +1,12 @@
-/* StudioOfPages Memories Ultimate
-   v1.2.1 Stability Patch
-   JSON Memory System + Hero Experience + Audio Player + Gallery + Lightbox + Scroll Reveal + Parallax
-*/
-
 const SOP = {
   memoryId: new URLSearchParams(window.location.search).get("id") || "0001",
   data: null,
-  galleryIndex: 0,
-  revealObserver: null,
 
-  el: {}
-};
-
-function cacheElements() {
-  SOP.el = {
-    intro: document.getElementById("intro"),
+  el: {
     title: document.getElementById("memoryTitle"),
     names: document.getElementById("memoryNames"),
     date: document.getElementById("memoryDate"),
     message: document.getElementById("memoryMessage"),
-    storyTitle: document.getElementById("storyTitle"),
-    endingQuote: document.getElementById("endingQuote"),
-    endingNames: document.getElementById("endingNames"),
     label: document.getElementById("memoryLabel"),
     heroPhoto: document.getElementById("heroPhoto"),
     audio: document.getElementById("memoryAudio"),
@@ -34,43 +19,28 @@ function cacheElements() {
     currentTime: document.getElementById("currentTime"),
     durationTime: document.getElementById("durationTime"),
     miniWaveform: document.getElementById("miniWaveform"),
-    largeWaveform: document.getElementById("largeWaveform"),
+    storySection: document.getElementById("storySection"),
     gallerySection: document.getElementById("gallerySection"),
-    galleryGrid: document.getElementById("galleryGrid"),
-    soundSection: document.getElementById("soundSection"),
-    lightbox: document.getElementById("galleryLightbox"),
-    lightboxImage: document.getElementById("lightboxImage"),
-    lightboxClose: document.getElementById("lightboxClose"),
-    lightboxPrev: document.getElementById("lightboxPrev"),
-    lightboxNext: document.getElementById("lightboxNext")
-  };
-}
+    soundSection: document.getElementById("soundSection")
+  }
+};
 
 function assetPath(filename) {
-  const clean = String(filename || "").replace(/^\/+/, "");
-  return `/data/${SOP.memoryId}/${clean}`;
+  return `/data/${SOP.memoryId}/${filename}`;
 }
 
 function setText(element, value) {
   if (element) element.textContent = value || "";
 }
 
-function hideIntro() {
-  if (!SOP.el.intro) return;
-  SOP.el.intro.classList.add("is-hidden");
-  window.setTimeout(() => {
-    if (SOP.el.intro) SOP.el.intro.style.display = "none";
-  }, 900);
-}
-
 function getAudioFile() {
-  if (!SOP.data || !SOP.data.audio) return "audio.mp3";
+  if (!SOP.data.audio) return "audio.mp3";
   if (typeof SOP.data.audio === "string") return SOP.data.audio;
   return SOP.data.audio.file || "audio.mp3";
 }
 
 function getAudioTitle() {
-  if (!SOP.data || !SOP.data.audio) return "Play Memory";
+  if (!SOP.data.audio) return "Play Memory";
   if (typeof SOP.data.audio === "string") return "Play Memory";
   return SOP.data.audio.title || "Play Memory";
 }
@@ -83,124 +53,70 @@ async function loadMemory() {
 
     SOP.data = await response.json();
 
-    applyTheme();
-    renderContent();
-    renderMedia();
-    renderGallery();
-    renderWaveforms();
-    bindAudio();
-    bindLightbox();
-    initScrollReveal();
-    initParallax();
+    if (SOP.data.layout === "single") {
+      renderSingleExperience();
+      bindAudio();
+      renderWaveforms();
+      hideIntro();
+      return;
+    }
 
-    document.body.classList.add("sop-loaded");
-    window.setTimeout(hideIntro, 3200);
+    renderError();
   } catch (error) {
     console.error(error);
     renderError();
-    hideIntro();
   }
 }
 
-function applyTheme() {
-  const theme = SOP.data?.theme?.style || SOP.data?.theme || "wedding";
-  document.body.classList.add(`theme-${theme}`);
-}
+function renderSingleExperience() {
+  document.body.classList.add("single-mode");
 
-function renderContent() {
-  document.title = `${SOP.data.title || "Memory"} | StudioOfPages`;
+  document.title = `${SOP.data.coupleNames || SOP.data.names || "Memory"} | StudioOfPages`;
 
-  setText(SOP.el.label, SOP.data.label || "StudioOfPages Memories");
-  setText(SOP.el.title, SOP.data.title || "Untitled Memory");
-  setText(SOP.el.names, SOP.data.names || "");
-  setText(SOP.el.date, SOP.data.date || "");
-  setText(SOP.el.message, SOP.data.message || "");
-
-  setText(
-    SOP.el.storyTitle,
-    SOP.data.story?.title || SOP.data.storyTitle || SOP.data.subtitle || "A moment worth remembering."
-  );
-
-  setText(
-    SOP.el.endingQuote,
-    SOP.data.footer?.quote || "Every memory deserves to be remembered."
-  );
-
-  setText(
-    SOP.el.endingNames,
-    SOP.data.names ? `Created for ${SOP.data.names}` : ""
-  );
-
+  setText(SOP.el.label, "");
+  setText(SOP.el.title, SOP.data.coupleNames || SOP.data.names || "");
+  setText(SOP.el.names, "♡");
+  setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.message || "");
+  setText(SOP.el.message, "");
   setText(SOP.el.audioTitle, getAudioTitle());
-  setText(SOP.el.audioSubtitle, "Tap to hear this moment");
-}
+  setText(SOP.el.audioSubtitle, "");
+  setText(SOP.el.currentTime, "0:00");
+  setText(SOP.el.durationTime, "0:00");
 
-function renderMedia() {
   if (SOP.el.heroPhoto) {
-    SOP.el.heroPhoto.src = assetPath(SOP.data.photo || "photo.jpg");
-    SOP.el.heroPhoto.addEventListener("error", () => {
-      SOP.el.heroPhoto.style.display = "none";
-    }, { once: true });
+    SOP.el.heroPhoto.src = assetPath(SOP.data.heroImage || SOP.data.photo || "photo.jpg");
   }
 
   if (SOP.el.audio) {
     SOP.el.audio.src = assetPath(getAudioFile());
   }
-}
 
-function normalizeGalleryItem(item) {
-  if (!item) return null;
-  if (typeof item === "string") return item;
-  return item.file || item.src || item.image || null;
-}
+  if (SOP.el.storySection) SOP.el.storySection.style.display = "none";
+  if (SOP.el.gallerySection) SOP.el.gallerySection.style.display = "none";
+  if (SOP.el.soundSection) SOP.el.soundSection.style.display = "none";
 
-function getGalleryItems() {
-  if (!SOP.data) return [];
-  const items = Array.isArray(SOP.data.gallery) ? SOP.data.gallery : [];
-  return items.map(normalizeGalleryItem).filter(Boolean);
-}
+  const heroContent = document.querySelector(".sop-hero__content");
 
-function renderGallery() {
-  if (!SOP.el.gallerySection || !SOP.el.galleryGrid) return;
-
-  const gallery = getGalleryItems();
-  SOP.el.galleryGrid.innerHTML = "";
-
-  if (!gallery.length) {
-    SOP.el.gallerySection.style.display = "none";
-    return;
+  if (heroContent && !document.querySelector(".sop-single-brand")) {
+    const brand = document.createElement("div");
+    brand.className = "sop-single-brand";
+    brand.textContent = SOP.data.brandText || "STUDIO OF PAGES";
+    heroContent.appendChild(brand);
   }
+}
 
-  SOP.el.gallerySection.style.display = "block";
+function hideIntro() {
+  const intro = document.getElementById("intro");
 
-  gallery.slice(0, 12).forEach((photo, index) => {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = "sop-gallery__card";
-    card.setAttribute("aria-label", `Open memory photo ${index + 1}`);
-    card.style.setProperty("--reveal-delay", `${index * 90}ms`);
+  if (!intro) return;
 
-    const img = document.createElement("img");
-    img.src = assetPath(photo);
-    img.alt = `Memory gallery photo ${index + 1}`;
-    img.loading = "lazy";
-
-    img.addEventListener("load", () => card.classList.add("is-loaded"), { once: true });
-    img.addEventListener("error", () => {
-      card.classList.add("is-missing");
-      card.textContent = `Photo ${index + 1}`;
-    }, { once: true });
-
-    card.appendChild(img);
-    card.addEventListener("click", () => openLightbox(index));
-
-    SOP.el.galleryGrid.appendChild(card);
-  });
+  setTimeout(() => {
+    intro.classList.add("is-hidden");
+  }, 900);
 }
 
 function renderWaveforms() {
   createBars(SOP.el.miniWaveform, 32, "mini");
-  createBars(SOP.el.largeWaveform, 72, "large");
 }
 
 function createBars(container, count, size) {
@@ -239,8 +155,6 @@ function bindAudio() {
 }
 
 async function toggleAudio() {
-  if (!SOP.el.audio) return;
-
   try {
     if (SOP.el.audio.paused) {
       await SOP.el.audio.play();
@@ -257,9 +171,11 @@ async function toggleAudio() {
 function setPlaying(isPlaying) {
   document.body.classList.toggle("is-playing", isPlaying);
 
-  if (SOP.el.playIcon) SOP.el.playIcon.textContent = isPlaying ? "❚❚" : "▶";
+  if (SOP.el.playIcon) {
+    SOP.el.playIcon.textContent = isPlaying ? "❚❚" : "▶";
+  }
+
   setText(SOP.el.audioTitle, isPlaying ? "Playing Memory" : getAudioTitle());
-  setText(SOP.el.audioSubtitle, isPlaying ? "Your sound is now playing" : "Tap to hear this moment");
 }
 
 function formatTime(seconds) {
@@ -272,22 +188,24 @@ function formatTime(seconds) {
 }
 
 function updateDuration() {
-  if (!SOP.el.audio) return;
   setText(SOP.el.durationTime, formatTime(SOP.el.audio.duration));
 }
 
 function updateProgress() {
-  if (!SOP.el.audio || !SOP.el.audio.duration) return;
+  if (!SOP.el.audio.duration) return;
 
   const percent = (SOP.el.audio.currentTime / SOP.el.audio.duration) * 100;
-  if (SOP.el.progress) SOP.el.progress.style.width = `${percent}%`;
+
+  if (SOP.el.progress) {
+    SOP.el.progress.style.width = `${percent}%`;
+  }
 
   setText(SOP.el.currentTime, formatTime(SOP.el.audio.currentTime));
   setText(SOP.el.durationTime, formatTime(SOP.el.audio.duration));
 }
 
 function seekAudio(event) {
-  if (!SOP.el.audio || !SOP.el.audio.duration || !SOP.el.progressTrack) return;
+  if (!SOP.el.audio.duration) return;
 
   const rect = SOP.el.progressTrack.getBoundingClientRect();
   const clickX = event.clientX - rect.left;
@@ -297,124 +215,12 @@ function seekAudio(event) {
   updateProgress();
 }
 
-function openLightbox(index) {
-  const gallery = getGalleryItems();
-  if (!gallery.length || !SOP.el.lightbox || !SOP.el.lightboxImage) return;
-
-  SOP.galleryIndex = index;
-  SOP.el.lightboxImage.src = assetPath(gallery[SOP.galleryIndex]);
-
-  SOP.el.lightbox.classList.add("is-open");
-  SOP.el.lightbox.setAttribute("aria-hidden", "false");
-  document.body.classList.add("sop-lightbox-open");
-}
-
-function closeLightbox() {
-  if (!SOP.el.lightbox) return;
-
-  SOP.el.lightbox.classList.remove("is-open");
-  SOP.el.lightbox.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("sop-lightbox-open");
-}
-
-function changeLightbox(direction) {
-  const gallery = getGalleryItems();
-  if (!gallery.length || !SOP.el.lightboxImage) return;
-
-  SOP.galleryIndex = (SOP.galleryIndex + direction + gallery.length) % gallery.length;
-  SOP.el.lightboxImage.src = assetPath(gallery[SOP.galleryIndex]);
-}
-
-function bindLightbox() {
-  if (!SOP.el.lightbox) return;
-
-  if (SOP.el.lightboxClose) SOP.el.lightboxClose.addEventListener("click", closeLightbox);
-  if (SOP.el.lightboxPrev) SOP.el.lightboxPrev.addEventListener("click", () => changeLightbox(-1));
-  if (SOP.el.lightboxNext) SOP.el.lightboxNext.addEventListener("click", () => changeLightbox(1));
-
-  SOP.el.lightbox.addEventListener("click", (event) => {
-    if (event.target === SOP.el.lightbox) closeLightbox();
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (!SOP.el.lightbox || !SOP.el.lightbox.classList.contains("is-open")) return;
-
-    if (event.key === "Escape") closeLightbox();
-    if (event.key === "ArrowLeft") changeLightbox(-1);
-    if (event.key === "ArrowRight") changeLightbox(1);
-  });
-}
-
-function initScrollReveal() {
-  const sections = document.querySelectorAll(".sop-section");
-  if (!sections.length) return;
-
-  if (!("IntersectionObserver" in window)) {
-    sections.forEach((section) => section.classList.add("is-visible"));
-    return;
-  }
-
-  if (SOP.revealObserver) SOP.revealObserver.disconnect();
-
-  SOP.revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        SOP.revealObserver.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.14,
-    rootMargin: "0px 0px -70px 0px"
-  });
-
-  sections.forEach((section) => SOP.revealObserver.observe(section));
-}
-
-function initParallax() {
-  const hero = document.querySelector(".sop-hero");
-  if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  let ticking = false;
-
-  function update() {
-    const scrollY = window.scrollY || 0;
-    const limited = Math.min(scrollY, hero.offsetHeight || window.innerHeight);
-    const parallax = limited * 0.12;
-
-    document.documentElement.style.setProperty("--hero-parallax", `${parallax}px`);
-    ticking = false;
-  }
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(update);
-      ticking = true;
-    }
-  }, { passive: true });
-
-  window.addEventListener("resize", update, { passive: true });
-  update();
-}
-
 function renderError() {
   setText(SOP.el.title, "Memory Not Found");
   setText(SOP.el.names, "StudioOfPages");
-  setText(SOP.el.message, "This memory page could not be loaded.");
+  setText(SOP.el.date, "This memory page could not be loaded.");
 
-  if (SOP.el.gallerySection) SOP.el.gallerySection.style.display = "none";
-  if (SOP.el.soundSection) SOP.el.soundSection.style.display = "none";
   if (SOP.el.playButton) SOP.el.playButton.disabled = true;
 }
 
-function boot() {
-  cacheElements();
-  window.setTimeout(hideIntro, 5200);
-  loadMemory();
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", boot, { once: true });
-} else {
-  boot();
-}
+loadMemory();
