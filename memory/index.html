@@ -2,54 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+
   <title>StudioOfPages Memory</title>
+
   <link rel="stylesheet" href="../assets/style.css">
 </head>
 
 <body>
-  <div class="grain"></div>
+  <!-- INTRO -->
+  <div id="intro" class="sop-intro">
+    <div class="sop-intro__inner">
+      <p class="sop-intro__eyebrow">StudioOfPages Memories</p>
+      <h1 class="sop-intro__title">A Memory Awaits</h1>
+    </div>
+  </div>
 
-  <main class="memory-experience">
-    <section class="hero">
-      <img id="memoryPhoto" class="hero-photo" src="" alt="Memory photo">
+  <!-- AMBIENCE -->
+  <div class="sop-grain" aria-hidden="true"></div>
+  <div class="sop-ambient sop-ambient--one" aria-hidden="true"></div>
+  <div class="sop-ambient sop-ambient--two" aria-hidden="true"></div>
 
-      <div class="hero-overlay"></div>
+  <main id="memoryApp" class="sop-memory">
+    <!-- HERO -->
+    <section class="sop-hero" data-section="hero">
+      <div class="sop-hero__media">
+        <img id="heroPhoto" class="sop-hero__image" src="" alt="Memory photo">
+      </div>
 
-      <div class="hero-content">
-        <p class="brand">StudioOfPages Memories</p>
+      <div class="sop-hero__overlay" aria-hidden="true"></div>
 
-        <h1 id="memoryTitle">Loading...</h1>
-        <p id="memoryNames" class="names"></p>
-        <p id="memoryDate" class="date"></p>
+      <div class="sop-hero__content">
+        <p id="memoryLabel" class="sop-eyebrow">StudioOfPages Memories</p>
 
-        <button id="playButton" class="cinematic-play" type="button">
-          <span class="play-icon">▶</span>
-        </button>
+        <h1 id="memoryTitle" class="sop-title">Loading...</h1>
+
+        <p id="memoryNames" class="sop-names"></p>
+        <p id="memoryDate" class="sop-date"></p>
+
+        <div class="sop-player">
+          <button id="playButton" class="sop-play" type="button" aria-label="Play memory">
+            <span class="sop-play__icon">▶</span>
+          </button>
+
+          <div class="sop-player__text">
+            <p id="audioTitle">Play Memory</p>
+            <span id="audioSubtitle">Tap to hear this moment</span>
+          </div>
+        </div>
 
         <audio id="memoryAudio" preload="metadata"></audio>
 
-        <div class="progress-wrap">
-          <div id="progressBar" class="progress-bar"></div>
+        <div class="sop-progress" aria-hidden="true">
+          <div id="progressBar" class="sop-progress__bar"></div>
         </div>
 
-        <div class="waveform" aria-hidden="true">
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
+        <div id="miniWaveform" class="sop-wave sop-wave--mini" aria-hidden="true"></div>
       </div>
     </section>
 
-    <section class="story-section">
-      <p class="section-label">The Story</p>
-      <p id="memoryMessage" class="story-text"></p>
+    <!-- STORY -->
+    <section id="storySection" class="sop-section sop-story" data-section="story">
+      <p class="sop-section__label">The Story</p>
+      <h2 id="storyTitle" class="sop-section__title">A moment worth remembering.</h2>
+      <p id="memoryMessage" class="sop-story__text"></p>
     </section>
 
-    <section class="ending-section">
-      <p>Every memory deserves to be remembered.</p>
-      <span id="endingNames"></span>
-      <small>Created with love by StudioOfPages</small>
+    <!-- GALLERY -->
+    <section id="gallerySection" class="sop-section sop-gallery" data-section="gallery">
+      <p class="sop-section__label">Gallery</p>
+      <div id="galleryGrid" class="sop-gallery__grid"></div>
+    </section>
+
+    <!-- SOUND -->
+    <section id="soundSection" class="sop-section sop-sound" data-section="sound">
+      <p class="sop-section__label">The Sound</p>
+      <h2 class="sop-section__title">Listen to the moment behind the print.</h2>
+      <div id="largeWaveform" class="sop-wave sop-wave--large" aria-hidden="true"></div>
+    </section>
+
+    <!-- ENDING -->
+    <section class="sop-section sop-ending" data-section="ending">
+      <p id="endingQuote" class="sop-ending__quote">Every memory deserves to be remembered.</p>
+      <span id="endingNames" class="sop-ending__names"></span>
+      <small class="sop-ending__brand">Created with love by StudioOfPages</small>
     </section>
   </main>
 
