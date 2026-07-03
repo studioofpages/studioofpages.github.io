@@ -193,7 +193,8 @@ function initScrollReveal() {
       }
     });
   }, {
-    threshold: 0.18
+    threshold: 0.22,
+    rootMargin: "0px 0px -80px 0px"
   });
 
   sections.forEach((section) => observer.observe(section));
