@@ -1,13 +1,29 @@
 {
+  "id": "0001",
+  "label": "StudioOfPages Memories",
   "title": "Our First I Love You",
+  "subtitle": "A moment worth remembering.",
   "names": "Matthew & Sophia",
   "date": "14 February 2025",
   "message": "The day everything changed forever.",
   "photo": "photo.jpg",
-  "audio": "audio.mp3",
+  "gallery": [
+    "photo.jpg"
+  ],
+  "audio": {
+    "file": "audio.mp3",
+    "title": "Our Voice"
+  },
   "theme": {
     "style": "wedding",
     "accent": "gold",
-    "animation": "floating_hearts"
+    "animation": "cinematic"
+  },
+  "story": {
+    "enabled": true,
+    "title": "A little voice became a forever memory."
+  },
+  "footer": {
+    "quote": "Every memory deserves to be remembered."
   }
 }
