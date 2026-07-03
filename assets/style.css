@@ -280,3 +280,77 @@ body.single-mode .sop-audio {
     margin:2px 0;
     opacity:.95;
 }
+body.single-mode:not(.is-memory-ready) .sop-hero {
+  opacity: 0;
+}
+
+body.single-mode.is-memory-ready .sop-hero {
+  opacity: 1;
+  transition: opacity 900ms ease;
+}
+
+body.single-mode .sop-hero__media img {
+  filter: none !important;
+  transform: none !important;
+}
+
+body.single-mode .sop-hero__content {
+  width: min(92vw, 520px) !important;
+  margin-left: auto !important;
+  margin-right: clamp(18px, 6vw, 90px) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6vh 24px !important;
+  min-height: 100vh !important;
+  background: rgba(18, 16, 14, .34);
+  border: 1px solid rgba(255,255,255,.20);
+  border-radius: 34px;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: 0 30px 90px rgba(0,0,0,.34);
+}
+
+#memoryTitle {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  text-align: center !important;
+  white-space: normal !important;
+}
+
+#memoryTitle .memory-name {
+  display: block !important;
+  width: 100% !important;
+  line-height: .92 !important;
+}
+
+#memoryTitle .memory-amp {
+  display: block !important;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 34px;
+  line-height: 1;
+  margin: 2px 0;
+  opacity: .95;
+}
+
+body.single-mode .sop-audio {
+  width: 100% !important;
+  margin-bottom: 18px !important;
+  background: rgba(255,255,255,.14) !important;
+}
+
+@media (max-width: 760px) {
+  body.single-mode .sop-hero__content {
+    width: calc(100vw - 32px) !important;
+    margin: 0 auto !important;
+    min-height: auto !important;
+    position: absolute;
+    right: 16px;
+    left: 16px;
+    bottom: 24px;
+    padding: 28px 18px !important;
+    border-radius: 28px;
+  }
+}

@@ -26,7 +26,7 @@ const SOP = {
 };
 
 function assetPath(filename) {
-return `/data/${SOP.memoryId}/${filename}`;
+  return `/data/${SOP.memoryId}/${filename}`;
 }
 
 function setText(element, value) {
@@ -48,33 +48,14 @@ function getAudioTitle() {
 async function loadMemory() {
   try {
     const response = await fetch(assetPath("memory.json"), { cache: "no-store" });
-
     if (!response.ok) throw new Error("Memory not found");
 
     SOP.data = await response.json();
 
     if (SOP.data.layout === "single") {
-      renderSingleExperience();preloadSingleImage();
-      function bindIntro() {
-  const intro = document.getElementById("intro");
-  const enterButton = document.getElementById("enterButton");
-
-  if (!intro) return;
-
-  function closeIntro() {
-    if (!document.body.classList.contains("is-memory-ready")) {
-      return;
-    }
-
-    intro.classList.add("is-hidden");
-  }
-
-  if (enterButton) {
-    enterButton.addEventListener("click", closeIntro);
-  } else {
-    intro.addEventListener("click", closeIntro);
-  }
-}
+      renderSingleExperience();
+      preloadSingleImage();
+      bindIntro();
       bindAudio();
       renderWaveforms();
       return;
@@ -90,21 +71,26 @@ async function loadMemory() {
 function renderSingleExperience() {
   document.body.classList.add("single-mode");
 
-  document.title = `${SOP.data.coupleNames || SOP.data.names || "Memory"} | StudioOfPages`;
+  const fullName = SOP.data.coupleNames || SOP.data.names || "";
+
+  document.title = `${fullName || "Memory"} | StudioOfPages`;
 
   setText(SOP.el.label, "");
-  const fullName = SOP.data.coupleNames || SOP.data.names || "";
-const parts = fullName.split("&");
 
-if (parts.length === 2) {
-  SOP.el.title.innerHTML = `
-    <span class="memory-name">${parts[0].trim()}</span>
-    <span class="memory-amp">&</span>
-    <span class="memory-name">${parts[1].trim()}</span>
-  `;
-} else {
-  SOP.el.title.textContent = fullName;
-};
+  if (SOP.el.title) {
+    const parts = fullName.split("&");
+
+    if (parts.length === 2) {
+      SOP.el.title.innerHTML = `
+        <span class="memory-name">${parts[0].trim()}</span>
+        <span class="memory-amp">&</span>
+        <span class="memory-name">${parts[1].trim()}</span>
+      `;
+    } else {
+      SOP.el.title.textContent = fullName;
+    }
+  }
+
   setText(SOP.el.names, "♡");
   setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.message || "");
   setText(SOP.el.message, "");
@@ -135,14 +121,41 @@ if (parts.length === 2) {
   }
 }
 
-function hideIntro() {
+function preloadSingleImage() {
+  const photoFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
+  const image = new Image();
+
+  document.body.classList.add("is-preloading-memory");
+
+  image.onload = () => {
+    document.body.classList.remove("is-preloading-memory");
+    document.body.classList.add("is-memory-ready");
+  };
+
+  image.onerror = () => {
+    document.body.classList.remove("is-preloading-memory");
+    document.body.classList.add("is-memory-ready");
+  };
+
+  image.src = assetPath(photoFile);
+}
+
+function bindIntro() {
   const intro = document.getElementById("intro");
+  const enterButton = document.getElementById("enterButton");
 
   if (!intro) return;
 
-  setTimeout(() => {
+  function closeIntro() {
+    if (!document.body.classList.contains("is-memory-ready")) return;
     intro.classList.add("is-hidden");
-  }, 900);
+  }
+
+  if (enterButton) {
+    enterButton.addEventListener("click", closeIntro);
+  } else {
+    intro.addEventListener("click", closeIntro);
+  }
 }
 
 function renderWaveforms() {
@@ -252,38 +265,5 @@ function renderError() {
 
   if (SOP.el.playButton) SOP.el.playButton.disabled = true;
 }
-function bindIntro() {
-  const intro = document.getElementById("intro");
-  const enterButton = document.getElementById("enterButton");
 
-  if (!intro) return;
-
-  if (enterButton) {
-    enterButton.addEventListener("click", () => {
-      intro.classList.add("is-hidden");
-    });
-  } else {
-    intro.addEventListener("click", () => {
-      intro.classList.add("is-hidden");
-    });
-  }
-}
-function preloadSingleImage() {
-  const photoFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
-  const image = new Image();
-
-  document.body.classList.add("is-preloading-memory");
-
-  image.onload = () => {
-    document.body.classList.remove("is-preloading-memory");
-    document.body.classList.add("is-memory-ready");
-  };
-
-  image.onerror = () => {
-    document.body.classList.remove("is-preloading-memory");
-    document.body.classList.add("is-memory-ready");
-  };
-
-  image.src = assetPath(photoFile);
-}
 loadMemory();
