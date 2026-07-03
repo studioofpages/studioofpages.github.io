@@ -54,8 +54,27 @@ async function loadMemory() {
     SOP.data = await response.json();
 
     if (SOP.data.layout === "single") {
-      renderSingleExperience();
-      bindIntro();
+      renderSingleExperience();preloadSingleImage();
+      function bindIntro() {
+  const intro = document.getElementById("intro");
+  const enterButton = document.getElementById("enterButton");
+
+  if (!intro) return;
+
+  function closeIntro() {
+    if (!document.body.classList.contains("is-memory-ready")) {
+      return;
+    }
+
+    intro.classList.add("is-hidden");
+  }
+
+  if (enterButton) {
+    enterButton.addEventListener("click", closeIntro);
+  } else {
+    intro.addEventListener("click", closeIntro);
+  }
+}
       bindAudio();
       renderWaveforms();
       return;
@@ -74,7 +93,18 @@ function renderSingleExperience() {
   document.title = `${SOP.data.coupleNames || SOP.data.names || "Memory"} | StudioOfPages`;
 
   setText(SOP.el.label, "");
-  setText(SOP.el.title, SOP.data.coupleNames || SOP.data.names || "");
+  const fullName = SOP.data.coupleNames || SOP.data.names || "";
+const parts = fullName.split("&");
+
+if (parts.length === 2) {
+  SOP.el.title.innerHTML = `
+    <span class="memory-name">${parts[0].trim()}</span>
+    <span class="memory-amp">&</span>
+    <span class="memory-name">${parts[1].trim()}</span>
+  `;
+} else {
+  SOP.el.title.textContent = fullName;
+};
   setText(SOP.el.names, "♡");
   setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.message || "");
   setText(SOP.el.message, "");
@@ -237,5 +267,23 @@ function bindIntro() {
       intro.classList.add("is-hidden");
     });
   }
+}
+function preloadSingleImage() {
+  const photoFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
+  const image = new Image();
+
+  document.body.classList.add("is-preloading-memory");
+
+  image.onload = () => {
+    document.body.classList.remove("is-preloading-memory");
+    document.body.classList.add("is-memory-ready");
+  };
+
+  image.onerror = () => {
+    document.body.classList.remove("is-preloading-memory");
+    document.body.classList.add("is-memory-ready");
+  };
+
+  image.src = assetPath(photoFile);
 }
 loadMemory();
