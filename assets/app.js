@@ -55,9 +55,9 @@ async function loadMemory() {
 
     if (SOP.data.layout === "single") {
       renderSingleExperience();
+      bindIntro();
       bindAudio();
       renderWaveforms();
-      hideIntro();
       return;
     }
 
@@ -222,5 +222,20 @@ function renderError() {
 
   if (SOP.el.playButton) SOP.el.playButton.disabled = true;
 }
+function bindIntro() {
+  const intro = document.getElementById("intro");
+  const enterButton = document.getElementById("enterButton");
 
+  if (!intro) return;
+
+  if (enterButton) {
+    enterButton.addEventListener("click", () => {
+      intro.classList.add("is-hidden");
+    });
+  } else {
+    intro.addEventListener("click", () => {
+      intro.classList.add("is-hidden");
+    });
+  }
+}
 loadMemory();
