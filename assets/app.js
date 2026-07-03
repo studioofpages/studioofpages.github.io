@@ -19,6 +19,8 @@ const SOP = {
     audioTitle: document.getElementById("audioTitle"),
     audioSubtitle: document.getElementById("audioSubtitle"),
     progress: document.getElementById("progressBar"),
+    currentTime: document.getElementById("currentTime"),
+durationTime: document.getElementById("durationTime"),
     miniWaveform: document.getElementById("miniWaveform"),
     largeWaveform: document.getElementById("largeWaveform"),
     gallerySection: document.getElementById("gallerySection"),
@@ -139,6 +141,12 @@ function bindAudio() {
   SOP.el.playButton.addEventListener("click", toggleAudio);
 
   SOP.el.audio.addEventListener("timeupdate", updateProgress);
+  SOP.el.audio.addEventListener("loadedmetadata", () => {
+
+    SOP.el.durationTime.textContent =
+        formatTime(SOP.el.audio.duration);
+
+});
 
   SOP.el.audio.addEventListener("ended", () => {
     setPlaying(false);
@@ -167,12 +175,30 @@ function setPlaying(isPlaying) {
   setText(SOP.el.audioTitle, isPlaying ? "Playing Memory" : (SOP.data.audio?.title || "Play Memory"));
   setText(SOP.el.audioSubtitle, isPlaying ? "Your sound is now playing" : "Tap to hear this moment");
 }
+function formatTime(seconds) {
 
+    if (!isFinite(seconds)) return "0:00";
+
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+
+    return `${min}:${String(sec).padStart(2,"0")}`;
+}
 function updateProgress() {
-  if (!SOP.el.audio.duration) return;
 
-  const percent = (SOP.el.audio.currentTime / SOP.el.audio.duration) * 100;
-  SOP.el.progress.style.width = `${percent}%`;
+    if (!SOP.el.audio.duration) return;
+
+    const percent =
+        (SOP.el.audio.currentTime / SOP.el.audio.duration) * 100;
+
+    SOP.el.progress.style.width = `${percent}%`;
+
+    SOP.el.currentTime.textContent =
+        formatTime(SOP.el.audio.currentTime);
+
+    SOP.el.durationTime.textContent =
+        formatTime(SOP.el.audio.duration);
+
 }
 
 function renderError() {

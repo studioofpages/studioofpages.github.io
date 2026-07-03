@@ -446,3 +446,15 @@ body {
   transform: translateY(0);
   filter: blur(0);
 }
+/* Audio Time */
+.sop-time{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+    font-size:13px;
+    letter-spacing:.08em;
+    color:rgba(255,247,238,.65);
+    font-variant-numeric: tabular-nums;
+}
