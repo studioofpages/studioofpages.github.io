@@ -2819,3 +2819,36 @@ body.book-mode .sop-page-arrow--next { right: max(18px, env(safe-area-inset-righ
     height: 24px !important;
   }
 }
+
+
+/* =========================================================
+   Intro instant click/touch fix — StudioOfPages
+   PC: click / Mobil: first touch opens immediately
+========================================================= */
+body.book-mode .sop-intro {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+  animation: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: opacity .55s ease, visibility .55s ease !important;
+}
+
+body.book-mode .sop-intro *,
+.sop-intro,
+.sop-intro * {
+  pointer-events: auto !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+body.book-mode .sop-intro.is-hidden,
+.sop-intro.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.book-mode .sop-intro.is-hidden * {
+  pointer-events: none !important;
+}

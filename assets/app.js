@@ -11,6 +11,7 @@ const SOP = {
   touchStartY: 0,
   lightboxTouchStartX: 0,
   startRequested: false,
+  introStarted: false,
   el: {
     intro: document.getElementById("intro"),
     track: document.getElementById("pageTrack"),
@@ -303,7 +304,8 @@ function preloadHeroImage() {
 
 function bindIntro() {
   const intro = SOP.el.intro;
-  if (!intro) return;
+  if (!intro || intro.dataset.bound === "true") return;
+  intro.dataset.bound = "true";
 
   const requestStart = (event) => {
     if (event) {
@@ -314,13 +316,9 @@ function bindIntro() {
     startExperience();
   };
 
-  [intro, intro.querySelector(".sop-intro__center"), intro.querySelector(".sop-intro__heart"), intro.querySelector(".sop-intro__tap"), intro.querySelector(".sop-intro__brand")]
-    .filter(Boolean)
-    .forEach((element) => {
-      element.addEventListener("click", requestStart, { capture: true });
-      element.addEventListener("pointerup", requestStart, { capture: true });
-      element.addEventListener("touchend", requestStart, { passive: false, capture: true });
-    });
+  ["pointerdown", "touchstart", "mousedown", "click"].forEach((eventName) => {
+    intro.addEventListener(eventName, requestStart, { passive: false, capture: true });
+  });
 
   intro.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") requestStart(event);
@@ -330,11 +328,19 @@ function bindIntro() {
 
 async function startExperience() {
   const intro = SOP.el.intro;
-  if (!intro || intro.classList.contains("is-hidden")) return;
+  if (!intro || SOP.introStarted) return;
+  SOP.introStarted = true;
+
   document.body.classList.remove("is-preloading-memory");
   document.body.classList.add("is-memory-ready");
 
   intro.classList.add("is-hidden");
+  intro.setAttribute("aria-hidden", "true");
+
+  window.setTimeout(() => {
+    intro.style.display = "none";
+  }, 650);
+
   if (SOP.audioReady && SOP.el.audio) {
     try {
       await SOP.el.audio.play();
