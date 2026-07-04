@@ -952,176 +952,259 @@ body.single-mode .sop-audio {
 body.single-mode .sop-single-brand {
   margin-top: 28px !important;
 }
-/* MOBILE FIX */
+
+
+/* =========================================================
+   StudioOfPages Memory Experience - v2.0 Mobile Stable Patch
+   PC görünümüne dokunmaz. Sadece 768px ve altı için çalışır.
+========================================================= */
+
 @media (max-width: 768px) {
-  .memory-glass,
-  .glass-panel,
-  .hero-glass,
-  .audio-panel {
-    position: relative !important;
-    width: calc(100% - 32px) !important;
-    max-width: 360px !important;
-    height: auto !important;
-    min-height: auto !important;
 
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-
-    margin: 24px auto 0 auto !important;
-    padding: 22px 18px !important;
-
-    border-radius: 24px !important;
-    overflow: visible !important;
-  }
-
-  .hero,
-  .memory-hero,
-  .scene,
-  .memory-screen {
+  html,
+  body {
+    width: 100% !important;
+    height: 100svh !important;
     min-height: 100svh !important;
-    height: auto !important;
-    padding: 24px 0 40px !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+    overflow: hidden !important;
   }
 
-  .memory-title,
-  .title,
-  .hero-title {
-    font-size: clamp(28px, 9vw, 42px) !important;
-    line-height: 1.05 !important;
+  body.single-mode,
+  body.single-mode main,
+  body.single-mode .sop-page,
+  body.single-mode .sop-hero {
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    max-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* Intro mobilde görünür kalsın */
+  body.single-mode .sop-intro {
+    display: grid !important;
+    place-items: center !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    padding: 24px !important;
+    background: #030303 !important;
+    text-align: center !important;
+    z-index: 9999 !important;
+  }
+
+  body.single-mode:not(.is-memory-ready) .sop-intro {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body.single-mode .sop-intro__inner {
+    width: 100% !important;
+    max-width: 320px !important;
+    padding: 0 16px !important;
+    margin: 0 auto !important;
     text-align: center !important;
   }
 
-  .waveform,
-  .audio-wave,
-  .player-wave {
-    max-width: 100% !important;
+  body.single-mode .sop-intro__inner p,
+  body.single-mode .sop-intro__inner .sop-eyebrow {
+    margin: 0 0 14px !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    letter-spacing: .22em !important;
+  }
+
+  body.single-mode .sop-intro__inner h1 {
+    margin: 0 !important;
+    font-size: clamp(30px, 10vw, 44px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.04em !important;
+  }
+
+  body.single-mode .sop-hero__media,
+  body.single-mode .sop-hero__image,
+  body.single-mode .sop-hero__media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  body.single-mode .sop-hero__overlay {
+    background:
+      linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.18) 58%, rgba(0,0,0,.04)) !important;
+  }
+
+  /* Mobil cam panel */
+  body.single-mode .sop-hero__content {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: max(14px, env(safe-area-inset-bottom)) !important;
+    transform: translateX(-50%) !important;
+
+    width: calc(100vw - 58px) !important;
+    max-width: 318px !important;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: 46svh !important;
+
+    margin: 0 !important;
+    padding: 16px 13px 14px !important;
+    border-radius: 23px !important;
+    gap: 5px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
     overflow: hidden !important;
+
+    background: linear-gradient(145deg, rgba(255,255,255,.15), rgba(255,255,255,.055)) !important;
+    border: 1px solid rgba(255,236,198,.28) !important;
+    backdrop-filter: blur(24px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+    box-shadow:
+      0 22px 70px rgba(0,0,0,.36),
+      inset 0 1px 0 rgba(255,255,255,.25),
+      inset 0 -1px 0 rgba(0,0,0,.16) !important;
+  }
+
+  body.single-mode .sop-hero__content::before,
+  body.single-mode .sop-hero__content::after {
+    border-radius: inherit !important;
+  }
+
+  body.single-mode #memoryTitle {
+    width: 100% !important;
+    margin: 0 0 4px !important;
+    font-size: clamp(23px, 7.7vw, 32px) !important;
+    line-height: .92 !important;
+    letter-spacing: .045em !important;
+    gap: 1px !important;
+  }
+
+  body.single-mode #memoryTitle .memory-name {
+    line-height: .92 !important;
+  }
+
+  body.single-mode #memoryTitle .memory-amp {
+    font-size: 22px !important;
+    line-height: .9 !important;
+    margin: 0 !important;
+  }
+
+  body.single-mode #memoryNames {
+    margin: 0 0 6px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+  }
+
+  body.single-mode #memoryDate {
+    max-width: 245px !important;
+    margin: 0 0 9px !important;
+    font-size: 11.5px !important;
+    line-height: 1.32 !important;
+    letter-spacing: .055em !important;
+  }
+
+  /* Mobil ses alanı */
+  body.single-mode .sop-audio {
+    width: 100% !important;
+    max-width: 248px !important;
+    margin: 0 auto 7px !important;
+    padding: 9px 10px !important;
+    border-radius: 17px !important;
+  }
+
+  body.single-mode .sop-player {
+    display: inline-flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+    padding: 7px 9px !important;
+    align-items: center !important;
+  }
+
+  body.single-mode .sop-play {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+  }
+
+  body.single-mode .sop-play__icon {
+    font-size: 14px !important;
+  }
+
+  body.single-mode .sop-player__text p,
+  body.single-mode #audioTitle {
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: .12em !important;
+  }
+
+  body.single-mode .sop-player__text span,
+  body.single-mode #audioSubtitle {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+  }
+
+  body.single-mode .sop-time {
+    display: none !important;
+  }
+
+  body.single-mode .sop-wave--mini {
+    height: 34px !important;
+    margin: 6px auto 0 !important;
+    gap: 3px !important;
+  }
+
+  body.single-mode .sop-wave i,
+  body.single-mode #miniWaveform i {
+    width: 2px !important;
+    max-height: 32px !important;
+  }
+
+  body.single-mode .sop-progress,
+  body.single-mode #progressTrack {
+    height: 3px !important;
+    margin-top: 7px !important;
+  }
+
+  body.single-mode .sop-single-brand {
+    margin-top: 4px !important;
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: .22em !important;
   }
 }
-/* =========================
-   MOBILE ONLY FIX
-   PC SÜRÜMÜNE DOKUNMAZ
-========================= */
-@media (max-width: 768px) {
 
-  /* Giriş intro mobil düzen */
-  .intro,
-  .intro-screen,
-  .intro-content {
-    width: 100% !important;
-    min-height: 100svh !important;
-    padding: 24px 18px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-    text-align: center !important;
+/* Daha kısa telefonlar için ekstra sıkıştırma */
+@media (max-width: 768px) and (max-height: 720px) {
+  body.single-mode .sop-hero__content {
+    max-height: 50svh !important;
+    padding: 13px 12px 12px !important;
+    bottom: 10px !important;
   }
 
-  .intro h1,
-  .intro-title,
-  .intro-name {
-    font-size: clamp(28px, 9vw, 42px) !important;
-    line-height: 1.05 !important;
-    max-width: 100% !important;
+  body.single-mode #memoryTitle {
+    font-size: clamp(21px, 7vw, 29px) !important;
   }
 
-  .intro p,
-  .intro-text,
-  .intro-subtitle {
-    font-size: 14px !important;
-    line-height: 1.5 !important;
-    max-width: 300px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  body.single-mode #memoryDate {
+    font-size: 10.5px !important;
+    margin-bottom: 7px !important;
   }
 
-  /* Ana ekran mobil düzen */
-  .hero,
-  .memory-hero,
-  .memory-screen,
-  .scene {
-    min-height: 100svh !important;
-    height: auto !important;
-    padding: 18px 0 32px !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+  body.single-mode .sop-audio {
+    padding: 7px 9px !important;
+    margin-bottom: 5px !important;
   }
 
-  /* Cam paneli küçült */
-  .memory-glass,
-  .glass-panel,
-  .hero-glass,
-  .audio-panel,
-  .story-panel {
-    position: relative !important;
-    width: calc(100% - 56px) !important;
-    max-width: 320px !important;
-    height: auto !important;
-    min-height: auto !important;
-
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-
-    margin: 18px auto 0 auto !important;
-    padding: 16px 14px !important;
-
-    border-radius: 20px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-
-  /* Panel içindeki yazıları küçült */
-  .memory-glass *,
-  .glass-panel *,
-  .hero-glass *,
-  .audio-panel *,
-  .story-panel * {
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .memory-title,
-  .title,
-  .hero-title,
-  .story-title {
-    font-size: clamp(24px, 8vw, 34px) !important;
-    line-height: 1.05 !important;
-    text-align: center !important;
-  }
-
-  .memory-text,
-  .story-text,
-  .glass-panel p,
-  .hero-glass p,
-  .audio-panel p,
-  .story-panel p {
-    font-size: 13px !important;
-    line-height: 1.45 !important;
-  }
-
-  /* Ses / waveform kısmını küçült */
-  .audio-player,
-  .player,
-  .waveform,
-  .audio-wave,
-  .player-wave {
-    width: 100% !important;
-    max-width: 260px !important;
-    height: auto !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    overflow: hidden !important;
-  }
-
-  .audio-player button,
-  .player button {
-    transform: scale(0.85) !important;
+  body.single-mode .sop-wave--mini {
+    height: 28px !important;
   }
 }
