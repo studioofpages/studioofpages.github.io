@@ -3055,3 +3055,129 @@ body.book-mode .sop-intro.is-hidden {
     height: 18px !important;
   }
 }
+
+/* =========================================================
+   v2.2 Mobile Letter Scroll Fix
+   Mobilde letter sayfası yarım kalmasın ve dikey kaydırılsın.
+========================================================= */
+@media (max-width: 768px) {
+  body.book-mode .sop-page-letter {
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+    padding: 0 !important;
+  }
+
+  body.book-mode .sop-page-letter .sop-page-inner {
+    width: 100% !important;
+    min-height: 100svh !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: max(76px, env(safe-area-inset-top) + 58px) 16px max(112px, env(safe-area-inset-bottom) + 92px) !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  body.book-mode .sop-letter-card {
+    width: min(100%, 420px) !important;
+    max-width: 420px !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 24px 18px 28px !important;
+    overflow: visible !important;
+    border-radius: 26px !important;
+  }
+
+  body.book-mode .sop-letter-heart {
+    margin-bottom: 12px !important;
+    font-size: 34px !important;
+  }
+
+  body.book-mode .sop-letter-text {
+    max-width: 100% !important;
+    font-size: 14.5px !important;
+    line-height: 1.62 !important;
+    text-align: left !important;
+  }
+
+  body.book-mode .sop-letter-text p {
+    margin-bottom: 0.95em !important;
+  }
+}
+
+
+/* =========================================================
+   v5 Instant Intro Hard Fix
+   En üst katmanda ilk dokunuşu yakalar, cache için yeni versiyonla gelir.
+========================================================= */
+.sop-intro,
+body.book-mode .sop-intro,
+body.single-mode .sop-intro {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+  z-index: 2147483647 !important;
+  animation: none !important;
+}
+
+.sop-intro *,
+body.book-mode .sop-intro *,
+body.single-mode .sop-intro * {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.sop-intro.is-hidden,
+.sop-intro.force-hidden,
+body.book-mode .sop-intro.is-hidden,
+body.book-mode .sop-intro.force-hidden,
+body.single-mode .sop-intro.is-hidden,
+body.single-mode .sop-intro.force-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: none !important;
+  animation: none !important;
+}
+
+body.sop-intro-opened .sop-intro {
+  display: none !important;
+}
+/* LETTER MOBILE SCROLL FIX */
+@media (max-width: 768px) {
+  body.book-mode {
+    overflow: hidden !important;
+  }
+
+  body.book-mode .sop-page-letter {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    height: 100svh !important;
+    max-height: 100svh !important;
+  }
+
+  body.book-mode .sop-page-letter .sop-page-inner {
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 80px !important;
+    padding-bottom: 120px !important;
+  }
+
+  body.book-mode .sop-letter-card {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.book-mode .sop-letter-text {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}

@@ -112,6 +112,9 @@ async function loadMemory() {
     bindLightbox();
     renderWaveforms();
     preloadHeroImage();
+    if (window.__SOP_INTRO_REQUESTED) {
+      startExperience();
+    }
   } catch (error) {
     console.error(error);
     renderError();
@@ -309,16 +312,23 @@ function bindIntro() {
 
   const requestStart = (event) => {
     if (event) {
-      event.preventDefault?.();
+      if (event.cancelable) event.preventDefault?.();
       event.stopPropagation?.();
     }
+
+    window.__SOP_INTRO_REQUESTED = true;
     SOP.startRequested = true;
-    if (intro) {
-      intro.classList.add("is-hidden");
-      intro.style.opacity = "0";
-      intro.style.visibility = "hidden";
-      intro.style.pointerEvents = "none";
-    }
+
+    document.body.classList.remove("is-preloading-memory");
+    document.body.classList.add("is-memory-ready", "sop-intro-opened");
+
+    intro.classList.add("is-hidden", "force-hidden");
+    intro.setAttribute("aria-hidden", "true");
+    intro.style.opacity = "0";
+    intro.style.visibility = "hidden";
+    intro.style.pointerEvents = "none";
+    intro.style.display = "none";
+
     startExperience();
   };
 
@@ -328,7 +338,9 @@ function bindIntro() {
 
   intro.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") requestStart(event);
-  });
+  }, { capture: true });
+
+  if (window.__SOP_INTRO_REQUESTED) requestStart();
 }
 
 
@@ -338,14 +350,14 @@ async function startExperience() {
   SOP.introStarted = true;
 
   document.body.classList.remove("is-preloading-memory");
-  document.body.classList.add("is-memory-ready");
+  document.body.classList.add("is-memory-ready", "sop-intro-opened");
 
-  intro.classList.add("is-hidden");
+  intro.classList.add("is-hidden", "force-hidden");
   intro.setAttribute("aria-hidden", "true");
-
-  window.setTimeout(() => {
-    intro.style.display = "none";
-  }, 650);
+  intro.style.opacity = "0";
+  intro.style.visibility = "hidden";
+  intro.style.pointerEvents = "none";
+  intro.style.display = "none";
 
   if (SOP.audioReady && SOP.el.audio) {
     try {

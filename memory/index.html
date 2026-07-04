@@ -19,6 +19,38 @@
     </div>
   </div>
 
+  <script>
+    // StudioOfPages instant intro opener: catches the very first PC click / mobile touch
+    (function () {
+      var intro = document.getElementById("intro");
+      if (!intro) return;
+
+      function openMemory(event) {
+        if (event) {
+          if (event.cancelable) event.preventDefault();
+          event.stopPropagation();
+        }
+        window.__SOP_INTRO_REQUESTED = true;
+        document.body.classList.add("is-memory-ready", "sop-intro-opened");
+        document.body.classList.remove("is-preloading-memory");
+        intro.classList.add("is-hidden", "force-hidden");
+        intro.setAttribute("aria-hidden", "true");
+        intro.style.opacity = "0";
+        intro.style.visibility = "hidden";
+        intro.style.pointerEvents = "none";
+        intro.style.display = "none";
+      }
+
+      ["pointerdown", "touchstart", "mousedown", "click"].forEach(function (name) {
+        intro.addEventListener(name, openMemory, { capture: true, passive: false });
+      });
+
+      intro.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") openMemory(event);
+      }, { capture: true });
+    }());
+  </script>
+
   <div class="sop-grain" aria-hidden="true"></div>
   <div class="sop-ambient sop-ambient--one" aria-hidden="true"></div>
   <div class="sop-ambient sop-ambient--two" aria-hidden="true"></div>
