@@ -1668,3 +1668,128 @@ body.single-mode.is-memory-ready .sop-hero__media img {
     transform: scale(var(--photo-zoom)) !important;
   }
 }
+
+
+/* =========================================================
+   StudioOfPages Theme Engine Layer
+   Tema dosyaları sadece --theme-* değişkenlerini tanımlar.
+   Bu katman mevcut premium görünümü bozmadan renkleri temaya bağlar.
+========================================================= */
+
+:root {
+  --theme-bg-1: #f3ede4;
+  --theme-bg-2: #d8c8b8;
+  --theme-accent: #d8b56f;
+  --theme-accent-soft: rgba(216, 181, 111, 0.28);
+  --theme-text: #fff7ee;
+  --theme-muted: rgba(255, 247, 238, 0.68);
+  --theme-glass: rgba(255, 247, 238, 0.12);
+  --theme-border: rgba(255, 247, 238, 0.24);
+  --theme-shadow: rgba(0, 0, 0, 0.55);
+
+  --sop-bg: #050505;
+  --sop-cream: var(--theme-text);
+  --sop-muted: var(--theme-muted);
+  --sop-soft: var(--theme-text);
+  --sop-gold: var(--theme-accent);
+  --sop-glass: var(--theme-glass);
+  --sop-line: var(--theme-border);
+  --sop-shadow: var(--theme-shadow);
+
+  --sop-panel-glass: var(--theme-glass);
+  --sop-panel-border: var(--theme-border);
+  --sop-panel-glow: var(--theme-accent-soft);
+}
+
+body.single-mode .sop-hero::before {
+  background:
+    radial-gradient(circle at 72% 50%, var(--theme-accent-soft), transparent 34%),
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,.06), transparent 30%) !important;
+}
+
+body.single-mode .sop-hero__overlay {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 45%, rgba(0,0,0,.46) 100%),
+    radial-gradient(circle at 80% 50%, var(--theme-accent-soft), transparent 44%) !important;
+}
+
+body.single-mode .sop-hero__content {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.055)),
+    linear-gradient(135deg, var(--theme-accent-soft), transparent 62%) !important;
+  border-color: var(--theme-border) !important;
+  box-shadow:
+    0 36px 110px var(--theme-shadow),
+    inset 0 1px 0 rgba(255,255,255,.34),
+    inset 0 -1px 0 rgba(0,0,0,.22),
+    0 0 55px var(--theme-accent-soft) !important;
+}
+
+body.single-mode #memoryTitle,
+body.single-mode #audioTitle {
+  color: var(--theme-text) !important;
+}
+
+body.single-mode #memoryDate,
+body.single-mode #audioSubtitle,
+body.single-mode .sop-time,
+body.single-mode #currentTime,
+body.single-mode #durationTime {
+  color: var(--theme-muted) !important;
+}
+
+body.single-mode #memoryNames,
+body.single-mode #memoryTitle .memory-amp,
+body.single-mode .sop-single-brand,
+.sop-intro__inner p,
+.sop-eyebrow,
+.sop-section__label {
+  color: var(--theme-accent) !important;
+}
+
+body.single-mode .sop-audio,
+body.single-mode .sop-player {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.06)),
+    linear-gradient(90deg, var(--theme-accent-soft), transparent 70%) !important;
+  border-color: var(--theme-border) !important;
+  box-shadow:
+    0 18px 55px var(--theme-shadow),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+body.single-mode .sop-play {
+  background:
+    linear-gradient(145deg, var(--theme-accent), rgba(255,255,255,.72)) !important;
+  color: rgba(35,25,18,.95) !important;
+  box-shadow:
+    0 14px 38px rgba(0,0,0,.28),
+    0 0 26px var(--theme-accent-soft) !important;
+}
+
+body.single-mode .sop-waveform i,
+body.single-mode #miniWaveform i,
+.sop-wave i {
+  background: linear-gradient(to top, var(--theme-accent-soft), var(--theme-text)) !important;
+  box-shadow: 0 0 12px var(--theme-accent-soft) !important;
+}
+
+body.single-mode .sop-progress__bar,
+body.single-mode #progressBar,
+.sop-progress__bar {
+  background: linear-gradient(90deg, var(--theme-accent), var(--theme-text)) !important;
+  box-shadow: 0 0 18px var(--theme-accent-soft) !important;
+}
+
+@media (max-width: 768px) {
+  body.single-mode .sop-hero__content {
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.15), rgba(255,255,255,.055)),
+      linear-gradient(135deg, var(--theme-accent-soft), transparent 68%) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  body.single-mode #memoryTitle .memory-amp {
+    color: var(--theme-accent) !important;
+  }
+}

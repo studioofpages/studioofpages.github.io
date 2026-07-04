@@ -1,18 +1,10 @@
 {
   "id": "0001",
+  "theme": "wedding",
   "layout": "single",
-  "label": "StudioOfPages Memories",
-  "title": "OUR MEMORIES",
-  "subtitle": "A story written in little moments.",
-  "names": "MATTHEW & SOPHIA",
-  "date": "",
-  "message": "Every moment with you is my favorite part of the story.",
-  "photo": "photo.jpg",
+  "title": "MATTHEW & SOPHIA",
+  "subtitle": "Every moment with you is my favorite part of the story.",
   "heroImage": "photo.jpg",
-  "coupleNames": "MATTHEW & SOPHIA",
-  "coupleQuote": "Every moment with you is my favorite part of the story.",
-  "brandText": "STUDIO OF PAGES",
-  "gallery": [],
   "audio": {
     "file": "audio.mp3",
     "title": "Our Voice",
@@ -20,11 +12,15 @@
     "cover": "photo.jpg",
     "waveform": "waveform.svg"
   },
-  "theme": {
-    "style": "wedding",
-    "accent": "gold",
-    "animation": "cinematic"
-  },
+  "brandText": "STUDIO OF PAGES",
+  "label": "StudioOfPages Memories",
+  "names": "MATTHEW & SOPHIA",
+  "date": "Every moment with you is my favorite part of the story.",
+  "message": "Every moment with you is my favorite part of the story.",
+  "photo": "photo.jpg",
+  "coupleNames": "MATTHEW & SOPHIA",
+  "coupleQuote": "Every moment with you is my favorite part of the story.",
+  "gallery": [],
   "story": {
     "enabled": false,
     "title": ""
@@ -32,5 +28,5 @@
   "footer": {
     "quote": "STUDIO OF PAGES"
   },
-  "version": "photo-fix-5"
+  "version": "theme-ready-1"
 }

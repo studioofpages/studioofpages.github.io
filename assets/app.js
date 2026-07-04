@@ -33,6 +33,38 @@ function setText(element, value) {
   if (element) element.textContent = value || "";
 }
 
+function normalizeThemeName(theme) {
+  return String(theme || "default")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "") || "default";
+}
+
+function loadTheme(theme) {
+  const themeName = normalizeThemeName(theme);
+
+  document.body.dataset.theme = themeName;
+
+  document.body.classList.forEach((className) => {
+    if (className.startsWith("theme-")) {
+      document.body.classList.remove(className);
+    }
+  });
+
+  document.body.classList.add(`theme-${themeName}`);
+
+  let themeLink = document.getElementById("themeStyle");
+
+  if (!themeLink) {
+    themeLink = document.createElement("link");
+    themeLink.id = "themeStyle";
+    themeLink.rel = "stylesheet";
+    document.head.appendChild(themeLink);
+  }
+
+  themeLink.href = `themes/${themeName}.css`;
+}
+
 function getAudioFile() {
   if (!SOP.data.audio) return "audio.mp3";
   if (typeof SOP.data.audio === "string") return SOP.data.audio;
@@ -51,6 +83,7 @@ async function loadMemory() {
     if (!response.ok) throw new Error("Memory not found");
 
     SOP.data = await response.json();
+    loadTheme(SOP.data.theme || "default");
 
     if (SOP.data.layout === "single") {
       renderSingleExperience();

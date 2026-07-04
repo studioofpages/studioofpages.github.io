@@ -1,0 +1,11 @@
+:root {
+  --theme-bg-1: #e8e6df;
+  --theme-bg-2: #1e3048;
+  --theme-accent: #d4af6a;
+  --theme-accent-soft: rgba(212, 175, 106, 0.32);
+  --theme-text: #fff8e8;
+  --theme-muted: rgba(255, 248, 232, 0.74);
+  --theme-glass: rgba(255, 255, 255, 0.13);
+  --theme-border: rgba(255, 239, 200, 0.30);
+  --theme-shadow: rgba(10, 18, 32, 0.42);
+}
