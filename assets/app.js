@@ -78,7 +78,9 @@ function getAudioTitle() {
 }
 
 function getLetterText() {
-  return String(SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || "").trim();
+  return String(SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || "")
+    .replace(/\\n/g, "\n")
+    .trim();
 }
 
 function imageExists(file) {
@@ -105,13 +107,17 @@ async function loadMemory() {
     if (!response.ok) throw new Error("Memory not found");
     SOP.data = await response.json();
     loadTheme(SOP.data.theme || "wedding");
-    await renderMemory();
+
+    // Fast first paint: build the pages immediately. Do not wait for
+    // album image checks or audio fetch checks before the experience opens.
+    renderMemory();
     bindIntro();
     bindPages();
     bindAudio();
     bindLightbox();
     renderWaveforms();
     preloadHeroImage();
+
     if (window.__SOP_INTRO_REQUESTED) {
       startExperience();
     }
@@ -121,7 +127,7 @@ async function loadMemory() {
   }
 }
 
-async function renderMemory() {
+function renderMemory() {
   document.body.classList.add("book-mode");
   const fullName = SOP.data.coupleNames || SOP.data.names || SOP.data.title || "";
   document.title = `${fullName || "Memory"} | StudioOfPages`;
@@ -147,30 +153,38 @@ async function renderMemory() {
   SOP.el.heroPhoto.src = assetPath(heroFile);
   document.body.style.setProperty("--sop-hero-bg", `url("${assetPath(heroFile)}")`);
 
-  await prepareAudio();
-  await renderAlbum();
+  prepareAudio();
   renderLetter();
   renderThanks();
+  renderAlbum();
   buildPages();
   renderDots();
   goToPage(0, false);
 }
 
-async function prepareAudio() {
+function prepareAudio() {
   const audioFile = getAudioFile();
-  SOP.audioReady = Boolean(audioFile) && await fileExists(audioFile);
+  SOP.audioReady = Boolean(audioFile);
 
-  if (SOP.audioReady) {
+  if (SOP.audioReady && SOP.el.audio) {
     SOP.el.audio.src = assetPath(audioFile);
+    SOP.el.audio.preload = "metadata";
     document.body.classList.remove("no-audio");
-  } else {
+
+    SOP.el.audio.addEventListener("error", () => {
+      SOP.audioReady = false;
+      document.body.classList.add("no-audio");
+      document.body.classList.remove("is-playing");
+      setText(SOP.el.audioSubtitle, "Music file not found");
+    }, { once: true });
+  } else if (SOP.el.audio) {
     SOP.el.audio.removeAttribute("src");
     document.body.classList.add("no-audio");
     document.body.classList.remove("is-playing");
   }
 }
 
-async function renderAlbum() {
+function getAlbumCandidates() {
   const configuredFiles = Array.isArray(SOP.data.album) && SOP.data.album.length
     ? SOP.data.album.map((item) => typeof item === "string" ? item : item.file).filter(Boolean)
     : Array.isArray(SOP.data.gallery) && SOP.data.gallery.length
@@ -178,16 +192,17 @@ async function renderAlbum() {
       : [];
 
   const defaultFiles = Array.from({ length: 9 }, (_, i) => `photo${i + 2}.jpg`);
-  const candidates = [...new Set([...defaultFiles, ...(configuredFiles || [])])].slice(0, 24);
-  const found = [];
+  const heroFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
 
-  for (const file of candidates) {
-    if (found.length >= 10) break;
-    if (!file || file === "photo.jpg" || file === (SOP.data.heroImage || SOP.data.photo || "photo.jpg")) continue;
-    if (await imageExists(file)) found.push(file);
-  }
+  return [...new Set([...(configuredFiles || []), ...defaultFiles])]
+    .filter((file) => file && file !== "photo.jpg" && file !== heroFile)
+    .slice(0, 10);
+}
 
-  SOP.albumImages = found;
+function renderAlbum() {
+  // Fast album: render candidate images immediately and remove only the ones
+  // that fail to load. This avoids 8-10 seconds of sequential image checking.
+  SOP.albumImages = getAlbumCandidates();
   SOP.el.albumGrid.innerHTML = "";
 
   SOP.albumImages.forEach((file, index) => {
@@ -200,9 +215,20 @@ async function renderAlbum() {
     img.src = assetPath(file);
     img.alt = `Memory photo ${index + 1}`;
     img.loading = "lazy";
+    img.decoding = "async";
+
+    img.onerror = () => {
+      button.remove();
+      SOP.albumImages = SOP.albumImages.filter((item) => item !== file);
+      if (!SOP.albumImages.length) {
+        buildPages();
+        renderDots();
+        goToPage(Math.min(SOP.page, SOP.pages.length - 1), false);
+      }
+    };
 
     button.appendChild(img);
-    button.addEventListener("click", () => openLightbox(index));
+    button.addEventListener("click", () => openLightbox(SOP.albumImages.indexOf(file)));
     SOP.el.albumGrid.appendChild(button);
   });
 }
