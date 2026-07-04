@@ -45,3 +45,4 @@ Ses otomatik başlamaz. Müşteri QR kodu okutur, sayfa açılır ve Play butonu
 Play butonuna basınca ses, fotoğraf efekti, progress bar ve soundwave animasyonu birlikte çalışır.
 
 deploy retry
+deploy retry
