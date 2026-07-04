@@ -42,4 +42,4 @@ Demo sayfa:
 ## Önemli
 
 Ses otomatik başlamaz. Müşteri QR kodu okutur, sayfa açılır ve Play butonuna basar.
-Play butonuna basınca ses, fotoğraf efekti, progress bar ve soundwave animasyonu birlikte çalışır. 
+Play butonuna basınca ses, fotoğraf efekti, progress bar ve soundwave animasyonu birlikte çalışır.  
