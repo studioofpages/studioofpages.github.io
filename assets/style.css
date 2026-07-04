@@ -2852,3 +2852,206 @@ body.book-mode .sop-intro.is-hidden,
 body.book-mode .sop-intro.is-hidden * {
   pointer-events: none !important;
 }
+
+
+/* =========================================================
+   v2.2 Intro instant tap/click fix
+   Sorun: Mobil katmanda .sop-intro pointer-events:none olduğu için
+   dokunma introya ulaşmıyordu. Ayrıca auto animation geç kalıyordu.
+========================================================= */
+.sop-intro,
+body.single-mode .sop-intro,
+body.book-mode .sop-intro {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+  animation: none !important;
+}
+
+.sop-intro.is-hidden,
+body.single-mode .sop-intro.is-hidden,
+body.book-mode .sop-intro.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: none !important;
+}
+
+.sop-intro__center,
+.sop-intro__heart,
+.sop-intro__tap,
+.sop-intro__brand {
+  pointer-events: auto !important;
+}
+
+/* =========================================================
+   v2.3 Compact Mobile Hero Glass Panel
+   Mobilde cam paneli daha küçük yapar ve sağ alta alır.
+   PC görünümüne dokunmaz.
+========================================================= */
+@media (max-width: 768px) {
+  body.book-mode .sop-hero__content,
+  body.single-mode .sop-hero__content {
+    position: absolute !important;
+    left: auto !important;
+    top: auto !important;
+    right: max(12px, env(safe-area-inset-right)) !important;
+    bottom: max(18px, env(safe-area-inset-bottom)) !important;
+
+    width: min(46vw, 176px) !important;
+    max-width: 176px !important;
+    min-width: 142px !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: 38svh !important;
+
+    margin: 0 !important;
+    padding: 10px 9px !important;
+    border-radius: 18px !important;
+    gap: 2px !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+
+  body.book-mode #memoryTitle,
+  body.single-mode #memoryTitle {
+    font-size: clamp(14px, 4.5vw, 19px) !important;
+    line-height: .86 !important;
+    gap: 0 !important;
+    margin: 0 0 1px !important;
+    letter-spacing: .045em !important;
+  }
+
+  body.book-mode #memoryTitle .memory-name,
+  body.single-mode #memoryTitle .memory-name {
+    line-height: .86 !important;
+  }
+
+  body.book-mode #memoryTitle .memory-amp,
+  body.single-mode #memoryTitle .memory-amp {
+    font-size: 12px !important;
+    line-height: .9 !important;
+    margin: 0 !important;
+  }
+
+  body.book-mode #memoryNames,
+  body.single-mode #memoryNames {
+    font-size: 8px !important;
+    margin: 0 0 2px !important;
+    line-height: 1 !important;
+  }
+
+  body.book-mode #memoryDate,
+  body.single-mode #memoryDate {
+    max-width: 148px !important;
+    font-size: 7.2px !important;
+    line-height: 1.18 !important;
+    letter-spacing: .07em !important;
+    margin: 0 0 5px !important;
+  }
+
+  body.book-mode .sop-audio,
+  body.single-mode .sop-audio {
+    max-width: 150px !important;
+    margin: 0 auto 3px !important;
+    padding: 0 !important;
+  }
+
+  body.book-mode .sop-player,
+  body.single-mode .sop-player {
+    max-width: 150px !important;
+    min-height: 28px !important;
+    gap: 5px !important;
+    padding: 4px 7px 4px 4px !important;
+  }
+
+  body.book-mode .sop-play,
+  body.single-mode .sop-play {
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    min-height: 23px !important;
+  }
+
+  body.book-mode .sop-play__icon,
+  body.single-mode .sop-play__icon {
+    font-size: 9px !important;
+  }
+
+  body.book-mode #audioTitle,
+  body.single-mode #audioTitle {
+    font-size: 6.7px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .06em !important;
+  }
+
+  body.book-mode #audioSubtitle,
+  body.single-mode #audioSubtitle {
+    font-size: 6px !important;
+    line-height: 1.05 !important;
+  }
+
+  body.book-mode .sop-progress,
+  body.book-mode #progressTrack,
+  body.single-mode .sop-progress,
+  body.single-mode #progressTrack {
+    max-width: 142px !important;
+    height: 2px !important;
+    margin: 1px auto 2px !important;
+  }
+
+  body.book-mode .sop-wave--mini,
+  body.book-mode #miniWaveform,
+  body.single-mode .sop-wave--mini,
+  body.single-mode #miniWaveform {
+    max-width: 128px !important;
+    height: 20px !important;
+    margin: 1px auto 2px !important;
+    gap: 1.5px !important;
+  }
+
+  body.book-mode .sop-single-brand,
+  body.single-mode .sop-single-brand {
+    font-size: 5.8px !important;
+    line-height: 1 !important;
+    letter-spacing: .2em !important;
+    margin-top: 1px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  body.book-mode .sop-hero__content,
+  body.single-mode .sop-hero__content {
+    width: min(44vw, 158px) !important;
+    max-width: 158px !important;
+    min-width: 132px !important;
+    padding: 9px 8px !important;
+    border-radius: 16px !important;
+  }
+
+  body.book-mode #memoryTitle,
+  body.single-mode #memoryTitle {
+    font-size: clamp(13px, 4.2vw, 17px) !important;
+  }
+
+  body.book-mode #memoryDate,
+  body.single-mode #memoryDate {
+    max-width: 132px !important;
+    font-size: 6.8px !important;
+  }
+
+  body.book-mode .sop-player,
+  body.book-mode .sop-audio,
+  body.single-mode .sop-player,
+  body.single-mode .sop-audio {
+    max-width: 132px !important;
+  }
+
+  body.book-mode .sop-wave--mini,
+  body.book-mode #miniWaveform,
+  body.single-mode .sop-wave--mini,
+  body.single-mode #miniWaveform {
+    max-width: 110px !important;
+    height: 18px !important;
+  }
+}

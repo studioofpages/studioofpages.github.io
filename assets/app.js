@@ -313,6 +313,12 @@ function bindIntro() {
       event.stopPropagation?.();
     }
     SOP.startRequested = true;
+    if (intro) {
+      intro.classList.add("is-hidden");
+      intro.style.opacity = "0";
+      intro.style.visibility = "hidden";
+      intro.style.pointerEvents = "none";
+    }
     startExperience();
   };
 
@@ -468,4 +474,6 @@ function renderError() {
   if (SOP.el.playButton) SOP.el.playButton.disabled = true;
 }
 
+// Intro listener is bound immediately so first tap/click never gets missed.
+bindIntro();
 loadMemory();
