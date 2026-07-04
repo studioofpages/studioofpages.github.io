@@ -2,12 +2,17 @@ const SOP = {
   memoryId: new URLSearchParams(window.location.search).get("id") || "0001",
   data: null,
   page: 0,
-  pages: ["hero", "album", "letter", "thanks"],
+  pages: [],
+  pageElements: {},
   albumImages: [],
+  audioReady: false,
   lightboxIndex: 0,
   touchStartX: 0,
   touchStartY: 0,
+  lightboxTouchStartX: 0,
+  startRequested: false,
   el: {
+    intro: document.getElementById("intro"),
     track: document.getElementById("pageTrack"),
     dots: document.getElementById("pageDots"),
     title: document.getElementById("memoryTitle"),
@@ -30,6 +35,8 @@ const SOP = {
     currentTime: document.getElementById("currentTime"),
     durationTime: document.getElementById("durationTime"),
     miniWaveform: document.getElementById("miniWaveform"),
+    prevPage: document.getElementById("prevPage"),
+    nextPage: document.getElementById("nextPage"),
     lightbox: document.getElementById("galleryLightbox"),
     lightboxImage: document.getElementById("lightboxImage"),
     lightboxClose: document.getElementById("lightboxClose"),
@@ -69,13 +76,35 @@ function getAudioTitle() {
   return SOP.data.audio.title || "Play Memory";
 }
 
+function getLetterText() {
+  return String(SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || "").trim();
+}
+
+function imageExists(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = `${assetPath(file)}?check=${Date.now()}`;
+  });
+}
+
+async function fileExists(file) {
+  try {
+    const response = await fetch(assetPath(file), { cache: "no-store" });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
 async function loadMemory() {
   try {
     const response = await fetch(assetPath("memory.json"), { cache: "no-store" });
     if (!response.ok) throw new Error("Memory not found");
     SOP.data = await response.json();
     loadTheme(SOP.data.theme || "wedding");
-    renderMemory();
+    await renderMemory();
     bindIntro();
     bindPages();
     bindAudio();
@@ -88,7 +117,7 @@ async function loadMemory() {
   }
 }
 
-function renderMemory() {
+async function renderMemory() {
   document.body.classList.add("book-mode");
   const fullName = SOP.data.coupleNames || SOP.data.names || SOP.data.title || "";
   document.title = `${fullName || "Memory"} | StudioOfPages`;
@@ -106,28 +135,53 @@ function renderMemory() {
   setText(SOP.el.names, "♡");
   setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "");
   setText(SOP.el.audioTitle, getAudioTitle());
-  setText(SOP.el.audioSubtitle, "Tap to hear this moment");
+  setText(SOP.el.audioSubtitle, "Music is ready");
   setText(SOP.el.currentTime, "0:00");
   setText(SOP.el.durationTime, "0:00");
 
   SOP.el.heroPhoto.src = assetPath(SOP.data.heroImage || SOP.data.photo || "photo.jpg");
-  SOP.el.audio.src = assetPath(getAudioFile());
 
-  renderAlbum();
+  await prepareAudio();
+  await renderAlbum();
   renderLetter();
   renderThanks();
+  buildPages();
   renderDots();
   goToPage(0, false);
 }
 
-function renderAlbum() {
-  const files = Array.isArray(SOP.data.album) && SOP.data.album.length
-    ? SOP.data.album
-    : Array.isArray(SOP.data.gallery) && SOP.data.gallery.length
-      ? SOP.data.gallery
-      : ["album1.jpg","album2.jpg","album3.jpg","album4.jpg","album5.jpg","album6.jpg","album7.jpg","album8.jpg","album9.jpg","album10.jpg"];
+async function prepareAudio() {
+  const audioFile = getAudioFile();
+  SOP.audioReady = Boolean(audioFile) && await fileExists(audioFile);
 
-  SOP.albumImages = files.slice(0, 10).map((item) => typeof item === "string" ? item : item.file).filter(Boolean);
+  if (SOP.audioReady) {
+    SOP.el.audio.src = assetPath(audioFile);
+    document.body.classList.remove("no-audio");
+  } else {
+    SOP.el.audio.removeAttribute("src");
+    document.body.classList.add("no-audio");
+    document.body.classList.remove("is-playing");
+  }
+}
+
+async function renderAlbum() {
+  const configuredFiles = Array.isArray(SOP.data.album) && SOP.data.album.length
+    ? SOP.data.album.map((item) => typeof item === "string" ? item : item.file).filter(Boolean)
+    : Array.isArray(SOP.data.gallery) && SOP.data.gallery.length
+      ? SOP.data.gallery.map((item) => typeof item === "string" ? item : item.file).filter(Boolean)
+      : [];
+
+  const defaultFiles = Array.from({ length: 10 }, (_, i) => `photo${i + 2}.jpg`);
+  const candidates = [...new Set([...(configuredFiles || []), ...defaultFiles])].slice(0, 24);
+  const found = [];
+
+  for (const file of candidates) {
+    if (found.length >= 10) break;
+    if (file === (SOP.data.heroImage || SOP.data.photo || "photo.jpg")) continue;
+    if (await imageExists(file)) found.push(file);
+  }
+
+  SOP.albumImages = found;
   SOP.el.albumGrid.innerHTML = "";
 
   SOP.albumImages.forEach((file, index) => {
@@ -140,15 +194,6 @@ function renderAlbum() {
     img.src = assetPath(file);
     img.alt = `Memory photo ${index + 1}`;
     img.loading = "lazy";
-    img.onerror = () => {
-      if (img.dataset.fallbackApplied === "true") {
-        button.classList.add("is-missing");
-        button.innerHTML = `<span>Photo ${index + 1}</span>`;
-        return;
-      }
-      img.dataset.fallbackApplied = "true";
-      img.src = assetPath(SOP.data.heroImage || SOP.data.photo || "photo.jpg");
-    };
 
     button.appendChild(img);
     button.addEventListener("click", () => openLightbox(index));
@@ -157,9 +202,11 @@ function renderAlbum() {
 }
 
 function renderLetter() {
-  const text = SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || SOP.data.message || "Every memory becomes timeless when it is kept with love.";
+  const text = getLetterText();
   SOP.el.letterText.innerHTML = "";
-  String(text).split(/\n{2,}/).forEach((paragraph) => {
+  if (!text) return;
+
+  text.split(/\n{2,}/).forEach((paragraph) => {
     const p = document.createElement("p");
     p.textContent = paragraph.trim();
     if (p.textContent) SOP.el.letterText.appendChild(p);
@@ -168,17 +215,38 @@ function renderLetter() {
 
 function renderThanks() {
   setText(SOP.el.thanksText, SOP.data.thankYouText || "Thank you for visiting our memories.");
-  setText(SOP.el.thanksBrand, SOP.data.thankYouBrand || SOP.data.brandText || "Created with love by StudioOfPages");
+  setText(SOP.el.thanksBrand, SOP.data.thankYouBrand || SOP.data.brandText || "STUDIO OF PAGES");
+}
+
+function buildPages() {
+  SOP.pageElements = {
+    hero: document.querySelector('[data-page="hero"]'),
+    album: document.querySelector('[data-page="album"]'),
+    letter: document.querySelector('[data-page="letter"]'),
+    thanks: document.querySelector('[data-page="thanks"]')
+  };
+
+  SOP.pages = ["hero"];
+  if (SOP.albumImages.length) SOP.pages.push("album");
+  if (getLetterText()) SOP.pages.push("letter");
+  SOP.pages.push("thanks");
+
+  Object.entries(SOP.pageElements).forEach(([name, element]) => {
+    if (!element) return;
+    element.hidden = !SOP.pages.includes(name);
+    element.style.display = SOP.pages.includes(name) ? "" : "none";
+  });
+
+  if (SOP.el.track) SOP.el.track.style.width = `${SOP.pages.length * 100}vw`;
+  document.body.dataset.pageCount = String(SOP.pages.length);
 }
 
 function renderDots() {
   SOP.el.dots.innerHTML = "";
   SOP.pages.forEach((page, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
+    const dot = document.createElement("span");
     dot.className = "sop-page-dot";
-    dot.setAttribute("aria-label", `Go to ${page} page`);
-    dot.addEventListener("click", () => goToPage(index));
+    dot.setAttribute("aria-hidden", "true");
     SOP.el.dots.appendChild(dot);
   });
 }
@@ -188,10 +256,15 @@ function goToPage(index, animate = true) {
   if (!animate) SOP.el.track.style.transition = "none";
   SOP.el.track.style.transform = `translateX(-${SOP.page * 100}vw)`;
   document.querySelectorAll(".sop-page-dot").forEach((dot, i) => dot.classList.toggle("is-active", i === SOP.page));
+  if (SOP.el.prevPage) SOP.el.prevPage.disabled = SOP.page === 0;
+  if (SOP.el.nextPage) SOP.el.nextPage.disabled = SOP.page === SOP.pages.length - 1;
   if (!animate) requestAnimationFrame(() => { SOP.el.track.style.transition = ""; });
 }
 
 function bindPages() {
+  SOP.el.prevPage?.addEventListener("click", () => goToPage(SOP.page - 1));
+  SOP.el.nextPage?.addEventListener("click", () => goToPage(SOP.page + 1));
+
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowRight") goToPage(SOP.page + 1);
     if (event.key === "ArrowLeft") goToPage(SOP.page - 1);
@@ -221,19 +294,47 @@ function preloadHeroImage() {
   image.onload = image.onerror = () => {
     document.body.classList.remove("is-preloading-memory");
     document.body.classList.add("is-memory-ready");
+    if (SOP.startRequested) startExperience();
   };
   image.src = assetPath(SOP.data.heroImage || SOP.data.photo || "photo.jpg");
 }
 
 function bindIntro() {
-  const intro = document.getElementById("intro");
+  const intro = SOP.el.intro;
   if (!intro) return;
-  function closeIntro() {
-    if (!document.body.classList.contains("is-memory-ready")) return;
-    intro.classList.add("is-hidden");
+
+  const requestStart = () => {
+    SOP.startRequested = true;
+    startExperience();
+  };
+
+  intro.addEventListener("click", requestStart);
+  intro.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      requestStart();
+    }
+  });
+  intro.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    requestStart();
+  }, { passive: false });
+}
+
+async function startExperience() {
+  const intro = SOP.el.intro;
+  if (!intro || intro.classList.contains("is-hidden")) return;
+  if (!document.body.classList.contains("is-memory-ready")) return;
+
+  intro.classList.add("is-hidden");
+  if (SOP.audioReady && SOP.el.audio) {
+    try {
+      await SOP.el.audio.play();
+      setPlaying(true);
+    } catch (error) {
+      setPlaying(false);
+    }
   }
-  intro.addEventListener("click", closeIntro);
-  setTimeout(closeIntro, 1900);
 }
 
 function renderWaveforms() {
@@ -252,7 +353,7 @@ function createBars(container, count) {
 }
 
 function bindAudio() {
-  if (!SOP.el.audio) return;
+  if (!SOP.el.audio || !SOP.audioReady) return;
   SOP.el.playButton?.addEventListener("click", toggleAudio);
   SOP.el.miniAudioButton?.addEventListener("click", toggleAudio);
   SOP.el.audio.addEventListener("timeupdate", updateProgress);
@@ -266,6 +367,7 @@ function bindAudio() {
 }
 
 async function toggleAudio() {
+  if (!SOP.audioReady) return;
   try {
     if (SOP.el.audio.paused) {
       await SOP.el.audio.play();
@@ -314,8 +416,21 @@ function bindLightbox() {
   SOP.el.lightboxPrev?.addEventListener("click", () => showLightbox(SOP.lightboxIndex - 1));
   SOP.el.lightboxNext?.addEventListener("click", () => showLightbox(SOP.lightboxIndex + 1));
   SOP.el.lightbox?.addEventListener("click", (event) => { if (event.target === SOP.el.lightbox) closeLightbox(); });
+
+  SOP.el.lightbox?.addEventListener("touchstart", (event) => {
+    SOP.lightboxTouchStartX = event.touches[0].clientX;
+  }, { passive: true });
+
+  SOP.el.lightbox?.addEventListener("touchend", (event) => {
+    const dx = event.changedTouches[0].clientX - SOP.lightboxTouchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) showLightbox(SOP.lightboxIndex + 1);
+      else showLightbox(SOP.lightboxIndex - 1);
+    }
+  }, { passive: true });
 }
 function openLightbox(index) {
+  if (!SOP.albumImages.length) return;
   showLightbox(index);
   SOP.el.lightbox.classList.add("is-open");
   SOP.el.lightbox.setAttribute("aria-hidden", "false");

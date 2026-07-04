@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#050505">
   <title>StudioOfPages Memory</title>
-  <link rel="stylesheet" href="../assets/style.css?v=memory-v2">
+  <link rel="stylesheet" href="../assets/style.css?v=memory-v2-final">
 </head>
 <body>
-  <div id="intro" class="sop-intro">
-    <div class="sop-intro__inner">
-      <p>StudioOfPages Memories</p>
-      <h1>A Memory Awaits</h1>
+  <div id="intro" class="sop-intro" role="button" tabindex="0" aria-label="Tap to view your memories">
+    <div class="sop-intro__center">
+      <div class="sop-intro__heart" aria-hidden="true">❤️</div>
+      <div class="sop-intro__tap">Tap to View Your Memories</div>
+    </div>
+    <div class="sop-intro__brand">
+      <strong>StudioOfPages</strong>
+      <span>A Memory Awaits</span>
     </div>
   </div>
 
@@ -21,9 +25,11 @@
 
   <main id="memoryBook" class="sop-book" aria-live="polite">
     <nav class="sop-book-nav" aria-label="Memory pages">
-      <div id="pageDots" class="sop-page-dots"></div>
+      <div id="pageDots" class="sop-page-dots" aria-hidden="true"></div>
       <button id="miniAudioButton" class="sop-mini-audio" type="button" aria-label="Play or pause music">▶</button>
     </nav>
+    <button id="prevPage" class="sop-page-arrow sop-page-arrow--prev" type="button" aria-label="Previous page">‹</button>
+    <button id="nextPage" class="sop-page-arrow sop-page-arrow--next" type="button" aria-label="Next page">›</button>
 
     <div id="pageTrack" class="sop-page-track">
       <section class="sop-book-page sop-page-hero" data-page="hero">
@@ -86,6 +92,6 @@
     <button id="lightboxNext" class="sop-lightbox__nav sop-lightbox__nav--next" type="button">›</button>
   </div>
 
-  <script src="../assets/app.js?v=memory-v2"></script>
+  <script src="../assets/app.js?v=memory-v2-final"></script>
 </body>
 </html>
