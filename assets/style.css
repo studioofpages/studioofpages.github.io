@@ -1465,3 +1465,20 @@ body.single-mode .sop-single-brand {
     max-width: 230px !important;
   }
 }
+/* =========================
+   MOBILE BRAND TEXT FIX
+========================= */
+@media (max-width: 768px) {
+  body.single-mode .sop-single-brand {
+    display: block !important;
+    position: relative !important;
+    z-index: 3 !important;
+
+    margin-top: 8px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.24em !important;
+    color: rgba(232, 199, 143, 0.82) !important;
+    text-align: center !important;
+  }
+}
