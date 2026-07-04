@@ -139,7 +139,9 @@ async function renderMemory() {
   setText(SOP.el.currentTime, "0:00");
   setText(SOP.el.durationTime, "0:00");
 
-  SOP.el.heroPhoto.src = assetPath(SOP.data.heroImage || SOP.data.photo || "photo.jpg");
+  const heroFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
+  SOP.el.heroPhoto.src = assetPath(heroFile);
+  document.body.style.setProperty("--sop-hero-bg", `url("${assetPath(heroFile)}")`);
 
   await prepareAudio();
   await renderAlbum();
@@ -171,13 +173,13 @@ async function renderAlbum() {
       ? SOP.data.gallery.map((item) => typeof item === "string" ? item : item.file).filter(Boolean)
       : [];
 
-  const defaultFiles = Array.from({ length: 10 }, (_, i) => `photo${i + 2}.jpg`);
-  const candidates = [...new Set([...(configuredFiles || []), ...defaultFiles])].slice(0, 24);
+  const defaultFiles = Array.from({ length: 9 }, (_, i) => `photo${i + 2}.jpg`);
+  const candidates = [...new Set([...defaultFiles, ...(configuredFiles || [])])].slice(0, 24);
   const found = [];
 
   for (const file of candidates) {
     if (found.length >= 10) break;
-    if (file === (SOP.data.heroImage || SOP.data.photo || "photo.jpg")) continue;
+    if (!file || file === "photo.jpg" || file === (SOP.data.heroImage || SOP.data.photo || "photo.jpg")) continue;
     if (await imageExists(file)) found.push(file);
   }
 
@@ -303,28 +305,34 @@ function bindIntro() {
   const intro = SOP.el.intro;
   if (!intro) return;
 
-  const requestStart = () => {
+  const requestStart = (event) => {
+    if (event) {
+      event.preventDefault?.();
+      event.stopPropagation?.();
+    }
     SOP.startRequested = true;
     startExperience();
   };
 
-  intro.addEventListener("click", requestStart);
+  [intro, intro.querySelector(".sop-intro__center"), intro.querySelector(".sop-intro__heart"), intro.querySelector(".sop-intro__tap"), intro.querySelector(".sop-intro__brand")]
+    .filter(Boolean)
+    .forEach((element) => {
+      element.addEventListener("click", requestStart, { capture: true });
+      element.addEventListener("pointerup", requestStart, { capture: true });
+      element.addEventListener("touchend", requestStart, { passive: false, capture: true });
+    });
+
   intro.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      requestStart();
-    }
+    if (event.key === "Enter" || event.key === " ") requestStart(event);
   });
-  intro.addEventListener("touchend", (event) => {
-    event.preventDefault();
-    requestStart();
-  }, { passive: false });
 }
+
 
 async function startExperience() {
   const intro = SOP.el.intro;
   if (!intro || intro.classList.contains("is-hidden")) return;
-  if (!document.body.classList.contains("is-memory-ready")) return;
+  document.body.classList.remove("is-preloading-memory");
+  document.body.classList.add("is-memory-ready");
 
   intro.classList.add("is-hidden");
   if (SOP.audioReady && SOP.el.audio) {
