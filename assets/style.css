@@ -1003,3 +1003,125 @@ body.single-mode .sop-single-brand {
     overflow: hidden !important;
   }
 }
+/* =========================
+   MOBILE ONLY FIX
+   PC SÜRÜMÜNE DOKUNMAZ
+========================= */
+@media (max-width: 768px) {
+
+  /* Giriş intro mobil düzen */
+  .intro,
+  .intro-screen,
+  .intro-content {
+    width: 100% !important;
+    min-height: 100svh !important;
+    padding: 24px 18px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    text-align: center !important;
+  }
+
+  .intro h1,
+  .intro-title,
+  .intro-name {
+    font-size: clamp(28px, 9vw, 42px) !important;
+    line-height: 1.05 !important;
+    max-width: 100% !important;
+  }
+
+  .intro p,
+  .intro-text,
+  .intro-subtitle {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    max-width: 300px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Ana ekran mobil düzen */
+  .hero,
+  .memory-hero,
+  .memory-screen,
+  .scene {
+    min-height: 100svh !important;
+    height: auto !important;
+    padding: 18px 0 32px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  /* Cam paneli küçült */
+  .memory-glass,
+  .glass-panel,
+  .hero-glass,
+  .audio-panel,
+  .story-panel {
+    position: relative !important;
+    width: calc(100% - 56px) !important;
+    max-width: 320px !important;
+    height: auto !important;
+    min-height: auto !important;
+
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+
+    margin: 18px auto 0 auto !important;
+    padding: 16px 14px !important;
+
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  /* Panel içindeki yazıları küçült */
+  .memory-glass *,
+  .glass-panel *,
+  .hero-glass *,
+  .audio-panel *,
+  .story-panel * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .memory-title,
+  .title,
+  .hero-title,
+  .story-title {
+    font-size: clamp(24px, 8vw, 34px) !important;
+    line-height: 1.05 !important;
+    text-align: center !important;
+  }
+
+  .memory-text,
+  .story-text,
+  .glass-panel p,
+  .hero-glass p,
+  .audio-panel p,
+  .story-panel p {
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Ses / waveform kısmını küçült */
+  .audio-player,
+  .player,
+  .waveform,
+  .audio-wave,
+  .player-wave {
+    width: 100% !important;
+    max-width: 260px !important;
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: hidden !important;
+  }
+
+  .audio-player button,
+  .player button {
+    transform: scale(0.85) !important;
+  }
+}
