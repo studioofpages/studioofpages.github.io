@@ -1,55 +1,48 @@
-{
-  "id": "0002",
-  "theme": "wedding",
-  "layout": "book",
-  "title": "EDA & İBRAHİM",
-  "subtitle": "SENİ ÇOK SEVİYORUM",
-  "heroImage": "photo.jpg",
-  "audio": {
-    "file": "audio.mp3",
-    "title": "Playing Memory",
-    "artist": "",
-    "cover": "photo.jpg"
-  },
-  "brandText": "STUDIO OF PAGES",
-  "label": "StudioOfPages Memories",
-  "names": "EDA & İBRAHİM",
-  "date": "SENİ ÇOK SEVİYORUM",
-  "message": "SENİ ÇOK SEVİYORUM",
-  "photo": "photo.jpg",
-  "coupleNames": "EDA & İBRAHİM",
-  "coupleQuote": "SENİ ÇOK SEVİYORUM",
-  "gallery": [
-    "photo2.jpg",
-    "photo3.jpg",
-    "photo4.jpg",
-    "photo5.jpg",
-    "photo6.jpg",
-    "photo7.jpg",
-    "photo8.jpg",
-    "photo9.jpg",
-    "photo10.jpg"
-  ],
-  "story": {
-    "enabled": false,
-    "title": ""
-  },
-  "footer": {
-    "quote": "STUDIO OF PAGES"
-  },
-  "version": "memory-book-v2",
-  "album": [
-    "photo2.jpg",
-    "photo3.jpg",
-    "photo4.jpg",
-    "photo5.jpg",
-    "photo6.jpg",
-    "photo7.jpg",
-    "photo8.jpg",
-    "photo9.jpg",
-    "photo10.jpg"
-  ],
-  "letter": "SENİ SEVERKEN GÖZLERİM DOLUYOR GÜZEL KARIM.",
-  "thankYouText": "Thank you for visiting our memories.",
-  "thankYouBrand": "STUDIO OF PAGES"
+﻿{
+    "id":  "0002",
+    "theme":  "baby",
+    "layout":  "book",
+    "title":  "EDA \u0026 İBRAHİM",
+    "subtitle":  "SENİ ÇOK SEVİYORUM",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "EDA \u0026 İBRAHİM",
+    "date":  "SENİ ÇOK SEVİYORUM",
+    "message":  "SENİ ÇOK SEVİYORUM",
+    "photo":  "photo.jpg",
+    "coupleNames":  "EDA \u0026 İBRAHİM",
+    "coupleQuote":  "SENİ ÇOK SEVİYORUM",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg",
+                  "photo6.jpg",
+                  "photo7.jpg",
+                  "photo8.jpg",
+                  "photo9.jpg",
+                  "photo10.jpg"
+              ],
+    "letter":  "SENİ SEVERKEN GÖZLERİM DOLUYOR BAHÇEEEEM",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
 }
