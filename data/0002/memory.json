@@ -1,7 +1,7 @@
 {
   "id": "0001",
   "theme": "wedding",
-  "layout": "single",
+  "layout": "book",
   "title": "MATTHEW & SOPHIA",
   "subtitle": "Every moment with you is my favorite part of the story.",
   "heroImage": "photo.jpg",
@@ -28,5 +28,20 @@
   "footer": {
     "quote": "STUDIO OF PAGES"
   },
-  "version": "theme-ready-1"
+  "version": "memory-book-v2",
+  "album": [
+    "album1.jpg",
+    "album2.jpg",
+    "album3.jpg",
+    "album4.jpg",
+    "album5.jpg",
+    "album6.jpg",
+    "album7.jpg",
+    "album8.jpg",
+    "album9.jpg",
+    "album10.jpg"
+  ],
+  "letter": "Every moment with you is my favorite part of the story.",
+  "thankYouText": "Thank you for visiting our memories.",
+  "thankYouBrand": "STUDIO OF PAGES"
 }

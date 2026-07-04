@@ -1,16 +1,91 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#050505"><title>StudioOfPages Memory</title><link rel="stylesheet" href="../assets/style.css?v=ultimate-v121"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <title>StudioOfPages Memory</title>
+  <link rel="stylesheet" href="../assets/style.css?v=memory-v2">
+</head>
 <body>
-<div id="intro" class="sop-intro"><div class="sop-intro__inner"><p>StudioOfPages Memories</p><h1>A Memory Awaits</h1></div></div>
-<div class="sop-grain" aria-hidden="true"></div><div class="sop-ambient sop-ambient--one" aria-hidden="true"></div><div class="sop-ambient sop-ambient--two" aria-hidden="true"></div>
-<main class="sop-memory">
-<section class="sop-hero" data-section="hero"><div class="sop-hero__media"><img id="heroPhoto" class="sop-hero__image" src="" alt="Memory photo"></div><div class="sop-hero__overlay" aria-hidden="true"></div><div class="sop-hero__content"><p id="memoryLabel" class="sop-eyebrow">StudioOfPages Memories</p><h1 id="memoryTitle" class="sop-title">Loading...</h1><p id="memoryNames" class="sop-names"></p><p id="memoryDate" class="sop-date"></p><div class="sop-player"><button id="playButton" class="sop-play" type="button" aria-label="Play memory"><span class="sop-play__icon">▶</span></button><div class="sop-player__text"><p id="audioTitle">Play Memory</p><span id="audioSubtitle">Tap to hear this moment</span></div><div class="sop-time"><span id="currentTime">0:00</span><span>/</span><span id="durationTime">0:00</span></div></div><audio id="memoryAudio" preload="metadata"></audio><div id="progressTrack" class="sop-progress"><div id="progressBar" class="sop-progress__bar"></div></div><div id="miniWaveform" class="sop-wave sop-wave--mini" aria-hidden="true"></div><div class="sop-scroll-hint" aria-hidden="true"><span></span></div></div></section>
-<section id="storySection" class="sop-section sop-story" data-section="story"><p class="sop-section__label">The Story</p><h2 id="storyTitle" class="sop-section__title">A moment worth remembering.</h2><p id="memoryMessage" class="sop-story__text"></p></section>
-<section id="gallerySection" class="sop-section sop-gallery" data-section="gallery"><p class="sop-section__label">Gallery</p><div id="galleryGrid" class="sop-gallery__grid"></div></section>
-<section id="soundSection" class="sop-section sop-sound" data-section="sound"><p class="sop-section__label">The Sound</p><h2 class="sop-section__title">Listen to the moment behind the print.</h2><div id="largeWaveform" class="sop-wave sop-wave--large" aria-hidden="true"></div></section>
-<section class="sop-section sop-ending" data-section="ending"><p id="endingQuote" class="sop-ending__quote">Every memory deserves to be remembered.</p><span id="endingNames" class="sop-ending__names"></span><small class="sop-ending__brand">Created with love by StudioOfPages</small></section>
-</main>
-<div id="galleryLightbox" class="sop-lightbox" aria-hidden="true"><button id="lightboxClose" class="sop-lightbox__close" type="button">×</button><button id="lightboxPrev" class="sop-lightbox__nav sop-lightbox__nav--prev" type="button">‹</button><img id="lightboxImage" class="sop-lightbox__image" src="" alt="Gallery image"><button id="lightboxNext" class="sop-lightbox__nav sop-lightbox__nav--next" type="button">›</button></div>
-<script src="../assets/app.js?v=ultimate-v121"></script>
-</body></html>
+  <div id="intro" class="sop-intro">
+    <div class="sop-intro__inner">
+      <p>StudioOfPages Memories</p>
+      <h1>A Memory Awaits</h1>
+    </div>
+  </div>
+
+  <div class="sop-grain" aria-hidden="true"></div>
+  <div class="sop-ambient sop-ambient--one" aria-hidden="true"></div>
+  <div class="sop-ambient sop-ambient--two" aria-hidden="true"></div>
+
+  <main id="memoryBook" class="sop-book" aria-live="polite">
+    <nav class="sop-book-nav" aria-label="Memory pages">
+      <div id="pageDots" class="sop-page-dots"></div>
+      <button id="miniAudioButton" class="sop-mini-audio" type="button" aria-label="Play or pause music">▶</button>
+    </nav>
+
+    <div id="pageTrack" class="sop-page-track">
+      <section class="sop-book-page sop-page-hero" data-page="hero">
+        <div class="sop-hero__media"><img id="heroPhoto" class="sop-hero__image" src="" alt="Memory photo"></div>
+        <div class="sop-hero__overlay" aria-hidden="true"></div>
+        <div class="sop-hero__content">
+          <p id="memoryLabel" class="sop-eyebrow">StudioOfPages Memories</p>
+          <h1 id="memoryTitle" class="sop-title">Loading...</h1>
+          <p id="memoryNames" class="sop-names"></p>
+          <p id="memoryDate" class="sop-date"></p>
+
+          <div class="sop-player">
+            <button id="playButton" class="sop-play" type="button" aria-label="Play memory">
+              <span class="sop-play__icon">▶</span>
+            </button>
+            <div class="sop-player__text">
+              <p id="audioTitle">Play Memory</p>
+              <span id="audioSubtitle">Tap to hear this moment</span>
+            </div>
+            <div class="sop-time"><span id="currentTime">0:00</span><span>/</span><span id="durationTime">0:00</span></div>
+          </div>
+          <div id="progressTrack" class="sop-progress"><div id="progressBar" class="sop-progress__bar"></div></div>
+          <div id="miniWaveform" class="sop-wave sop-wave--mini" aria-hidden="true"></div>
+          <div class="sop-single-brand">STUDIO OF PAGES</div>
+        </div>
+      </section>
+
+      <section class="sop-book-page sop-page-album" data-page="album">
+        <div class="sop-page-inner">
+          <p class="sop-section__label">Our Memories</p>
+          <h2 class="sop-section__title">A little album of moments.</h2>
+          <div id="albumGrid" class="sop-album-grid"></div>
+        </div>
+      </section>
+
+      <section class="sop-book-page sop-page-letter" data-page="letter">
+        <div class="sop-page-inner sop-letter-card">
+          <div class="sop-letter-heart" aria-hidden="true">♡</div>
+          <div id="letterText" class="sop-letter-text"></div>
+        </div>
+      </section>
+
+      <section class="sop-book-page sop-page-thanks" data-page="thanks">
+        <div class="sop-page-inner sop-thanks-card">
+          <div class="sop-thanks-heart" aria-hidden="true">♡</div>
+          <h2>Thank You</h2>
+          <p id="thanksText">Thank you for visiting our memories.</p>
+          <small id="thanksBrand">Created with love by StudioOfPages</small>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <audio id="memoryAudio" preload="metadata"></audio>
+
+  <div id="galleryLightbox" class="sop-lightbox" aria-hidden="true">
+    <button id="lightboxClose" class="sop-lightbox__close" type="button">×</button>
+    <button id="lightboxPrev" class="sop-lightbox__nav sop-lightbox__nav--prev" type="button">‹</button>
+    <img id="lightboxImage" class="sop-lightbox__image" src="" alt="Album image">
+    <button id="lightboxNext" class="sop-lightbox__nav sop-lightbox__nav--next" type="button">›</button>
+  </div>
+
+  <script src="../assets/app.js?v=memory-v2"></script>
+</body>
+</html>
