@@ -1,26 +1,35 @@
 {
-  "id": "0001",
+  "id": "0002",
   "theme": "wedding",
   "layout": "book",
-  "title": "MATTHEW & SOPHIA",
-  "subtitle": "Every moment with you is my favorite part of the story.",
+  "title": "EDA & İBRAHİM",
+  "subtitle": "SENİ ÇOK SEVİYORUM",
   "heroImage": "photo.jpg",
   "audio": {
     "file": "audio.mp3",
-    "title": "Our Voice",
+    "title": "Playing Memory",
     "artist": "",
-    "cover": "photo.jpg",
-    "waveform": "waveform.svg"
+    "cover": "photo.jpg"
   },
   "brandText": "STUDIO OF PAGES",
   "label": "StudioOfPages Memories",
-  "names": "MATTHEW & SOPHIA",
-  "date": "Every moment with you is my favorite part of the story.",
-  "message": "Every moment with you is my favorite part of the story.",
+  "names": "EDA & İBRAHİM",
+  "date": "SENİ ÇOK SEVİYORUM",
+  "message": "SENİ ÇOK SEVİYORUM",
   "photo": "photo.jpg",
-  "coupleNames": "MATTHEW & SOPHIA",
-  "coupleQuote": "Every moment with you is my favorite part of the story.",
-  "gallery": [],
+  "coupleNames": "EDA & İBRAHİM",
+  "coupleQuote": "SENİ ÇOK SEVİYORUM",
+  "gallery": [
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg",
+    "photo6.jpg",
+    "photo7.jpg",
+    "photo8.jpg",
+    "photo9.jpg",
+    "photo10.jpg"
+  ],
   "story": {
     "enabled": false,
     "title": ""
@@ -30,18 +39,17 @@
   },
   "version": "memory-book-v2",
   "album": [
-    "album1.jpg",
-    "album2.jpg",
-    "album3.jpg",
-    "album4.jpg",
-    "album5.jpg",
-    "album6.jpg",
-    "album7.jpg",
-    "album8.jpg",
-    "album9.jpg",
-    "album10.jpg"
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg",
+    "photo6.jpg",
+    "photo7.jpg",
+    "photo8.jpg",
+    "photo9.jpg",
+    "photo10.jpg"
   ],
-  "letter": "Every moment with you is my favorite part of the story.",
+  "letter": "SENİ SEVERKEN GÖZLERİM DOLUYOR GÜZEL KARIM.",
   "thankYouText": "Thank you for visiting our memories.",
   "thankYouBrand": "STUDIO OF PAGES"
 }
