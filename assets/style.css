@@ -1399,3 +1399,23 @@ body.single-mode .sop-single-brand {
     font-size: 9px;
   }
 }
+/* Mobile intro title size fix */
+@media (max-width: 768px) {
+  .sop-intro__inner h1,
+  .intro-title,
+  .intro h1 {
+    font-size: clamp(24px, 8vw, 36px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.03em !important;
+    max-width: 280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .sop-intro__inner p,
+  .intro-subtitle,
+  .intro p {
+    font-size: 10px !important;
+    letter-spacing: 0.22em !important;
+  }
+}
