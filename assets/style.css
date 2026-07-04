@@ -1481,4 +1481,15 @@ body.single-mode .sop-single-brand {
     color: rgba(232, 199, 143, 0.82) !important;
     text-align: center !important;
   }
+  /* =========================
+   DESKTOP PHOTO FIT FIX
+   Mobil görünümü bozmaz
+========================= */
+@media (min-width: 769px) {
+  body.single-mode .sop-hero__media img,
+  body.single-mode .sop-hero__image {
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: #050505 !important;
+  }
 }
