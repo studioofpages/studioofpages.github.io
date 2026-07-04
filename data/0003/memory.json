@@ -1,0 +1,47 @@
+﻿{
+    "id":  "0003",
+    "theme":  "wedding",
+    "layout":  "book",
+    "title":  "JAMES \u0026 SOPHIA",
+    "subtitle":  "04.07.2026",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "JAMES \u0026 SOPHIA",
+    "date":  "04.07.2026",
+    "message":  "04.07.2026",
+    "photo":  "photo.jpg",
+    "coupleNames":  "JAMES \u0026 SOPHIA",
+    "coupleQuote":  "04.07.2026",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg",
+                  "photo6.jpg",
+                  "photo7.jpg",
+                  "photo8.jpg",
+                  "photo9.jpg"
+              ],
+    "letter":  "My Love,",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
+}
