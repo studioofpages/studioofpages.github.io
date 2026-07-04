@@ -47,3 +47,4 @@ Play butonuna basınca ses, fotoğraf efekti, progress bar ve soundwave animasyo
 deploy retry
 deploy retry
 deploy retry
+deploy retry
