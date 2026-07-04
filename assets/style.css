@@ -1473,7 +1473,6 @@ body.single-mode .sop-single-brand {
     display: block !important;
     position: relative !important;
     z-index: 3 !important;
-
     margin-top: 8px !important;
     font-size: 8px !important;
     line-height: 1.2 !important;
@@ -1481,15 +1480,191 @@ body.single-mode .sop-single-brand {
     color: rgba(232, 199, 143, 0.82) !important;
     text-align: center !important;
   }
-  /* =========================
-   DESKTOP PHOTO FIT FIX
-   Mobil görünümü bozmaz
+}
+
+/* =========================
+   v2.1 AUTO PHOTO FIT
+   Görsel oranına göre otomatik yerleşim
 ========================= */
+:root {
+  --photo-fit: cover;
+  --photo-position: center center;
+  --photo-zoom: 1;
+}
+
+body.single-mode .sop-hero__image,
+body.single-mode .sop-hero__media img {
+  object-fit: var(--photo-fit) !important;
+  object-position: var(--photo-position) !important;
+}
+
+/* PC: yatay görseller kırpılmasın, dikey/kare görseller tam ekran hissini korusun */
 @media (min-width: 769px) {
-  body.single-mode .sop-hero__media img,
-  body.single-mode .sop-hero__image {
+  body.single-mode.photo-landscape .sop-hero__image,
+  body.single-mode.photo-landscape .sop-hero__media img {
     object-fit: contain !important;
     object-position: center center !important;
+    transform: scale(var(--photo-zoom)) !important;
     background: #050505 !important;
+  }
+
+  body.single-mode.photo-portrait .sop-hero__image,
+  body.single-mode.photo-portrait .sop-hero__media img,
+  body.single-mode.photo-square .sop-hero__image,
+  body.single-mode.photo-square .sop-hero__media img {
+    object-fit: cover !important;
+    object-position: var(--photo-position) !important;
+    transform: scale(var(--photo-zoom)) !important;
+  }
+
+  body.single-mode .sop-hero__media {
+    background: #050505 !important;
+  }
+}
+
+/* Mobil: mevcut başarılı görünümü koru */
+@media (max-width: 768px) {
+  body.single-mode .sop-hero__image,
+  body.single-mode .sop-hero__media img {
+    object-fit: cover !important;
+    object-position: var(--photo-position) !important;
+    transform: scale(var(--photo-zoom)) !important;
+  }
+}
+
+/* =========================================================
+   StudioOfPages Memory Experience — v2.1 Auto Photo Fit
+   Müşteri fotoğrafını otomatik oranlar: wide / landscape / square / portrait / tall
+   memory.json opsiyonları: photoFit, photoPosition, photoZoom
+========================================================= */
+
+:root {
+  --photo-fit: cover;
+  --photo-position: center center;
+  --photo-zoom: 1.05;
+  --photo-pan-x: 0%;
+  --photo-pan-y: 0%;
+}
+
+body.single-mode .sop-hero__media,
+body.single-mode .sop-hero__image,
+body.single-mode .sop-hero__media img {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.single-mode .sop-hero__image,
+body.single-mode .sop-hero__media img {
+  object-fit: var(--photo-fit) !important;
+  object-position: var(--photo-position) !important;
+  transform-origin: var(--photo-position) !important;
+  filter: brightness(1.14) contrast(1.04) saturate(1.04) !important;
+}
+
+body.single-mode.photo-wide {
+  --photo-position: center center;
+  --photo-zoom: 1.08;
+  --photo-pan-x: -1.2%;
+  --photo-pan-y: 0%;
+}
+
+body.single-mode.photo-landscape {
+  --photo-position: center center;
+  --photo-zoom: 1.06;
+  --photo-pan-x: -0.8%;
+  --photo-pan-y: -0.4%;
+}
+
+body.single-mode.photo-square {
+  --photo-position: center center;
+  --photo-zoom: 1.05;
+  --photo-pan-x: -0.6%;
+  --photo-pan-y: -0.6%;
+}
+
+body.single-mode.photo-portrait {
+  --photo-position: center 34%;
+  --photo-zoom: 1.02;
+  --photo-pan-x: 0%;
+  --photo-pan-y: -0.8%;
+}
+
+body.single-mode.photo-tall {
+  --photo-position: center 32%;
+  --photo-zoom: 1.00;
+  --photo-pan-x: 0%;
+  --photo-pan-y: -0.4%;
+}
+
+body.single-mode.is-memory-ready .sop-hero__image,
+body.single-mode.is-memory-ready .sop-hero__media img {
+  opacity: 1 !important;
+  animation: sopAutoPhotoKenBurns 42s ease-in-out infinite alternate !important;
+}
+
+@keyframes sopAutoPhotoKenBurns {
+  0% {
+    transform: scale(var(--photo-zoom)) translate3d(0, 0, 0) !important;
+  }
+  100% {
+    transform: scale(calc(var(--photo-zoom) + 0.045)) translate3d(var(--photo-pan-x), var(--photo-pan-y), 0) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --photo-fit: cover;
+    --photo-position: center center;
+    --photo-zoom: 1.03;
+  }
+
+  body.single-mode.photo-wide {
+    --photo-position: center center;
+    --photo-zoom: 1.18;
+    --photo-pan-x: -1.4%;
+    --photo-pan-y: 0%;
+  }
+
+  body.single-mode.photo-landscape {
+    --photo-position: center center;
+    --photo-zoom: 1.14;
+    --photo-pan-x: -1%;
+    --photo-pan-y: 0%;
+  }
+
+  body.single-mode.photo-square {
+    --photo-position: center center;
+    --photo-zoom: 1.08;
+    --photo-pan-x: 0%;
+    --photo-pan-y: -0.6%;
+  }
+
+  body.single-mode.photo-portrait {
+    --photo-position: center 34%;
+    --photo-zoom: 1.00;
+    --photo-pan-x: 0%;
+    --photo-pan-y: -0.5%;
+  }
+
+  body.single-mode.photo-tall {
+    --photo-position: center 30%;
+    --photo-zoom: 1.00;
+    --photo-pan-x: 0%;
+    --photo-pan-y: -0.2%;
+  }
+
+  body.single-mode .sop-hero__image,
+  body.single-mode .sop-hero__media img {
+    object-fit: var(--photo-fit) !important;
+    object-position: var(--photo-position) !important;
+    transform-origin: var(--photo-position) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.single-mode.is-memory-ready .sop-hero__image,
+  body.single-mode.is-memory-ready .sop-hero__media img {
+    animation: none !important;
+    transform: scale(var(--photo-zoom)) !important;
   }
 }

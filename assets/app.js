@@ -54,6 +54,37 @@ async function loadMemory() {
 
     if (SOP.data.layout === "single") {
       renderSingleExperience();
+      function applyAutoPhotoFit(image) {
+  if (!image || !SOP.data) return;
+
+  const ratio = image.naturalWidth / image.naturalHeight;
+
+  document.body.classList.remove(
+    "photo-landscape",
+    "photo-portrait",
+    "photo-square"
+  );
+
+  if (ratio > 1.25) {
+    document.body.classList.add("photo-landscape");
+  } else if (ratio < 0.85) {
+    document.body.classList.add("photo-portrait");
+  } else {
+    document.body.classList.add("photo-square");
+  }
+
+  if (SOP.data.photoFit) {
+    document.documentElement.style.setProperty("--photo-fit", SOP.data.photoFit);
+  }
+
+  if (SOP.data.photoPosition) {
+    document.documentElement.style.setProperty("--photo-position", SOP.data.photoPosition);
+  }
+
+  if (SOP.data.photoZoom) {
+    document.documentElement.style.setProperty("--photo-zoom", SOP.data.photoZoom);
+  }
+}
       preloadSingleImage();
       bindIntro();
       bindAudio();
