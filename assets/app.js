@@ -78,9 +78,7 @@ function getAudioTitle() {
 }
 
 function getLetterText() {
-  return String(SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || "")
-    .replace(/\\n/g, "\n")
-    .trim();
+  return String(SOP.data.letter || SOP.data.longMessage || SOP.data.customerLetter || "").trim();
 }
 
 function imageExists(file) {
@@ -108,8 +106,8 @@ async function loadMemory() {
     SOP.data = await response.json();
     loadTheme(SOP.data.theme || "wedding");
 
-    // Fast first paint: build the pages immediately. Do not wait for
-    // album image checks or audio fetch checks before the experience opens.
+    // FAST LOAD FIX:
+    // Sayfaları ve oynatıcıyı hiçbir fotoğraf/ses kontrolünü bekletmeden kur.
     renderMemory();
     bindIntro();
     bindPages();
@@ -118,9 +116,7 @@ async function loadMemory() {
     renderWaveforms();
     preloadHeroImage();
 
-    if (window.__SOP_INTRO_REQUESTED) {
-      startExperience();
-    }
+    if (window.__SOP_INTRO_REQUESTED) startExperience();
   } catch (error) {
     console.error(error);
     renderError();
@@ -154,9 +150,9 @@ function renderMemory() {
   document.body.style.setProperty("--sop-hero-bg", `url("${assetPath(heroFile)}")`);
 
   prepareAudio();
+  renderAlbum();
   renderLetter();
   renderThanks();
-  renderAlbum();
   buildPages();
   renderDots();
   goToPage(0, false);
@@ -168,7 +164,7 @@ function prepareAudio() {
 
   if (SOP.audioReady && SOP.el.audio) {
     SOP.el.audio.src = assetPath(audioFile);
-    SOP.el.audio.preload = "metadata";
+    SOP.el.audio.load?.();
     document.body.classList.remove("no-audio");
 
     SOP.el.audio.addEventListener("error", () => {
@@ -184,7 +180,7 @@ function prepareAudio() {
   }
 }
 
-function getAlbumCandidates() {
+function renderAlbum() {
   const configuredFiles = Array.isArray(SOP.data.album) && SOP.data.album.length
     ? SOP.data.album.map((item) => typeof item === "string" ? item : item.file).filter(Boolean)
     : Array.isArray(SOP.data.gallery) && SOP.data.gallery.length
@@ -194,15 +190,12 @@ function getAlbumCandidates() {
   const defaultFiles = Array.from({ length: 9 }, (_, i) => `photo${i + 2}.jpg`);
   const heroFile = SOP.data.heroImage || SOP.data.photo || "photo.jpg";
 
-  return [...new Set([...(configuredFiles || []), ...defaultFiles])]
+  // Bekleme yok: imageExists ile tek tek kontrol etmiyoruz.
+  // Görsel yoksa img.onerror ile kartı otomatik kaldırıyoruz.
+  SOP.albumImages = [...new Set([...(configuredFiles || []), ...defaultFiles])]
     .filter((file) => file && file !== "photo.jpg" && file !== heroFile)
     .slice(0, 10);
-}
 
-function renderAlbum() {
-  // Fast album: render candidate images immediately and remove only the ones
-  // that fail to load. This avoids 8-10 seconds of sequential image checking.
-  SOP.albumImages = getAlbumCandidates();
   SOP.el.albumGrid.innerHTML = "";
 
   SOP.albumImages.forEach((file, index) => {
@@ -218,8 +211,9 @@ function renderAlbum() {
     img.decoding = "async";
 
     img.onerror = () => {
+      const removeIndex = SOP.albumImages.indexOf(file);
+      if (removeIndex > -1) SOP.albumImages.splice(removeIndex, 1);
       button.remove();
-      SOP.albumImages = SOP.albumImages.filter((item) => item !== file);
       if (!SOP.albumImages.length) {
         buildPages();
         renderDots();
