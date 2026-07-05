@@ -1,0 +1,43 @@
+﻿{
+    "id":  "0005",
+    "theme":  "couple",
+    "layout":  "book",
+    "title":  "DANİEL \u0026 İSABELLA",
+    "subtitle":  "Every love story is beautiful, but ours is our favorite.",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "DANİEL \u0026 İSABELLA",
+    "date":  "Every love story is beautiful, but ours is our favorite.",
+    "message":  "Every love story is beautiful, but ours is our favorite.",
+    "photo":  "photo.jpg",
+    "coupleNames":  "DANİEL \u0026 İSABELLA",
+    "coupleQuote":  "Every love story is beautiful, but ours is our favorite.",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg"
+              ],
+    "letter":  "Dear Isabella,From the moment we met, life became brighter in ways I never imagined. Every smile, every adventure, and every quiet moment we\u0027ve shared has become a memory I treasure forever.Thank you for being my best friend, my greatest support, and the love of my life. No matter where our journey takes us, my heart will always choose you.Here\u0027s to every memory we\u0027ve created and every beautiful chapter still waiting for us.Forever yours,Daniel",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
+}
