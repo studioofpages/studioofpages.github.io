@@ -1,0 +1,44 @@
+﻿{
+    "id":  "0007",
+    "theme":  "family",
+    "layout":  "book",
+    "title":  "The Anderson Family",
+    "subtitle":  "Together is our favorite place.",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "The Anderson Family",
+    "date":  "Together is our favorite place.",
+    "message":  "Together is our favorite place.",
+    "photo":  "photo.jpg",
+    "coupleNames":  "The Anderson Family",
+    "coupleQuote":  "Together is our favorite place.",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg",
+                  "photo6.jpg"
+              ],
+    "letter":  "To Our Family, Home is more than a place. It is every laugh we have shared, every hand we have held, and every memory we have created together. No matter where life takes us, the moments we have spent side by side will always be our greatest treasure. Through every season, every challenge, and every celebration, our love continues to grow stronger. This family is built on kindness, trust, and unconditional love. These memories remind us that happiness is not found in perfect moments, but in being together. May this little collection of memories always bring smiles to our faces and warmth to our hearts. Here is to yesterday\u0027s memories, today\u0027s laughter, and tomorrow\u0027s adventures. Forever together. Forever family.",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
+}
