@@ -1,0 +1,43 @@
+﻿{
+    "id":  "0006",
+    "theme":  "baby",
+    "layout":  "book",
+    "title":  "OLIVER JAMES",
+    "subtitle":  "Our Greatest Blessing",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "OLIVER JAMES",
+    "date":  "Our Greatest Blessing",
+    "message":  "Our Greatest Blessing",
+    "photo":  "photo.jpg",
+    "coupleNames":  "OLIVER JAMES",
+    "coupleQuote":  "Our Greatest Blessing",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg"
+              ],
+    "letter":  "Dear Oliver,From the moment we held you,our world became softer,brighter,and more beautiful.Your tiny hands,peaceful smile,and gentle presence filled our hearts with a love we never knew before.You are our greatest blessing,our sweetest memory,and the beginning of our most beautiful story.We will cherish every smile,every milestone,and every precious moment with you forever.With all our love,Mom \u0026 Dad",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
+}
