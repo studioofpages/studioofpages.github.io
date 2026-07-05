@@ -1,0 +1,43 @@
+﻿{
+    "id":  "0004",
+    "theme":  "pet",
+    "layout":  "book",
+    "title":  "BUDDY",
+    "subtitle":  "You left paw prints on our hearts that will never fade.",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Our Voice",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Memories",
+    "names":  "BUDDY",
+    "date":  "You left paw prints on our hearts that will never fade.",
+    "message":  "You left paw prints on our hearts that will never fade.",
+    "photo":  "photo.jpg",
+    "coupleNames":  "BUDDY",
+    "coupleQuote":  "You left paw prints on our hearts that will never fade.",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "STUDIO OF PAGES"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg"
+              ],
+    "letter":  "Dear Buddy, Thank you for every wagging tail, every happy greeting, and every quiet moment we shared together. You filled our home with laughter, comfort, and unconditional love. No matter how much time passes, your paw prints will always remain on our hearts. We miss you every single day, but we are forever grateful for the beautiful memories you gave us. Until we meet again... We love you always.",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES"
+}
