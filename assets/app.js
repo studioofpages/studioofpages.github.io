@@ -65,6 +65,24 @@ function loadTheme(theme) {
   document.body.classList.add(`theme-${themeName}`);
 }
 
+
+function isMovieTheme() {
+  return normalizeThemeName(SOP.data?.theme) === "movie";
+}
+
+function getDisplayNames() {
+  return String(SOP.data?.names || SOP.data?.coupleNames || SOP.data?.castNames || "").trim();
+}
+
+function splitCastNames() {
+  const raw = getDisplayNames();
+  return raw
+    .split(/\s*&\s*|\s+and\s+|\s*,\s*/i)
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
 function getAudioFile() {
   if (!SOP.data.audio) return "audio.mp3";
   if (typeof SOP.data.audio === "string") return SOP.data.audio;
@@ -125,23 +143,37 @@ async function loadMemory() {
 
 function renderMemory() {
   document.body.classList.add("book-mode");
-  const fullName = SOP.data.coupleNames || SOP.data.names || SOP.data.title || "";
+  const movie = isMovieTheme();
+  const displayNames = getDisplayNames();
+  const fullName = movie
+    ? (SOP.data.movieTitle || SOP.data.title || "The Story Of Us")
+    : (SOP.data.coupleNames || SOP.data.names || SOP.data.title || "");
+
   document.title = `${fullName || "Memory"} | StudioOfPages`;
-  setText(SOP.el.label, "");
+  setText(SOP.el.label, movie ? "Now Showing" : "");
 
   if (SOP.el.title) {
-    const parts = fullName.split("&");
-    if (parts.length === 2) {
-      SOP.el.title.innerHTML = `<span class="memory-name">${parts[0].trim()}</span><span class="memory-amp">&</span><span class="memory-name">${parts[1].trim()}</span>`;
+    if (movie) {
+      SOP.el.title.innerHTML = `<span class="movie-title-line">${fullName}</span>`;
     } else {
-      SOP.el.title.innerHTML = `<span class="memory-name">${fullName}</span>`;
+      const parts = fullName.split("&");
+      if (parts.length === 2) {
+        SOP.el.title.innerHTML = `<span class="memory-name">${parts[0].trim()}</span><span class="memory-amp">&</span><span class="memory-name">${parts[1].trim()}</span>`;
+      } else {
+        SOP.el.title.innerHTML = `<span class="memory-name">${fullName}</span>`;
+      }
     }
   }
 
-  setText(SOP.el.names, "♡");
-  setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "");
-  setText(SOP.el.audioTitle, getAudioTitle());
-  setText(SOP.el.audioSubtitle, "Music is ready");
+  setText(SOP.el.names, movie ? (displayNames || "Based On A True Story") : "♡");
+  setText(
+    SOP.el.date,
+    movie
+      ? (SOP.data.tagline || SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "A personal film based on true moments.")
+      : (SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "")
+  );
+  setText(SOP.el.audioTitle, movie ? (getAudioTitle() === "Play Memory" ? "Official Soundtrack" : getAudioTitle()) : getAudioTitle());
+  setText(SOP.el.audioSubtitle, movie ? "Tap to play this scene" : "Music is ready");
   setText(SOP.el.currentTime, "0:00");
   setText(SOP.el.durationTime, "0:00");
 
@@ -153,6 +185,7 @@ function renderMemory() {
   renderAlbum();
   renderLetter();
   renderThanks();
+  renderMovieTheme();
   buildPages();
   renderDots();
   goToPage(0, false);
@@ -244,17 +277,126 @@ function renderThanks() {
   setText(SOP.el.thanksBrand, SOP.data.thankYouBrand || SOP.data.brandText || "STUDIO OF PAGES");
 }
 
+
+function renderMovieTheme() {
+  const track = SOP.el.track;
+  if (!track) return;
+
+  document.querySelectorAll(".sop-movie-extra-page").forEach((el) => el.remove());
+
+  const intro = SOP.el.intro;
+  if (intro && isMovieTheme()) {
+    const icon = intro.querySelector(".sop-intro__heart");
+    const tap = intro.querySelector(".sop-intro__tap");
+    const brand = intro.querySelector(".sop-intro__brand strong");
+    const sub = intro.querySelector(".sop-intro__brand span");
+    if (icon) icon.textContent = "🎬";
+    if (tap) tap.textContent = "Tap to Watch The Story";
+    if (brand) brand.textContent = "Studio Of Pages Presents";
+    if (sub) sub.textContent = "A Film Based On True Moments";
+  }
+
+  const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
+  const albumTitle = document.querySelector('[data-page="album"] .sop-section__title');
+  const thanksCard = document.querySelector('[data-page="thanks"] .sop-thanks-card h2');
+  const letterHeart = document.querySelector('[data-page="letter"] .sop-letter-heart');
+  const thanksHeart = document.querySelector('[data-page="thanks"] .sop-thanks-heart');
+
+  if (!isMovieTheme()) {
+    if (albumLabel) albumLabel.textContent = "Our Memories";
+    if (albumTitle) albumTitle.textContent = "A little album of moments.";
+    if (thanksCard) thanksCard.textContent = "Thank You";
+    if (letterHeart) letterHeart.textContent = "♡";
+    if (thanksHeart) thanksHeart.textContent = "♡";
+    return;
+  }
+
+  if (albumLabel) albumLabel.textContent = "Scenes From The Movie";
+  if (albumTitle) albumTitle.textContent = "Selected scenes from this story.";
+  if (thanksCard) thanksCard.textContent = "The End";
+  if (letterHeart) letterHeart.textContent = "FADE IN";
+  if (thanksHeart) thanksHeart.textContent = "★";
+  setText(SOP.el.thanksText, SOP.data.thankYouText || "Until the next chapter...");
+  setText(SOP.el.thanksBrand, SOP.data.thankYouBrand || "A Studio Of Pages Original");
+
+  const castNames = splitCastNames();
+  const title = SOP.data.movieTitle || SOP.data.title || "The Story Of Us";
+  const releaseDate = SOP.data.date || SOP.data.subtitle || "Forever";
+  const musicTitle = getAudioTitle() === "Play Memory" ? "Official Soundtrack" : getAudioTitle();
+
+  const castPage = document.createElement("section");
+  castPage.className = "sop-book-page sop-page-movie-cast sop-movie-extra-page";
+  castPage.dataset.page = "movieCast";
+  castPage.innerHTML = `
+    <div class="sop-page-inner sop-movie-cast-card">
+      <p class="sop-section__label">Meet The Cast</p>
+      <h2 class="sop-section__title">Starring in ${escapeHtml(title)}</h2>
+      <div class="sop-movie-cast-grid">
+        ${(castNames.length ? castNames : ["The Main Character"]).map((name, index) => `
+          <article class="sop-movie-cast-member">
+            <span>${index === 0 ? "Lead Role" : index === 1 ? "Co-Star" : "Special Appearance"}</span>
+            <strong>${escapeHtml(name)}</strong>
+            <small>${index === 0 ? "as The One Who Started It All" : index === 1 ? "as The One Who Made It Unforgettable" : "as A Beautiful Part Of The Story"}</small>
+          </article>
+        `).join("")}
+      </div>
+    </div>`;
+
+  const creditsPage = document.createElement("section");
+  creditsPage.className = "sop-book-page sop-page-movie-credits sop-movie-extra-page";
+  creditsPage.dataset.page = "movieCredits";
+  creditsPage.innerHTML = `
+    <div class="sop-page-inner sop-movie-credits-card">
+      <div class="sop-movie-credits-roll">
+        <p>Studio Of Pages Presents</p>
+        <h2>${escapeHtml(title)}</h2>
+        <p>Based On True Moments</p>
+        <p>Starring</p>
+        <strong>${escapeHtml(getDisplayNames() || title)}</strong>
+        <p>Release Date</p>
+        <strong>${escapeHtml(releaseDate)}</strong>
+        <p>Official Soundtrack</p>
+        <strong>${escapeHtml(musicTitle)}</strong>
+        <p>Directed By</p>
+        <strong>Love</strong>
+        <p>Produced By</p>
+        <strong>Memory</strong>
+        <p>Running Time</p>
+        <strong>Forever</strong>
+        <h3>THE END</h3>
+      </div>
+    </div>`;
+
+  const albumPage = document.querySelector('[data-page="album"]');
+  if (albumPage) track.insertBefore(castPage, albumPage);
+  const thanksPage = document.querySelector('[data-page="thanks"]');
+  if (thanksPage) track.insertBefore(creditsPage, thanksPage);
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function buildPages() {
   SOP.pageElements = {
     hero: document.querySelector('[data-page="hero"]'),
+    movieCast: document.querySelector('[data-page="movieCast"]'),
     album: document.querySelector('[data-page="album"]'),
     letter: document.querySelector('[data-page="letter"]'),
+    movieCredits: document.querySelector('[data-page="movieCredits"]'),
     thanks: document.querySelector('[data-page="thanks"]')
   };
 
   SOP.pages = ["hero"];
+  if (isMovieTheme() && SOP.pageElements.movieCast) SOP.pages.push("movieCast");
   if (SOP.albumImages.length) SOP.pages.push("album");
   if (getLetterText()) SOP.pages.push("letter");
+  if (isMovieTheme() && SOP.pageElements.movieCredits) SOP.pages.push("movieCredits");
   SOP.pages.push("thanks");
 
   Object.entries(SOP.pageElements).forEach(([name, element]) => {
@@ -437,7 +579,7 @@ function setPlaying(isPlaying) {
   document.body.classList.toggle("is-playing", isPlaying);
   if (SOP.el.playIcon) SOP.el.playIcon.textContent = isPlaying ? "❚❚" : "▶";
   if (SOP.el.miniAudioButton) SOP.el.miniAudioButton.textContent = isPlaying ? "♪" : "▶";
-  setText(SOP.el.audioTitle, isPlaying ? "Playing Memory" : getAudioTitle());
+  setText(SOP.el.audioTitle, isPlaying ? (isMovieTheme() ? "Now Playing" : "Playing Memory") : (isMovieTheme() && getAudioTitle() === "Play Memory" ? "Official Soundtrack" : getAudioTitle()));
 }
 
 function formatTime(seconds) {

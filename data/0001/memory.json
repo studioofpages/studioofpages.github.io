@@ -1,19 +1,19 @@
 {
   "id": "0001",
-  "theme": "wedding",
-  "layout": "book",
+  "theme": "movie",
+  "layout": "movie",
   "title": "MATTHEW & SOPHIA",
-  "subtitle": "Every moment with you is my favorite part of the story.",
+  "subtitle": "Based on a True Story",
   "heroImage": "photo.jpg",
   "audio": {
     "file": "audio.mp3",
-    "title": "Our Voice",
+    "title": "Official Soundtrack",
     "artist": "",
     "cover": "photo.jpg",
     "waveform": "waveform.svg"
   },
   "brandText": "STUDIO OF PAGES",
-  "label": "StudioOfPages Memories",
+  "label": "StudioOfPages Presents",
   "names": "MATTHEW & SOPHIA",
   "date": "Every moment with you is my favorite part of the story.",
   "message": "Every moment with you is my favorite part of the story.",
@@ -26,7 +26,7 @@
     "title": ""
   },
   "footer": {
-    "quote": "STUDIO OF PAGES"
+    "quote": "THE END"
   },
   "version": "memory-book-v2",
   "album": [
