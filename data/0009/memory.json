@@ -1,0 +1,53 @@
+﻿{
+    "id":  "0009",
+    "theme":  "movie",
+    "layout":  "movie",
+    "title":  "Eda İbrahim",
+    "subtitle":  "Seni seviyorum",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Official Soundtrack",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Presents",
+    "names":  "Eda İbrahim",
+    "date":  "Seni seviyorum",
+    "message":  "Seni seviyorum",
+    "photo":  "photo.jpg",
+    "coupleNames":  "Eda İbrahim",
+    "coupleQuote":  "Seni seviyorum",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "THE END"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg"
+              ],
+    "letter":  "seni seviyorummmmmm",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES",
+    "posterTitle":  "Eda İbrahim",
+    "movieTitle":  "Eda İbrahim",
+    "tagline":  "Seni seviyorum",
+    "introTitle":  "Studio Of Pages Presents",
+    "introSubtitle":  "A Film Based On True Events",
+    "musicTitle":  "Official Soundtrack",
+    "galleryTitle":  "Scenes From The Movie",
+    "letterTitle":  "The Script",
+    "thanksTitle":  "The End",
+    "creditsTitle":  "End Credits"
+}

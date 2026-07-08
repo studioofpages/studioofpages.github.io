@@ -651,3 +651,239 @@ function renderError() {
 // Intro listener is bound immediately so first tap/click never gets missed.
 bindIntro();
 loadMemory();
+
+/* =========================================================
+   Movie Theme v3.0 — cinematic layer
+   Safe override: only activates when memory.json has "theme": "movie".
+========================================================= */
+function getMovieMeta() {
+  const movie = (SOP.data && typeof SOP.data.movie === "object") ? SOP.data.movie : {};
+  const title = SOP.data?.movieTitle || movie.title || SOP.data?.title || "The Story Of Us";
+  const names = getDisplayNames() || SOP.data?.coupleNames || SOP.data?.names || title;
+  const tagline = movie.tagline || SOP.data?.tagline || SOP.data?.subtitle || SOP.data?.coupleQuote || "Based on a True Story";
+  const releaseDate = movie.releaseDate || movie.date || SOP.data?.date || "Forever";
+  const rating = movie.rating || "★★★★★";
+  const genre = movie.genre || "Romance";
+  const duration = movie.duration || "Forever";
+  const director = movie.director || "Love";
+  const producer = movie.producer || "Destiny";
+  const studio = movie.studio || "Studio Of Pages";
+  const soundtrack = getAudioTitle() === "Play Memory" ? (movie.soundtrack || "Official Soundtrack") : getAudioTitle();
+  return { title, names, tagline, releaseDate, rating, genre, duration, director, producer, studio, soundtrack };
+}
+
+function decorateMovieHero(meta) {
+  const hero = document.querySelector('[data-page="hero"] .sop-hero__content');
+  if (!hero || hero.dataset.movieV3 === "true") return;
+  hero.dataset.movieV3 = "true";
+
+  const posterTop = document.createElement("div");
+  posterTop.className = "sop-movie-poster-top sop-movie-v3-only";
+  posterTop.innerHTML = `
+    <span>${escapeHtml(meta.rating)}</span>
+    <strong>NOW SHOWING</strong>
+    <span>${escapeHtml(meta.genre)}</span>
+  `;
+  hero.insertBefore(posterTop, hero.firstChild);
+
+  const metaLine = document.createElement("div");
+  metaLine.className = "sop-movie-poster-meta sop-movie-v3-only";
+  metaLine.innerHTML = `
+    <span>${escapeHtml(meta.releaseDate)}</span>
+    <span>${escapeHtml(meta.duration)}</span>
+    <span>PRIVATE SCREENING</span>
+  `;
+  const date = SOP.el.date;
+  if (date && date.parentNode === hero) date.insertAdjacentElement("afterend", metaLine);
+
+  const cta = document.createElement("button");
+  cta.className = "sop-movie-play-story sop-movie-v3-only";
+  cta.type = "button";
+  cta.innerHTML = `<span>▶</span> Play Story`;
+  cta.addEventListener("click", () => {
+    if (SOP.audioReady && SOP.el.audio && SOP.el.audio.paused) toggleAudio();
+    goToPage(Math.min(1, SOP.pages.length - 1));
+  });
+  const player = hero.querySelector(".sop-player");
+  if (player) hero.insertBefore(cta, player);
+
+  const billing = document.createElement("div");
+  billing.className = "sop-movie-billing sop-movie-v3-only";
+  billing.innerHTML = `DIRECTED BY ${escapeHtml(meta.director)} · PRODUCED BY ${escapeHtml(meta.producer)} · A ${escapeHtml(meta.studio).toUpperCase()} ORIGINAL`;
+  hero.appendChild(billing);
+}
+
+function decorateMovieAlbum() {
+  if (!isMovieTheme() || !SOP.el.albumGrid) return;
+  Array.from(SOP.el.albumGrid.children).forEach((button, index) => {
+    button.classList.add("sop-movie-scene-card");
+    button.dataset.scene = `SCENE ${String(index + 1).padStart(2, "0")}`;
+  });
+}
+
+function buildMovieTimeline(meta) {
+  const configured = Array.isArray(SOP.data?.movieTimeline) ? SOP.data.movieTimeline : [];
+  const fallback = [
+    { year: "Opening", title: "The First Scene", text: "Where this story begins." },
+    { year: "Chapter I", title: "The Moment", text: "A memory worth keeping forever." },
+    { year: "Forever", title: "The Next Chapter", text: "Still being written." }
+  ];
+  const items = configured.length ? configured : fallback;
+  return `
+    <div class="sop-page-inner sop-movie-timeline-card">
+      <p class="sop-section__label">Story Timeline</p>
+      <h2 class="sop-section__title">A film told in moments.</h2>
+      <div class="sop-movie-timeline-list">
+        ${items.slice(0, 5).map((item, index) => `
+          <article class="sop-movie-timeline-item">
+            <span>${escapeHtml(item.year || item.date || `Scene ${index + 1}`)}</span>
+            <strong>${escapeHtml(item.title || item.name || "A Beautiful Moment")}</strong>
+            <small>${escapeHtml(item.text || item.description || meta.tagline)}</small>
+          </article>
+        `).join("")}
+      </div>
+    </div>`;
+}
+
+function renderMovieTheme() {
+  const track = SOP.el.track;
+  if (!track) return;
+
+  document.querySelectorAll(".sop-movie-extra-page, .sop-movie-v3-only").forEach((el) => el.remove());
+
+  const intro = SOP.el.intro;
+  if (intro && isMovieTheme()) {
+    const icon = intro.querySelector(".sop-intro__heart");
+    const tap = intro.querySelector(".sop-intro__tap");
+    const brand = intro.querySelector(".sop-intro__brand strong");
+    const sub = intro.querySelector(".sop-intro__brand span");
+    if (icon) icon.textContent = "🎬";
+    if (tap) tap.textContent = "Tap to Watch The Story";
+    if (brand) brand.textContent = "Studio Of Pages Presents";
+    if (sub) sub.textContent = "A Film Based On True Moments";
+  }
+
+  const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
+  const albumTitle = document.querySelector('[data-page="album"] .sop-section__title');
+  const thanksCard = document.querySelector('[data-page="thanks"] .sop-thanks-card h2');
+  const letterHeart = document.querySelector('[data-page="letter"] .sop-letter-heart');
+  const thanksHeart = document.querySelector('[data-page="thanks"] .sop-thanks-heart');
+
+  if (!isMovieTheme()) {
+    if (albumLabel) albumLabel.textContent = "Our Memories";
+    if (albumTitle) albumTitle.textContent = "A little album of moments.";
+    if (thanksCard) thanksCard.textContent = "Thank You";
+    if (letterHeart) letterHeart.textContent = "♡";
+    if (thanksHeart) thanksHeart.textContent = "♡";
+    return;
+  }
+
+  const meta = getMovieMeta();
+  document.body.classList.add("movie-v3-ready");
+
+  setText(SOP.el.label, "Now Showing");
+  setText(SOP.el.names, meta.names);
+  setText(SOP.el.date, meta.tagline);
+  setText(SOP.el.audioTitle, meta.soundtrack);
+  setText(SOP.el.audioSubtitle, "Official soundtrack · tap to play");
+  decorateMovieHero(meta);
+  decorateMovieAlbum();
+
+  if (albumLabel) albumLabel.textContent = "Scenes From The Movie";
+  if (albumTitle) albumTitle.textContent = "Selected scenes from this story.";
+  if (thanksCard) thanksCard.textContent = "The End";
+  if (letterHeart) letterHeart.textContent = "FADE IN";
+  if (thanksHeart) thanksHeart.textContent = "★";
+  setText(SOP.el.thanksText, SOP.data.thankYouText || "Until the next chapter...");
+  setText(SOP.el.thanksBrand, SOP.data.thankYouBrand || "A Studio Of Pages Original");
+
+  const castNames = splitCastNames();
+  const castPage = document.createElement("section");
+  castPage.className = "sop-book-page sop-page-movie-cast sop-movie-extra-page";
+  castPage.dataset.page = "movieCast";
+  castPage.innerHTML = `
+    <div class="sop-page-inner sop-movie-cast-card">
+      <p class="sop-section__label">Meet The Cast</p>
+      <h2 class="sop-section__title">Starring in ${escapeHtml(meta.title)}</h2>
+      <div class="sop-movie-cast-grid">
+        ${(castNames.length ? castNames : ["The Main Character"]).map((name, index) => `
+          <article class="sop-movie-cast-member">
+            <span>${index === 0 ? "Lead Role" : index === 1 ? "Co-Star" : "Special Appearance"}</span>
+            <strong>${escapeHtml(name)}</strong>
+            <small>${index === 0 ? "as The One Who Started It All" : index === 1 ? "as The One Who Made It Unforgettable" : "as A Beautiful Part Of The Story"}</small>
+          </article>
+        `).join("")}
+      </div>
+    </div>`;
+
+  const timelinePage = document.createElement("section");
+  timelinePage.className = "sop-book-page sop-page-movie-timeline sop-movie-extra-page";
+  timelinePage.dataset.page = "movieTimeline";
+  timelinePage.innerHTML = buildMovieTimeline(meta);
+
+  const creditsPage = document.createElement("section");
+  creditsPage.className = "sop-book-page sop-page-movie-credits sop-movie-extra-page";
+  creditsPage.dataset.page = "movieCredits";
+  creditsPage.innerHTML = `
+    <div class="sop-page-inner sop-movie-credits-card">
+      <div class="sop-movie-credits-roll">
+        <p>${escapeHtml(meta.studio)} Presents</p>
+        <h2>${escapeHtml(meta.title)}</h2>
+        <p>${escapeHtml(meta.tagline)}</p>
+        <p>Starring</p>
+        <strong>${escapeHtml(meta.names)}</strong>
+        <p>Release Date</p>
+        <strong>${escapeHtml(meta.releaseDate)}</strong>
+        <p>Official Soundtrack</p>
+        <strong>${escapeHtml(meta.soundtrack)}</strong>
+        <p>Genre</p>
+        <strong>${escapeHtml(meta.genre)}</strong>
+        <p>Directed By</p>
+        <strong>${escapeHtml(meta.director)}</strong>
+        <p>Produced By</p>
+        <strong>${escapeHtml(meta.producer)}</strong>
+        <p>Running Time</p>
+        <strong>${escapeHtml(meta.duration)}</strong>
+        <p>Special Thanks</p>
+        <strong>Family · Friends · Every Beautiful Memory</strong>
+        <h3>THE END</h3>
+      </div>
+    </div>`;
+
+  const albumPage = document.querySelector('[data-page="album"]');
+  if (albumPage) {
+    track.insertBefore(castPage, albumPage);
+    track.insertBefore(timelinePage, albumPage);
+  }
+  const thanksPage = document.querySelector('[data-page="thanks"]');
+  if (thanksPage) track.insertBefore(creditsPage, thanksPage);
+}
+
+function buildPages() {
+  SOP.pageElements = {
+    hero: document.querySelector('[data-page="hero"]'),
+    movieCast: document.querySelector('[data-page="movieCast"]'),
+    movieTimeline: document.querySelector('[data-page="movieTimeline"]'),
+    album: document.querySelector('[data-page="album"]'),
+    letter: document.querySelector('[data-page="letter"]'),
+    movieCredits: document.querySelector('[data-page="movieCredits"]'),
+    thanks: document.querySelector('[data-page="thanks"]')
+  };
+
+  SOP.pages = ["hero"];
+  if (isMovieTheme() && SOP.pageElements.movieCast) SOP.pages.push("movieCast");
+  if (isMovieTheme() && SOP.pageElements.movieTimeline) SOP.pages.push("movieTimeline");
+  if (SOP.albumImages.length) SOP.pages.push("album");
+  if (getLetterText()) SOP.pages.push("letter");
+  if (isMovieTheme() && SOP.pageElements.movieCredits) SOP.pages.push("movieCredits");
+  SOP.pages.push("thanks");
+
+  Object.entries(SOP.pageElements).forEach(([name, element]) => {
+    if (!element) return;
+    element.hidden = !SOP.pages.includes(name);
+    element.style.display = SOP.pages.includes(name) ? "" : "none";
+  });
+
+  if (SOP.el.track) SOP.el.track.style.width = `${SOP.pages.length * 100}vw`;
+  document.body.dataset.pageCount = String(SOP.pages.length);
+}
