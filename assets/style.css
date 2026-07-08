@@ -6251,3 +6251,13 @@ body[data-theme="movie"].movie-pro-clean .sop-wave--mini i {
     height: 38px !important;
   }
 }
+/* Movie Theme - Mobile: Hide waveform under audio */
+
+@media (max-width: 768px) {
+
+  body[data-theme="movie"] #miniWaveform,
+  body[data-theme="movie"] .sop-wave--mini {
+    display: none !important;
+  }
+
+}
