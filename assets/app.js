@@ -290,8 +290,8 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎞";
-    if (tap) tap.textContent = "Tap to Start The Film";
+    if (icon) icon.textContent = "🎬";
+    if (tap) tap.textContent = "Begin The Story";
     if (brand) brand.textContent = "Studio Of Pages";
     if (sub) sub.textContent = "Presents"
   }
@@ -733,8 +733,8 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎞";
-    if (tap) tap.textContent = "Tap to Start The Film";
+    if (icon) icon.textContent = "🎬";
+    if (tap) tap.textContent = "Begin The Story";
     if (brand) brand.textContent = "Studio Of Pages";
     if (sub) sub.textContent = "Presents"
   }

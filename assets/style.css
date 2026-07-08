@@ -4387,3 +4387,607 @@ body.theme-movie .sop-wave--mini {
   0%, 100% { transform: scale(1); opacity: .92; }
   50% { transform: scale(1.045); opacity: 1; }
 }
+
+
+/* =========================================================
+   Movie Theme v5 — HERO A + Cinema Curtain Intro
+   Amaç:
+   1) Hero cam paneli kesinlikle kesilmesin.
+   2) Intro: Studio Of Pages Presents + perde açılışı.
+   3) Diğer sayfalara dokunmaz.
+========================================================= */
+
+/* ---------- HERO A: Yukarı Ortalanmış / Kesilmeyen Panel ---------- */
+
+body.theme-movie .sop-page-hero {
+  position: relative !important;
+  display: block !important;
+  min-height: 100svh !important;
+  height: 100svh !important;
+  overflow: hidden !important;
+}
+
+body.theme-movie .sop-page-hero .sop-hero__media,
+body.theme-movie .sop-page-hero .sop-hero__image,
+body.theme-movie .sop-page-hero #heroPhoto {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.theme-movie .sop-page-hero #heroPhoto {
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+body.theme-movie .sop-page-hero .sop-hero__overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.20), rgba(0,0,0,.08) 42%, rgba(0,0,0,.50) 100%),
+    radial-gradient(circle at 72% 38%, rgba(216,181,111,.16), transparent 34%),
+    linear-gradient(to top, rgba(0,0,0,.38), rgba(0,0,0,.04) 56%, rgba(0,0,0,.16)) !important;
+}
+
+/* Paneli bottom/translate kurallarından tamamen kurtarıyoruz */
+body.theme-movie .sop-page-hero .sop-hero__content {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: clamp(42px, 9svh, 92px) !important;
+  bottom: auto !important;
+  right: clamp(22px, 6vw, 92px) !important;
+  left: auto !important;
+  transform: none !important;
+
+  width: min(86vw, 430px) !important;
+  min-height: auto !important;
+  height: auto !important;
+  max-height: calc(100svh - 118px) !important;
+
+  padding: clamp(24px, 4.4svh, 42px) clamp(18px, 3vw, 30px) !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+
+  overflow: visible !important;
+  text-align: center !important;
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.155), rgba(255,255,255,.055)) !important;
+  border: 1px solid rgba(235,205,142,.38) !important;
+  border-radius: 34px !important;
+  backdrop-filter: blur(28px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;
+  box-shadow:
+    0 32px 100px rgba(0,0,0,.46),
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 0 48px rgba(216,181,111,.12) !important;
+
+  animation: sopMovieHeroCardIn .9s cubic-bezier(.2,.82,.2,1) both !important;
+}
+
+body.theme-movie .sop-page-hero .sop-hero__content::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 1px !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(circle at 24% 0%, rgba(255,255,255,.18), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.07), transparent 48%) !important;
+  opacity: .95 !important;
+  z-index: -1 !important;
+}
+
+body.theme-movie .sop-page-hero .sop-hero__content::after {
+  content: "★★★★★" !important;
+  position: relative !important;
+  order: -2 !important;
+  display: block !important;
+  margin: 0 0 2px !important;
+  color: rgba(216,181,111,.98) !important;
+  font-size: 14px !important;
+  letter-spacing: .22em !important;
+  line-height: 1 !important;
+  background: none !important;
+  opacity: 1 !important;
+  z-index: 3 !important;
+}
+
+body.theme-movie #memoryLabel {
+  order: -1 !important;
+  margin: 0 0 4px !important;
+  color: rgba(216,181,111,.92) !important;
+  font-size: 10px !important;
+  letter-spacing: .36em !important;
+  line-height: 1.4 !important;
+}
+
+body.theme-movie #memoryTitle {
+  width: 100% !important;
+  margin: 0 !important;
+  font-size: clamp(38px, 5.2vw, 66px) !important;
+  line-height: .88 !important;
+  letter-spacing: .035em !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+}
+
+body.theme-movie #memoryNames {
+  margin: 10px 0 0 !important;
+  color: rgba(255,247,238,.94) !important;
+  font-size: clamp(16px, 2.4vw, 24px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  font-style: normal !important;
+}
+
+body.theme-movie #memoryDate {
+  max-width: 330px !important;
+  margin: 4px auto 12px !important;
+  color: rgba(255,247,238,.72) !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  letter-spacing: .16em !important;
+  text-transform: uppercase !important;
+}
+
+/* Player panelin içinde kesilmeden dursun */
+body.theme-movie .sop-player {
+  width: 100% !important;
+  max-width: 350px !important;
+  min-height: 66px !important;
+  margin: 4px auto 0 !important;
+  padding: 10px 13px 10px 10px !important;
+  gap: 11px !important;
+  border-radius: 999px !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie .sop-play {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  flex: 0 0 48px !important;
+}
+
+body.theme-movie .sop-player__text {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+body.theme-movie #audioTitle {
+  font-size: 12px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+}
+
+body.theme-movie #audioSubtitle {
+  font-size: 11px !important;
+}
+
+body.theme-movie .sop-time {
+  display: none !important;
+}
+
+body.theme-movie .sop-progress {
+  width: 100% !important;
+  max-width: 330px !important;
+  height: 4px !important;
+  margin: 12px auto 0 !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie .sop-wave--mini {
+  height: 28px !important;
+  margin: 6px auto 0 !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie .sop-wave--mini i {
+  max-height: 24px !important;
+}
+
+body.theme-movie .sop-single-brand {
+  margin: 8px 0 0 !important;
+  color: rgba(216,181,111,.78) !important;
+  font-size: 9px !important;
+  letter-spacing: .34em !important;
+  flex-shrink: 0 !important;
+}
+
+/* Mobilde panel daha yukarı ve tam görünür */
+@media (max-width: 768px) {
+  body.theme-movie .sop-page-hero .sop-hero__content {
+    top: max(34px, env(safe-area-inset-top)) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+
+    width: min(calc(100vw - 34px), 370px) !important;
+    max-height: calc(100svh - 86px) !important;
+    padding: 20px 15px 18px !important;
+    border-radius: 28px !important;
+    gap: 7px !important;
+  }
+
+  body.theme-movie .sop-page-hero .sop-hero__content::after {
+    font-size: 12px !important;
+    letter-spacing: .18em !important;
+  }
+
+  body.theme-movie #memoryLabel {
+    font-size: 9px !important;
+    letter-spacing: .28em !important;
+  }
+
+  body.theme-movie #memoryTitle {
+    font-size: clamp(34px, 10vw, 48px) !important;
+    line-height: .9 !important;
+  }
+
+  body.theme-movie #memoryNames {
+    font-size: clamp(14px, 4.2vw, 19px) !important;
+    margin-top: 8px !important;
+  }
+
+  body.theme-movie #memoryDate {
+    max-width: 292px !important;
+    margin-bottom: 10px !important;
+    font-size: 10px !important;
+    line-height: 1.38 !important;
+    letter-spacing: .12em !important;
+  }
+
+  body.theme-movie .sop-player {
+    max-width: 300px !important;
+    min-height: 58px !important;
+    padding: 8px 10px 8px 8px !important;
+  }
+
+  body.theme-movie .sop-play {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    flex-basis: 42px !important;
+  }
+
+  body.theme-movie #audioTitle {
+    font-size: 11px !important;
+  }
+
+  body.theme-movie #audioSubtitle {
+    font-size: 10px !important;
+  }
+
+  body.theme-movie .sop-progress {
+    margin-top: 9px !important;
+  }
+
+  body.theme-movie .sop-wave--mini {
+    height: 20px !important;
+    margin-top: 4px !important;
+  }
+
+  body.theme-movie .sop-single-brand {
+    margin-top: 5px !important;
+    font-size: 8px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  body.theme-movie .sop-page-hero .sop-hero__content {
+    top: 20px !important;
+    padding-top: 16px !important;
+    padding-bottom: 14px !important;
+    gap: 5px !important;
+  }
+
+  body.theme-movie #memoryTitle {
+    font-size: clamp(30px, 8vw, 44px) !important;
+  }
+
+  body.theme-movie #memoryDate {
+    margin-bottom: 6px !important;
+  }
+
+  body.theme-movie .sop-wave--mini {
+    display: none !important;
+  }
+}
+
+/* ---------- INTRO: Cinema Opening + Curtain ---------- */
+
+body.theme-movie .sop-intro {
+  display: grid !important;
+  place-items: center !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  height: 100svh !important;
+  min-height: 100svh !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,238,190,.12), transparent 28%),
+    linear-gradient(180deg, #050505 0%, #000 100%) !important;
+
+  animation: none !important;
+}
+
+body.theme-movie.sop-intro-opened .sop-intro,
+body.theme-movie .sop-intro.is-hidden,
+body.theme-movie .sop-intro.force-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Studio Of Pages Presents */
+body.theme-movie .sop-intro::before {
+  content: "STUDIO OF PAGES\A PRESENTS";
+  white-space: pre;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  text-align: center;
+
+  color: rgba(255,247,238,.94);
+  font-size: clamp(18px, 5vw, 54px);
+  line-height: 1.32;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  text-shadow: 0 0 34px rgba(216,181,111,.22);
+
+  animation: sopV5StudioPresents 3.3s ease forwards;
+  pointer-events: none;
+}
+
+/* Film grain / projector flicker */
+body.theme-movie .sop-intro::after {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: 8;
+  pointer-events: none;
+  opacity: .22;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.13) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 50% 52%, transparent 0 34%, rgba(0,0,0,.80) 76%);
+  mix-blend-mode: screen;
+  animation: sopV5FilmFlicker 1.1s steps(2,end) infinite;
+}
+
+/* Curtain halves using center children as pseudo layer */
+body.theme-movie .sop-intro__center {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  pointer-events: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+body.theme-movie .sop-intro__center::before,
+body.theme-movie .sop-intro__center::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 53%;
+  z-index: 3;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(110,0,12,.96) 0 18px,
+      rgba(70,0,10,.98) 18px 38px,
+      rgba(135,12,20,.96) 38px 56px),
+    linear-gradient(180deg, rgba(255,255,255,.06), transparent 18%, rgba(0,0,0,.22) 100%);
+  box-shadow:
+    inset 0 0 52px rgba(0,0,0,.62),
+    0 0 48px rgba(0,0,0,.72);
+  animation-duration: 4.8s;
+  animation-timing-function: cubic-bezier(.77,0,.18,1);
+  animation-fill-mode: forwards;
+  animation-delay: 1.55s;
+}
+
+body.theme-movie .sop-intro__center::before {
+  left: 0;
+  transform-origin: left center;
+  animation-name: sopV5CurtainLeft;
+}
+
+body.theme-movie .sop-intro__center::after {
+  right: 0;
+  transform-origin: right center;
+  animation-name: sopV5CurtainRight;
+}
+
+/* Hide old icon but use it as the movie message */
+body.theme-movie .sop-intro__heart {
+  position: absolute !important;
+  z-index: 6 !important;
+  left: 50% !important;
+  top: 46% !important;
+  transform: translate(-50%, -50%) !important;
+  width: min(86vw, 720px) !important;
+
+  font-size: 0 !important;
+  line-height: 1 !important;
+  filter: none !important;
+  animation: sopV5FilmTitleIn 4.8s ease forwards !important;
+  pointer-events: none !important;
+}
+
+body.theme-movie .sop-intro__heart::before {
+  content: "A FILM";
+  display: block;
+  color: rgba(216,181,111,.96);
+  font-size: clamp(15px, 4vw, 34px);
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+body.theme-movie .sop-intro__heart::after {
+  content: "BASED ON TRUE EVENTS";
+  display: block;
+  color: rgba(255,247,238,.92);
+  font-size: clamp(22px, 7vw, 62px);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.08;
+}
+
+body.theme-movie .sop-intro__tap {
+  position: absolute !important;
+  z-index: 7 !important;
+  left: 50% !important;
+  bottom: 18% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  min-width: min(86vw, 340px) !important;
+
+  padding: 14px 22px !important;
+  border: 1px solid rgba(216,181,111,.42) !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.34) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+
+  color: rgba(255,247,238,.96) !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  letter-spacing: .26em !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+
+  opacity: 0 !important;
+  animation: sopV5BeginButton 1s ease forwards !important;
+  animation-delay: 4.45s !important;
+  pointer-events: none !important;
+}
+
+body.theme-movie .sop-intro__brand {
+  position: absolute !important;
+  z-index: 7 !important;
+  left: 50% !important;
+  bottom: 8% !important;
+  transform: translateX(-50%) !important;
+  width: 92vw !important;
+  text-align: center !important;
+  opacity: 0 !important;
+  animation: sopV5IntroBrand 1s ease forwards !important;
+  animation-delay: 4.7s !important;
+}
+
+body.theme-movie .sop-intro__brand strong {
+  display: none !important;
+}
+
+body.theme-movie .sop-intro__brand span {
+  display: block !important;
+  color: rgba(216,181,111,.76) !important;
+  font-size: 10px !important;
+  letter-spacing: .36em !important;
+  text-transform: uppercase !important;
+}
+
+/* Mobile intro balance */
+@media (max-width: 768px) {
+  body.theme-movie .sop-intro::before {
+    font-size: clamp(16px, 6vw, 32px);
+    letter-spacing: .20em;
+  }
+
+  body.theme-movie .sop-intro__heart {
+    width: 92vw !important;
+    top: 45% !important;
+  }
+
+  body.theme-movie .sop-intro__heart::before {
+    font-size: 13px;
+    letter-spacing: .30em;
+    margin-bottom: 14px;
+  }
+
+  body.theme-movie .sop-intro__heart::after {
+    font-size: clamp(24px, 8vw, 42px);
+    letter-spacing: .12em;
+  }
+
+  body.theme-movie .sop-intro__tap {
+    bottom: 20% !important;
+    min-width: min(84vw, 310px) !important;
+    font-size: 10px !important;
+    letter-spacing: .20em !important;
+    padding: 13px 18px !important;
+  }
+
+  body.theme-movie .sop-intro__brand {
+    bottom: 10% !important;
+  }
+}
+
+/* Intro animations */
+@keyframes sopV5StudioPresents {
+  0% { opacity: 0; transform: scale(.985); filter: blur(10px); }
+  18% { opacity: 1; transform: scale(1); filter: blur(0); }
+  46% { opacity: 1; transform: scale(1); filter: blur(0); }
+  68% { opacity: 0; transform: scale(1.018); filter: blur(8px); }
+  100% { opacity: 0; transform: scale(1.018); filter: blur(8px); }
+}
+
+@keyframes sopV5CurtainLeft {
+  0%, 28% { transform: translateX(0); }
+  100% { transform: translateX(-92%); }
+}
+
+@keyframes sopV5CurtainRight {
+  0%, 28% { transform: translateX(0); }
+  100% { transform: translateX(92%); }
+}
+
+@keyframes sopV5FilmTitleIn {
+  0%, 52% { opacity: 0; filter: blur(10px); transform: translate(-50%, -42%); }
+  68% { opacity: 1; filter: blur(0); transform: translate(-50%, -50%); }
+  100% { opacity: 1; filter: blur(0); transform: translate(-50%, -50%); }
+}
+
+@keyframes sopV5BeginButton {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes sopV5IntroBrand {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes sopV5FilmFlicker {
+  0%, 100% { opacity: .16; transform: translateX(0); }
+  50% { opacity: .28; transform: translateX(1px); }
+}
+
+@keyframes sopMovieHeroCardIn {
+  from { opacity: 0; transform: translateY(18px); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
