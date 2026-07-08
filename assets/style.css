@@ -4942,3 +4942,194 @@ body.is-intro-pending .sop-intro {
 body:not(.is-intro-pending) .sop-intro {
   visibility: visible;
 }
+
+
+/* =========================================================
+   Movie Theme 2.5 — Mobile Hero + Intro Flicker Fix
+   - Mobilde üst meta satırı taşmaz.
+   - Kart biraz yukarı alınır.
+   - Audio player daraltılır.
+   - Waveform / alt kredi / oklar mobilde dengelenir.
+   - Intro tema okunana kadar kesin gizli kalır.
+========================================================= */
+
+/* Extra intro safety */
+body.is-intro-pending #intro,
+body.is-intro-pending .sop-intro {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Mobil düzeltmeler */
+@media (max-width: 768px) {
+
+  body.theme-movie .sop-page-hero .sop-hero__content {
+    top: max(10px, env(safe-area-inset-top)) !important;
+    transform: translateX(-50%) translateY(-24px) !important;
+    width: min(calc(100vw - 30px), 380px) !important;
+    max-height: calc(100svh - 42px) !important;
+    padding: 16px 14px 14px !important;
+    gap: 6px !important;
+  }
+
+  /* Üstteki bozulan "ŞU ANDA GÖSTERİMDE / yıldız / romantizm" alanları */
+  body.theme-movie .sop-page-hero .sop-hero__content::after {
+    order: -3 !important;
+    font-size: 11px !important;
+    letter-spacing: .16em !important;
+    margin: 0 0 6px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  body.theme-movie #memoryLabel {
+    order: -2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 0 8px !important;
+    padding: 11px 10px !important;
+    border: 1px solid rgba(216,181,111,.42) !important;
+    color: rgba(255,247,238,.94) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    letter-spacing: .18em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body.theme-movie #memoryTitle {
+    font-size: clamp(31px, 9.2vw, 47px) !important;
+    line-height: .94 !important;
+    margin: 12px 0 8px !important;
+    letter-spacing: .01em !important;
+  }
+
+  body.theme-movie #memoryNames,
+  body.theme-movie #memoryDate {
+    display: none !important;
+  }
+
+  /* Play Story butonu */
+  body.theme-movie .sop-movie-play,
+  body.theme-movie .sop-play-story,
+  body.theme-movie .sop-hero-play,
+  body.theme-movie .sop-story-play,
+  body.theme-movie .sop-page-hero a,
+  body.theme-movie .sop-page-hero .sop-primary-button {
+    margin-top: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Audio player */
+  body.theme-movie .sop-player {
+    width: 88% !important;
+    max-width: 318px !important;
+    min-height: 58px !important;
+    padding: 8px 10px 8px 8px !important;
+    gap: 9px !important;
+    margin-top: 8px !important;
+  }
+
+  body.theme-movie .sop-play {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  body.theme-movie .sop-player__text p,
+  body.theme-movie #audioTitle {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    letter-spacing: .12em !important;
+  }
+
+  body.theme-movie .sop-player__text span,
+  body.theme-movie #audioSubtitle {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+  }
+
+  body.theme-movie .sop-progress {
+    width: 82% !important;
+    max-width: 290px !important;
+    margin-top: 8px !important;
+  }
+
+  body.theme-movie .sop-wave--mini {
+    height: 54px !important;
+    margin-top: -2px !important;
+    margin-bottom: -2px !important;
+  }
+
+  body.theme-movie .sop-wave--mini i {
+    max-height: 48px !important;
+  }
+
+  body.theme-movie .sop-single-brand {
+    margin-top: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: .36em !important;
+  }
+
+  /* Alt kredi yazısını biraz yukarı ve daha okunur yap */
+  body.theme-movie .sop-movie-footer,
+  body.theme-movie .sop-hero-footer,
+  body.theme-movie .sop-page-hero small:last-child {
+    margin-top: 8px !important;
+    transform: translateY(-8px) !important;
+  }
+
+  /* Sayfa okları */
+  body.theme-movie .sop-page-arrow {
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 34px !important;
+    bottom: 58px !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  body.theme-movie .sop-page-arrow--prev {
+    left: 18px !important;
+  }
+
+  body.theme-movie .sop-page-arrow--next {
+    right: 18px !important;
+  }
+
+  body.theme-movie .sop-book-nav {
+    top: max(8px, env(safe-area-inset-top)) !important;
+    transform: scale(.88) !important;
+    transform-origin: top center !important;
+  }
+}
+
+/* Daha kısa telefonlar için ek sıkıştırma */
+@media (max-width: 768px) and (max-height: 760px) {
+  body.theme-movie .sop-page-hero .sop-hero__content {
+    top: 6px !important;
+    transform: translateX(-50%) translateY(-28px) !important;
+    padding: 12px 12px 12px !important;
+    gap: 4px !important;
+  }
+
+  body.theme-movie #memoryTitle {
+    font-size: clamp(28px, 8.4vw, 42px) !important;
+    margin: 8px 0 6px !important;
+  }
+
+  body.theme-movie .sop-player {
+    min-height: 54px !important;
+    margin-top: 5px !important;
+  }
+
+  body.theme-movie .sop-wave--mini {
+    height: 40px !important;
+  }
+}
