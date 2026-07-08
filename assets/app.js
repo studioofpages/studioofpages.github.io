@@ -757,7 +757,7 @@ function renderMovieTheme() {
   castPage.innerHTML = `
     <div class="sop-page-inner sop-movie-cast-card">
       <p class="sop-section__label">Meet The Cast</p>
-      <h2 class="sop-section__title">Starring in ${escapeHtml(meta.title)}</h2>
+      <h2 class="sop-section__title">Starring</h2>
       <div class="sop-movie-cast-grid">
         ${(castNames.length ? castNames : ["The Main Character"]).map((name, index) => `
           <article class="sop-movie-cast-member">
@@ -789,8 +789,6 @@ const creditsPage = document.createElement("section");
         <strong>${escapeHtml(meta.producer)}</strong>
         <p>Running Time</p>
         <strong>${escapeHtml(meta.duration)}</strong>
-        <p>Special Thanks</p>
-        <strong>Family · Friends · Every Beautiful Memory</strong>
         <h3>THE END</h3>
       </div>
     </div>`;

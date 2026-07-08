@@ -4813,3 +4813,55 @@ body.theme-movie .sop-movie-credits-roll strong {
   22% { opacity: .78; transform: translateX(-50%) scaleX(1); }
   72%, 100% { opacity: .38; transform: translateX(-50%) scaleX(.82); }
 }
+
+
+/* =========================================================
+   Movie Theme 2.2 FINAL — Cast + Special Thanks Fix
+   Son düzeltme:
+   - Cast başlığı sadece STARRING olur.
+   - Special Thanks bölümü görünmez.
+========================================================= */
+
+/* CAST: Eski "STARRING IN ..." metnini kesin olarak bastır */
+body.theme-movie .sop-page-movie-cast .sop-section__title {
+  position: relative !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  letter-spacing: 0 !important;
+  color: transparent !important;
+  text-shadow: none !important;
+  margin: 0 0 clamp(34px, 6vh, 62px) !important;
+  min-height: clamp(58px, 9vw, 108px) !important;
+}
+
+body.theme-movie .sop-page-movie-cast .sop-section__title::before {
+  content: "STARRING" !important;
+  display: block !important;
+  color: var(--sop-cream) !important;
+  font-size: clamp(54px, 8vw, 112px) !important;
+  line-height: .9 !important;
+  letter-spacing: .18em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 22px 70px rgba(0,0,0,.55) !important;
+}
+
+/* CREDITS: Special Thanks alanı eski HTML içinde kalsa bile görünmesin.
+   Credits içinde Special Thanks genellikle p + strong olarak geldiği için,
+   bu özel sınıf JS tarafında da kaynak koddan kaldırıldı. */
+body.theme-movie .sop-movie-credits-roll .sop-special-thanks,
+body.theme-movie .sop-movie-credits-roll [data-remove="special-thanks"] {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  body.theme-movie .sop-page-movie-cast .sop-section__title {
+    min-height: clamp(46px, 14vw, 72px) !important;
+    margin-bottom: 28px !important;
+  }
+
+  body.theme-movie .sop-page-movie-cast .sop-section__title::before {
+    font-size: clamp(38px, 13vw, 66px) !important;
+    letter-spacing: .11em !important;
+  }
+}
