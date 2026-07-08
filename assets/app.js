@@ -290,10 +290,10 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎬";
+    if (icon) icon.textContent = "";
     if (tap) tap.textContent = "Begin The Story";
     if (brand) brand.textContent = "Studio Of Pages";
-    if (sub) sub.textContent = "Presents"
+    if (sub) sub.textContent = "Presents";
   }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
@@ -733,10 +733,10 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎬";
+    if (icon) icon.textContent = "";
     if (tap) tap.textContent = "Begin The Story";
     if (brand) brand.textContent = "Studio Of Pages";
-    if (sub) sub.textContent = "Presents"
+    if (sub) sub.textContent = "Presents";
   }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
