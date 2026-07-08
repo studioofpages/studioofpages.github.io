@@ -358,6 +358,7 @@ function renderMovieTheme() {
   const thanksHeart = document.querySelector('[data-page="thanks"] .sop-thanks-heart');
 
   if (!isMovieTheme()) {
+    document.body.classList.remove("movie-v3-ready", "movie-pro-clean");
     if (albumLabel) albumLabel.textContent = "Our Memories";
     if (albumTitle) albumTitle.textContent = "A little album of moments.";
     if (thanksCard) thanksCard.textContent = "Thank You";
@@ -737,9 +738,9 @@ function decorateMovieHero(meta) {
   const posterTop = document.createElement("div");
   posterTop.className = "sop-movie-poster-top sop-movie-v3-only";
   posterTop.innerHTML = `
-    <span>${escapeHtml(meta.rating)}</span>
+    <span class="sop-movie-stars" aria-hidden="true">${escapeHtml(meta.rating)}</span>
     <strong>NOW SHOWING</strong>
-    <span>${escapeHtml(meta.genre)}</span>
+    <span class="sop-movie-genre">${escapeHtml(meta.genre)}</span>
   `;
   hero.insertBefore(posterTop, hero.firstChild);
 
@@ -801,7 +802,7 @@ function renderMovieTheme() {
   }
 
   const meta = getMovieMeta();
-  document.body.classList.add("movie-v3-ready");
+  document.body.classList.add("movie-v3-ready", "movie-pro-clean");
 
   setText(SOP.el.label, "Now Showing");
   setText(SOP.el.names, meta.names);
