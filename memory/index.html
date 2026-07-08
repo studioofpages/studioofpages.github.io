@@ -5,26 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#050505">
   <title>StudioOfPages Memory</title>
-  <link rel="stylesheet" href="../assets/style.css?v=movie-theme-25-mobile-intro-fix">
+  <link rel="stylesheet" href="../assets/style.css?v=movie-theme-27-mobile-hard-fix">
   <style>
-    body.is-intro-pending #intro {
+    html, body { background:#050505; }
+    body.is-intro-pending #intro,
+    body.is-page-pending #memoryBook {
+      display: none !important;
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
     }
   </style>
 </head>
-<body class="is-intro-pending">
-  <div id="intro" class="sop-intro" role="button" tabindex="0" aria-label="Tap to view your memories">
-    <div class="sop-intro__center">
-      <div class="sop-intro__heart" aria-hidden="true">♡</div>
-      <div class="sop-intro__tap">Tap to View Your Memories</div>
-    </div>
-    <div class="sop-intro__brand">
-      <strong>StudioOfPages</strong>
-      <span>A Memory Awaits</span>
-    </div>
-  </div>
+<body class="is-intro-pending is-page-pending">
+  <div id="intro" class="sop-intro" style="display:none" role="button" tabindex="0" aria-label="Loading intro"></div>
 
   <script>
     // StudioOfPages instant intro opener: catches the very first PC click / mobile touch
@@ -131,6 +125,6 @@
     <button id="lightboxNext" class="sop-lightbox__nav sop-lightbox__nav--next" type="button">›</button>
   </div>
 
-  <script src="../assets/app.js?v=movie-theme-25-mobile-intro-fix"></script>
+  <script src="../assets/app.js?v=movie-theme-27-mobile-hard-fix"></script>
 </body>
 </html>

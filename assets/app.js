@@ -46,6 +46,12 @@ const SOP = {
   }
 };
 
+
+function showMemoryBookWhenReady() {
+  document.body.classList.remove("is-page-pending");
+}
+
+
 function assetPath(filename) {
   return `/data/${SOP.memoryId}/${filename}`;
 }
@@ -66,6 +72,16 @@ function loadTheme(theme) {
 }
 
 
+
+
+function showConfiguredIntro() {
+  const intro = SOP.el.intro;
+  if (!intro) return;
+  intro.style.removeProperty("display");
+  intro.style.removeProperty("opacity");
+  intro.style.removeProperty("visibility");
+  intro.style.removeProperty("pointer-events");
+}
 
 function configureIntroForTheme(theme) {
   const intro = SOP.el.intro;
@@ -92,6 +108,7 @@ function configureIntroForTheme(theme) {
           <small>Tap anywhere to continue</small>
         </div>
       </div>`;
+    showConfiguredIntro();
     return;
   }
 
@@ -107,6 +124,7 @@ function configureIntroForTheme(theme) {
       <strong>StudioOfPages</strong>
       <span>A Memory Awaits</span>
     </div>`;
+  showConfiguredIntro();
 }
 
 
@@ -179,6 +197,7 @@ async function loadMemory() {
     bindLightbox();
     renderWaveforms();
     preloadHeroImage();
+    showMemoryBookWhenReady();
 
     if (window.__SOP_INTRO_REQUESTED) startExperience();
   } catch (error) {
@@ -517,6 +536,7 @@ function bindIntro() {
 
     document.body.classList.remove("is-preloading-memory");
     document.body.classList.add("is-memory-ready", "sop-intro-opened");
+        document.body.classList.remove("is-page-pending");
 
     intro.classList.add("is-hidden", "force-hidden");
     intro.setAttribute("aria-hidden", "true");
@@ -547,6 +567,7 @@ async function startExperience() {
 
   document.body.classList.remove("is-preloading-memory");
   document.body.classList.add("is-memory-ready", "sop-intro-opened");
+        document.body.classList.remove("is-page-pending");
 
   intro.classList.add("is-hidden", "force-hidden");
   intro.setAttribute("aria-hidden", "true");
@@ -676,6 +697,7 @@ function closeLightbox() {
 }
 
 function renderError() {
+  document.body.classList.remove("is-intro-pending", "is-page-pending");
   document.body.classList.remove("is-intro-pending");
   document.body.classList.add("book-mode", "is-memory-ready");
   setText(SOP.el.title, "Memory Not Found");
