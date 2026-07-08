@@ -290,10 +290,10 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎬";
-    if (tap) tap.textContent = "Tap to Watch The Story";
-    if (brand) brand.textContent = "Studio Of Pages Presents";
-    if (sub) sub.textContent = "A Film Based On True Moments";
+    if (icon) icon.textContent = "🎞";
+    if (tap) tap.textContent = "Tap to Start The Film";
+    if (brand) brand.textContent = "Studio Of Pages";
+    if (sub) sub.textContent = "Presents"
   }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
@@ -721,30 +721,6 @@ function decorateMovieAlbum() {
   });
 }
 
-function buildMovieTimeline(meta) {
-  const configured = Array.isArray(SOP.data?.movieTimeline) ? SOP.data.movieTimeline : [];
-  const fallback = [
-    { year: "Opening", title: "The First Scene", text: "Where this story begins." },
-    { year: "Chapter I", title: "The Moment", text: "A memory worth keeping forever." },
-    { year: "Forever", title: "The Next Chapter", text: "Still being written." }
-  ];
-  const items = configured.length ? configured : fallback;
-  return `
-    <div class="sop-page-inner sop-movie-timeline-card">
-      <p class="sop-section__label">Story Timeline</p>
-      <h2 class="sop-section__title">A film told in moments.</h2>
-      <div class="sop-movie-timeline-list">
-        ${items.slice(0, 5).map((item, index) => `
-          <article class="sop-movie-timeline-item">
-            <span>${escapeHtml(item.year || item.date || `Scene ${index + 1}`)}</span>
-            <strong>${escapeHtml(item.title || item.name || "A Beautiful Moment")}</strong>
-            <small>${escapeHtml(item.text || item.description || meta.tagline)}</small>
-          </article>
-        `).join("")}
-      </div>
-    </div>`;
-}
-
 function renderMovieTheme() {
   const track = SOP.el.track;
   if (!track) return;
@@ -757,10 +733,10 @@ function renderMovieTheme() {
     const tap = intro.querySelector(".sop-intro__tap");
     const brand = intro.querySelector(".sop-intro__brand strong");
     const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "🎬";
-    if (tap) tap.textContent = "Tap to Watch The Story";
-    if (brand) brand.textContent = "Studio Of Pages Presents";
-    if (sub) sub.textContent = "A Film Based On True Moments";
+    if (icon) icon.textContent = "🎞";
+    if (tap) tap.textContent = "Tap to Start The Film";
+    if (brand) brand.textContent = "Studio Of Pages";
+    if (sub) sub.textContent = "Presents"
   }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
@@ -815,13 +791,7 @@ function renderMovieTheme() {
         `).join("")}
       </div>
     </div>`;
-
-  const timelinePage = document.createElement("section");
-  timelinePage.className = "sop-book-page sop-page-movie-timeline sop-movie-extra-page";
-  timelinePage.dataset.page = "movieTimeline";
-  timelinePage.innerHTML = buildMovieTimeline(meta);
-
-  const creditsPage = document.createElement("section");
+const creditsPage = document.createElement("section");
   creditsPage.className = "sop-book-page sop-page-movie-credits sop-movie-extra-page";
   creditsPage.dataset.page = "movieCredits";
   creditsPage.innerHTML = `
@@ -853,7 +823,6 @@ function renderMovieTheme() {
   const albumPage = document.querySelector('[data-page="album"]');
   if (albumPage) {
     track.insertBefore(castPage, albumPage);
-    track.insertBefore(timelinePage, albumPage);
   }
   const thanksPage = document.querySelector('[data-page="thanks"]');
   if (thanksPage) track.insertBefore(creditsPage, thanksPage);
@@ -863,7 +832,6 @@ function buildPages() {
   SOP.pageElements = {
     hero: document.querySelector('[data-page="hero"]'),
     movieCast: document.querySelector('[data-page="movieCast"]'),
-    movieTimeline: document.querySelector('[data-page="movieTimeline"]'),
     album: document.querySelector('[data-page="album"]'),
     letter: document.querySelector('[data-page="letter"]'),
     movieCredits: document.querySelector('[data-page="movieCredits"]'),
@@ -872,7 +840,6 @@ function buildPages() {
 
   SOP.pages = ["hero"];
   if (isMovieTheme() && SOP.pageElements.movieCast) SOP.pages.push("movieCast");
-  if (isMovieTheme() && SOP.pageElements.movieTimeline) SOP.pages.push("movieTimeline");
   if (SOP.albumImages.length) SOP.pages.push("album");
   if (getLetterText()) SOP.pages.push("letter");
   if (isMovieTheme() && SOP.pageElements.movieCredits) SOP.pages.push("movieCredits");

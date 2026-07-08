@@ -1,0 +1,54 @@
+﻿{
+    "id":  "0010",
+    "theme":  "movie",
+    "layout":  "movie",
+    "title":  "Eda \u0026 İbrahim",
+    "subtitle":  "Seni Çok Seviyorum",
+    "heroImage":  "photo.jpg",
+    "audio":  {
+                  "file":  "audio.mp3",
+                  "title":  "Official Soundtrack",
+                  "artist":  "",
+                  "cover":  "photo.jpg",
+                  "waveform":  "waveform.svg"
+              },
+    "brandText":  "STUDIO OF PAGES",
+    "label":  "StudioOfPages Presents",
+    "names":  "Eda \u0026 İbrahim",
+    "date":  "Seni Çok Seviyorum",
+    "message":  "Seni Çok Seviyorum",
+    "photo":  "photo.jpg",
+    "coupleNames":  "Eda \u0026 İbrahim",
+    "coupleQuote":  "Seni Çok Seviyorum",
+    "gallery":  [
+
+                ],
+    "story":  {
+                  "enabled":  false,
+                  "title":  ""
+              },
+    "footer":  {
+                   "quote":  "THE END"
+               },
+    "version":  "memory-book-v2",
+    "album":  [
+                  "photo2.jpg",
+                  "photo3.jpg",
+                  "photo4.jpg",
+                  "photo5.jpg",
+                  "photo6.jpg"
+              ],
+    "letter":  "Seni çok seviyorum canım karım",
+    "thankYouText":  "Thank you for visiting our memories.",
+    "thankYouBrand":  "STUDIO OF PAGES",
+    "posterTitle":  "Eda \u0026 İbrahim",
+    "movieTitle":  "Eda \u0026 İbrahim",
+    "tagline":  "Seni Çok Seviyorum",
+    "introTitle":  "Studio Of Pages Presents",
+    "introSubtitle":  "A Film Based On True Events",
+    "musicTitle":  "Official Soundtrack",
+    "galleryTitle":  "Scenes From The Movie",
+    "letterTitle":  "The Script",
+    "thanksTitle":  "The End",
+    "creditsTitle":  "End Credits"
+}
