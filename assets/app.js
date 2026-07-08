@@ -165,13 +165,33 @@ function renderMemory() {
     }
   }
 
-  setText(SOP.el.names, movie ? (displayNames || "Based On A True Story") : "♡");
-  setText(
-    SOP.el.date,
-    movie
-      ? (SOP.data.tagline || SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "A personal film based on true moments.")
-      : (SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "")
-  );
+  if (movie) {
+    // Movie poster temizliği:
+    // Başlığın altında isim tekrarını göstermiyoruz.
+    setText(SOP.el.names, "");
+
+    // Tagline/altyazı için tekrar eden değerleri temizliyoruz.
+    const candidateTexts = [
+      SOP.data.tagline,
+      SOP.data.coupleQuote,
+      SOP.data.subtitle,
+      SOP.data.message,
+      SOP.data.date
+    ].filter(Boolean).map((value) => String(value).trim());
+
+    const normalizedTitle = String(fullName || "").trim().toLowerCase();
+    const normalizedNames = String(displayNames || "").trim().toLowerCase();
+
+    const cleanSubtitle = candidateTexts.find((value) => {
+      const normalized = value.toLowerCase();
+      return normalized && normalized !== normalizedTitle && normalized !== normalizedNames;
+    });
+
+    setText(SOP.el.date, cleanSubtitle || "Based On True Events");
+  } else {
+    setText(SOP.el.names, "♡");
+    setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "");
+  }
   setText(SOP.el.audioTitle, movie ? (getAudioTitle() === "Play Memory" ? "Official Soundtrack" : getAudioTitle()) : getAudioTitle());
   setText(SOP.el.audioSubtitle, movie ? "Tap to play this scene" : "Music is ready");
   setText(SOP.el.currentTime, "0:00");
@@ -319,7 +339,7 @@ function renderMovieTheme() {
   castPage.innerHTML = `
     <div class="sop-page-inner sop-movie-cast-card">
       <p class="sop-section__label">Meet The Cast</p>
-      <h2 class="sop-section__title">Starring in ${escapeHtml(title)}</h2>
+      <h2 class="sop-section__title">Starring</h2>
       <div class="sop-movie-cast-grid">
         ${(castNames.length ? castNames : ["The Main Character"]).map((name, index) => `
           <article class="sop-movie-cast-member">
@@ -342,8 +362,6 @@ function renderMovieTheme() {
         <p>Based On True Moments</p>
         <p>Starring</p>
         <strong>${escapeHtml(getDisplayNames() || title)}</strong>
-        <p>Release Date</p>
-        <strong>${escapeHtml(releaseDate)}</strong>
         <p>Official Soundtrack</p>
         <strong>${escapeHtml(musicTitle)}</strong>
         <p>Directed By</p>
@@ -780,8 +798,6 @@ const creditsPage = document.createElement("section");
         <p>${escapeHtml(meta.tagline)}</p>
         <p>Starring</p>
         <strong>${escapeHtml(meta.names)}</strong>
-        <p>Release Date</p>
-        <strong>${escapeHtml(meta.releaseDate)}</strong>
         <p>Official Soundtrack</p>
         <strong>${escapeHtml(meta.soundtrack)}</strong>
         <p>Genre</p>
