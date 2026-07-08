@@ -284,17 +284,6 @@ function renderMovieTheme() {
 
   document.querySelectorAll(".sop-movie-extra-page").forEach((el) => el.remove());
 
-  const intro = SOP.el.intro;
-  if (intro && isMovieTheme()) {
-    const icon = intro.querySelector(".sop-intro__heart");
-    const tap = intro.querySelector(".sop-intro__tap");
-    const brand = intro.querySelector(".sop-intro__brand strong");
-    const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "";
-    if (tap) tap.textContent = "Begin The Story";
-    if (brand) brand.textContent = "Studio Of Pages";
-    if (sub) sub.textContent = "Presents";
-  }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
   const albumTitle = document.querySelector('[data-page="album"] .sop-section__title');
@@ -727,17 +716,6 @@ function renderMovieTheme() {
 
   document.querySelectorAll(".sop-movie-extra-page, .sop-movie-v3-only").forEach((el) => el.remove());
 
-  const intro = SOP.el.intro;
-  if (intro && isMovieTheme()) {
-    const icon = intro.querySelector(".sop-intro__heart");
-    const tap = intro.querySelector(".sop-intro__tap");
-    const brand = intro.querySelector(".sop-intro__brand strong");
-    const sub = intro.querySelector(".sop-intro__brand span");
-    if (icon) icon.textContent = "";
-    if (tap) tap.textContent = "Begin The Story";
-    if (brand) brand.textContent = "Studio Of Pages";
-    if (sub) sub.textContent = "Presents";
-  }
 
   const albumLabel = document.querySelector('[data-page="album"] .sop-section__label');
   const albumTitle = document.querySelector('[data-page="album"] .sop-section__title');
