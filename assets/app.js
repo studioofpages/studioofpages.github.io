@@ -215,7 +215,7 @@ function renderMemory() {
     : (SOP.data.coupleNames || SOP.data.names || SOP.data.title || "");
 
   document.title = `${fullName || "Memory"} | StudioOfPages`;
-  setText(SOP.el.label, movie ? "Now Showing" : "");
+  setText(SOP.el.label, movie ? "" : "");
 
   if (SOP.el.title) {
     if (movie) {
@@ -738,8 +738,8 @@ function decorateMovieHero(meta) {
   const posterTop = document.createElement("div");
   posterTop.className = "sop-movie-poster-top sop-movie-v3-only";
   posterTop.innerHTML = `
+    <strong class="sop-movie-now-showing">NOW SHOWING</strong>
     <span class="sop-movie-stars" aria-hidden="true">${escapeHtml(meta.rating)}</span>
-    <strong>NOW SHOWING</strong>
     <span class="sop-movie-genre">${escapeHtml(meta.genre)}</span>
   `;
   hero.insertBefore(posterTop, hero.firstChild);

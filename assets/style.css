@@ -6026,3 +6026,228 @@ body.theme-movie.movie-pro-clean .sop-book-nav {
     display: none !important;
   }
 }
+
+
+/* =========================================================
+   Movie Theme v4.1 Emergency Alignment Fix
+   ONLY Movie Theme. Other themes are untouched.
+   - Removes duplicate red NOW SHOWING label
+   - Forces poster header into clean vertical rows
+   - Separates player, progress bar and waveform so they never overlap
+========================================================= */
+body.theme-movie.movie-pro-clean #memoryLabel,
+body[data-theme="movie"].movie-pro-clean #memoryLabel {
+  display: none !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-movie-poster-top,
+body[data-theme="movie"].movie-pro-clean .sop-movie-poster-top {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+  width: 100% !important;
+  margin: 0 0 14px !important;
+  text-align: center !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-movie-now-showing,
+body.theme-movie.movie-pro-clean .sop-movie-poster-top strong,
+body[data-theme="movie"].movie-pro-clean .sop-movie-now-showing,
+body[data-theme="movie"].movie-pro-clean .sop-movie-poster-top strong {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: min(72%, 360px) !important;
+  min-height: 36px !important;
+  padding: 0 18px !important;
+  margin: 0 auto !important;
+  border: 1px solid rgba(216,181,111,.62) !important;
+  background: rgba(0,0,0,.34) !important;
+  color: var(--movie-cream, #fff7e6) !important;
+  font-size: clamp(10px, 1.35vw, 13px) !important;
+  font-weight: 800 !important;
+  letter-spacing: .30em !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-movie-stars,
+body[data-theme="movie"].movie-pro-clean .sop-movie-stars {
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  color: var(--movie-gold, #d8b56f) !important;
+  font-size: clamp(13px, 1.7vw, 17px) !important;
+  line-height: 1 !important;
+  letter-spacing: .18em !important;
+  text-align: center !important;
+  transform: translateX(.09em) !important;
+  white-space: nowrap !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-movie-genre,
+body[data-theme="movie"].movie-pro-clean .sop-movie-genre {
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  color: var(--movie-gold, #d8b56f) !important;
+  font-size: clamp(10px, 1.25vw, 13px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: .28em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-player,
+body[data-theme="movie"].movie-pro-clean .sop-player {
+  position: relative !important;
+  z-index: 5 !important;
+  width: min(100%, 430px) !important;
+  margin: 0 auto 12px !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-progress,
+body[data-theme="movie"].movie-pro-clean .sop-progress {
+  position: relative !important;
+  z-index: 5 !important;
+  width: min(100%, 360px) !important;
+  height: 4px !important;
+  margin: 0 auto 10px !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-wave--mini,
+body[data-theme="movie"].movie-pro-clean .sop-wave--mini {
+  position: relative !important;
+  z-index: 4 !important;
+  width: min(82%, 330px) !important;
+  height: 58px !important;
+  margin: 0 auto 8px !important;
+  transform: none !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+body.theme-movie.movie-pro-clean .sop-wave--mini i,
+body[data-theme="movie"].movie-pro-clean .sop-wave--mini i {
+  max-height: 54px !important;
+}
+
+@media (max-width: 768px) {
+  body.theme-movie.movie-pro-clean .sop-hero__content,
+  body[data-theme="movie"].movie-pro-clean .sop-hero__content {
+    width: min(94vw, 430px) !important;
+    max-height: calc(100svh - 112px - var(--movie-safe-top, 0px) - var(--movie-safe-bottom, 0px)) !important;
+    padding: 22px 18px 18px !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-poster-top,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-poster-top {
+    gap: 6px !important;
+    margin-bottom: 12px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-now-showing,
+  body.theme-movie.movie-pro-clean .sop-movie-poster-top strong,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-now-showing,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-poster-top strong {
+    width: min(82%, 280px) !important;
+    min-height: 32px !important;
+    padding: 0 14px !important;
+    font-size: 10px !important;
+    letter-spacing: .24em !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-stars,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-stars {
+    font-size: 14px !important;
+    letter-spacing: .16em !important;
+    transform: translateX(.08em) !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-genre,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-genre {
+    font-size: 10px !important;
+    letter-spacing: .25em !important;
+  }
+
+  body.theme-movie.movie-pro-clean #memoryTitle,
+  body[data-theme="movie"].movie-pro-clean #memoryTitle {
+    margin-bottom: 9px !important;
+    font-size: clamp(38px, 12.6vw, 58px) !important;
+    line-height: .82 !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-poster-meta,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-poster-meta {
+    margin: 6px auto 10px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-play-story,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-play-story {
+    margin: 0 auto 11px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-player,
+  body[data-theme="movie"].movie-pro-clean .sop-player {
+    width: min(100%, 360px) !important;
+    margin: 0 auto 11px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-progress,
+  body[data-theme="movie"].movie-pro-clean .sop-progress {
+    width: min(82%, 300px) !important;
+    margin: 0 auto 9px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-wave--mini,
+  body[data-theme="movie"].movie-pro-clean .sop-wave--mini {
+    width: min(78%, 280px) !important;
+    height: 46px !important;
+    margin: 0 auto 7px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-single-brand,
+  body[data-theme="movie"].movie-pro-clean .sop-single-brand {
+    margin-top: 0 !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-movie-billing,
+  body[data-theme="movie"].movie-pro-clean .sop-movie-billing {
+    margin-top: 7px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body.theme-movie.movie-pro-clean .sop-hero__content,
+  body[data-theme="movie"].movie-pro-clean .sop-hero__content {
+    padding: 18px 14px 15px !important;
+  }
+
+  body.theme-movie.movie-pro-clean #memoryTitle,
+  body[data-theme="movie"].movie-pro-clean #memoryTitle {
+    font-size: clamp(34px, 11.8vw, 48px) !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-player,
+  body[data-theme="movie"].movie-pro-clean .sop-player {
+    transform: scale(.94) !important;
+    transform-origin: center top !important;
+    margin-bottom: 5px !important;
+  }
+
+  body.theme-movie.movie-pro-clean .sop-wave--mini,
+  body[data-theme="movie"].movie-pro-clean .sop-wave--mini {
+    height: 38px !important;
+  }
+}
