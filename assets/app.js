@@ -166,28 +166,9 @@ function renderMemory() {
   }
 
   if (movie) {
-    // Movie poster temizliği:
-    // Başlığın altında isim tekrarını göstermiyoruz.
+    // Movie poster: tekrar eden isim ve slogan yok.
     setText(SOP.el.names, "");
-
-    // Tagline/altyazı için tekrar eden değerleri temizliyoruz.
-    const candidateTexts = [
-      SOP.data.tagline,
-      SOP.data.coupleQuote,
-      SOP.data.subtitle,
-      SOP.data.message,
-      SOP.data.date
-    ].filter(Boolean).map((value) => String(value).trim());
-
-    const normalizedTitle = String(fullName || "").trim().toLowerCase();
-    const normalizedNames = String(displayNames || "").trim().toLowerCase();
-
-    const cleanSubtitle = candidateTexts.find((value) => {
-      const normalized = value.toLowerCase();
-      return normalized && normalized !== normalizedTitle && normalized !== normalizedNames;
-    });
-
-    setText(SOP.el.date, cleanSubtitle || "Based On True Events");
+    setText(SOP.el.date, "");
   } else {
     setText(SOP.el.names, "♡");
     setText(SOP.el.date, SOP.data.coupleQuote || SOP.data.subtitle || SOP.data.date || SOP.data.message || "");
