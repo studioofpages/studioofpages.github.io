@@ -4865,3 +4865,63 @@ body.theme-movie .sop-movie-credits-roll [data-remove="special-thanks"] {
     letter-spacing: .11em !important;
   }
 }
+
+
+/* =========================================================
+   v23 Intro Isolation Fix
+   Movie cinema intro only works on body.theme-movie.
+   Other themes use default intro.
+========================================================= */
+
+body:not(.theme-movie) .sop-cinema-intro__grain,
+body:not(.theme-movie) .sop-cinema-intro__stage,
+body:not(.theme-movie) .sop-cinema-intro__step,
+body:not(.theme-movie) .sop-cinema-intro__start {
+  display: none !important;
+}
+
+body:not(.theme-movie) .sop-intro {
+  background: #030303 !important;
+}
+
+body:not(.theme-movie) .sop-intro__center {
+  text-align: center;
+}
+
+body:not(.theme-movie) .sop-intro__heart {
+  font-size: clamp(48px, 12vw, 96px);
+  color: var(--sop-gold);
+}
+
+body:not(.theme-movie) .sop-intro__tap {
+  margin-top: 18px;
+  color: var(--sop-cream);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+body:not(.theme-movie) .sop-intro__brand {
+  position: fixed;
+  left: 50%;
+  bottom: 38px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+body:not(.theme-movie) .sop-intro__brand strong {
+  display: block;
+  color: var(--sop-cream);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+body:not(.theme-movie) .sop-intro__brand span {
+  display: block;
+  margin-top: 8px;
+  color: var(--sop-gold);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  font-size: 10px;
+}

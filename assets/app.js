@@ -66,6 +66,50 @@ function loadTheme(theme) {
 }
 
 
+
+function configureIntroForTheme(theme) {
+  const intro = SOP.el.intro;
+  if (!intro) return;
+
+  const themeName = normalizeThemeName(theme);
+
+  if (themeName === "movie") {
+    intro.className = "sop-intro sop-cinema-intro";
+    intro.setAttribute("aria-label", "Begin the story");
+    intro.innerHTML = `
+      <div class="sop-cinema-intro__grain" aria-hidden="true"></div>
+      <div class="sop-cinema-intro__stage" aria-hidden="false">
+        <div class="sop-cinema-intro__step sop-cinema-intro__step--studio">
+          <span>STUDIO OF PAGES</span>
+          <small>PRESENTS</small>
+        </div>
+        <div class="sop-cinema-intro__step sop-cinema-intro__step--film">
+          <span>A FILM</span>
+          <small>BASED ON TRUE EVENTS</small>
+        </div>
+        <div class="sop-cinema-intro__start">
+          <span>Begin The Story</span>
+          <small>Tap anywhere to continue</small>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Default intro for wedding, baby, pet, family, anniversary, star map, etc.
+  intro.className = "sop-intro";
+  intro.setAttribute("aria-label", "Tap to view your memories");
+  intro.innerHTML = `
+    <div class="sop-intro__center">
+      <div class="sop-intro__heart" aria-hidden="true">♡</div>
+      <div class="sop-intro__tap">Tap to View Your Memories</div>
+    </div>
+    <div class="sop-intro__brand">
+      <strong>StudioOfPages</strong>
+      <span>A Memory Awaits</span>
+    </div>`;
+}
+
+
 function isMovieTheme() {
   return normalizeThemeName(SOP.data?.theme) === "movie";
 }
@@ -123,6 +167,7 @@ async function loadMemory() {
     if (!response.ok) throw new Error("Memory not found");
     SOP.data = await response.json();
     loadTheme(SOP.data.theme || "wedding");
+    configureIntroForTheme(SOP.data.theme || "wedding");
 
     // FAST LOAD FIX:
     // Sayfaları ve oynatıcıyı hiçbir fotoğraf/ses kontrolünü bekletmeden kur.
