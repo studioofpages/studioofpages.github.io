@@ -4925,3 +4925,20 @@ body:not(.theme-movie) .sop-intro__brand span {
   text-transform: uppercase;
   font-size: 10px;
 }
+
+
+/* =========================================================
+   v24 Intro Pending Fix
+   Tema okunana kadar intro gizli kalır.
+   Movie'de eski kalp intro bir an bile görünmez.
+========================================================= */
+
+body.is-intro-pending .sop-intro {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body:not(.is-intro-pending) .sop-intro {
+  visibility: visible;
+}

@@ -168,6 +168,7 @@ async function loadMemory() {
     SOP.data = await response.json();
     loadTheme(SOP.data.theme || "wedding");
     configureIntroForTheme(SOP.data.theme || "wedding");
+    document.body.classList.remove("is-intro-pending");
 
     // FAST LOAD FIX:
     // Sayfaları ve oynatıcıyı hiçbir fotoğraf/ses kontrolünü bekletmeden kur.
@@ -675,6 +676,7 @@ function closeLightbox() {
 }
 
 function renderError() {
+  document.body.classList.remove("is-intro-pending");
   document.body.classList.add("book-mode", "is-memory-ready");
   setText(SOP.el.title, "Memory Not Found");
   setText(SOP.el.date, "This memory page could not be loaded.");
